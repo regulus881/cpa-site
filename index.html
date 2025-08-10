@@ -13,10 +13,10 @@
         /* Body */
         body {
             font-family: 'Rajdhani', sans-serif;
-            background: linear-gradient(45deg, #1f1f1f, #14b8a6, #1f1f1f, #14b8a6);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #667eea 50%, #764ba2 75%, #667eea 100%);
             background-size: 400% 400%;
-            animation: gradientShift 8s ease-in-out infinite;
-            color: rgb(255, 255, 255);
+            animation: gradientShift 20s ease-in-out infinite;
+            color: #f8fafc;
             text-align: center;
             margin: 0;
             padding: 0;
@@ -27,8 +27,14 @@
             0% {
                 background-position: 0% 50%;
             }
-            50% {
+            25% {
                 background-position: 100% 50%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            75% {
+                background-position: 0% 100%;
             }
             100% {
                 background-position: 0% 50%;
@@ -37,29 +43,24 @@
 
         /* Logo Styles */
         .logo-container {
-            margin: 30px auto;
+            margin: 40px auto;
             text-align: center;
+            animation: logoFloat 8s ease-in-out infinite;
         }
 
-        .logo {
-            font-family: 'Sarpanch', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #14b8a6, #06d6a0, #118ab2, #073b4c);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin: 0;
-            text-shadow: 0 0 30px rgba(20, 184, 166, 0.8);
-            animation: logoGlow 3s ease-in-out infinite alternate, gradientShift 8s ease-in-out infinite;
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
         }
 
-        @keyframes logoGlow {
-            0% { filter: drop-shadow(0 0 10px rgba(20, 184, 166, 0.5)); }
-            100% { filter: drop-shadow(0 0 25px rgba(20, 184, 166, 0.9)); }
+        .logo-container svg {
+            filter: drop-shadow(0 8px 20px rgba(99, 102, 241, 0.15));
+            transition: all 0.4s ease;
+        }
+
+        .logo-container:hover svg {
+            transform: scale(1.02);
+            filter: drop-shadow(0 12px 30px rgba(99, 102, 241, 0.25));
         }
 
         /* Main Logo */
@@ -97,63 +98,62 @@
         /* Search box style */
         input {
             padding-left: 40px !important;
-            color: #ffffff;
-            background: rgba(31, 31, 31, 0.8) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2314b8a6'%3E%3Cpath d='M23.707,22.293l-5.969-5.969a10.016,10.016,0,1,0-1.414,1.414l5.969,5.969a1,1,0,0,0,1.414-1.414ZM10,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,10,18Z'/%3E%3C/svg%3E") no-repeat 15px center;
+            color: #1e293b;
+            background: rgba(248, 250, 252, 0.95) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366f1'%3E%3Cpath d='M23.707,22.293l-5.969-5.969a10.016,10.016,0,1,0-1.414,1.414l5.969,5.969a1,1,0,0,0,1.414-1.414ZM10,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,10,18Z'/%3E%3C/svg%3E") no-repeat 15px center;
             background-size: 20px;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(20, 184, 166, 0.3);
+            border: 2px solid rgba(99, 102, 241, 0.3);
             width: 80%;
-            padding: 10px;
+            padding: 12px;
             margin: 10px 0 20px 0;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         input:focus {
-            border-color: #14b8a6;
-            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), 0 4px 15px rgba(0, 0, 0, 0.1);
             outline: none;
+            background: rgba(255, 255, 255, 0.98);
         }
 
         input::placeholder {
-            color: #555252;
+            color: #64748b;
             transition: all 0.3s ease;
         }
 
         input:focus::placeholder {
-            opacity: 0.5;
+            opacity: 0.6;
             transform: translateX(5px);
         }
 
         /* Install Button */
         .install-btn {
             font-family: 'Rajdhani', sans-serif;
-            background: linear-gradient(135deg, #14b8a6, #0f766e);
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
             color: white;
-            padding: 10px 20px;
-            border-radius: 15px;
+            padding: 12px 24px;
+            border-radius: 8px;
             text-decoration: none;
             transition: all 0.3s ease;
             margin-top: 15px;
-            width: calc(-10% -100% - 10px);
-            min-height: auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
             text-align: center;
-            font-weight: 700;
+            font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
             border: none;
-            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
 
         .install-btn:hover {
-            background: linear-gradient(135deg, #0f766e, #14b8a6);
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(20, 184, 166, 0.5);
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #2563eb, #5b21b6);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
         }
 
         /* Cards container */
@@ -161,34 +161,34 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
             padding: 20px;
         }
 
         /* Each card */
         .app-card {
             font-family: 'Rajdhani', sans-serif;
-            background: rgba(31, 31, 31, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(20, 184, 166, 0.3);
-            padding: 15px;
-            border-radius: 10px;
+            background: rgba(248, 250, 252, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(203, 213, 225, 0.3);
+            padding: 20px;
+            border-radius: 12px;
             width: 200px;
             text-align: center;
-            color: #fff;
+            color: #1e293b;
             min-height: 350px;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
         }
 
         .app-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(20, 184, 166, 0.3);
-            border-color: #14b8a6;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 15px rgba(0, 0, 0, 0.08);
+            border-color: rgba(99, 102, 241, 0.3);
         }
 
         .app-card-content {
@@ -201,17 +201,18 @@
         .app-card img {
             width: 100px;
             height: 100px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin: 0 auto;
             object-fit: cover;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .app-card h3 {
             font-family: 'Rajdhani', sans-serif;
-            color: #e6eeee;
-            font-size: 1rem;
-            margin: 10px 0;
+            color: #0f172a;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 15px 0 10px 0;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
@@ -222,22 +223,23 @@
         }
 
         .app-card p {
-            color: #ccc;
+            color: #64748b;
             font-size: 14px;
-            margin: 5px 0;
+            margin: 8px 0;
+            font-weight: 500;
         }
 
         .badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: linear-gradient(135deg, #14b8a6, #0f766e);
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
-            font-size: 10px;
-            padding: 3px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            box-shadow: 0 2px 8px rgba(20, 184, 166, 0.4);
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
         }
 
         /* Trust badges */
@@ -245,26 +247,30 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin: 20px 0;
+            margin: 30px 0;
             flex-wrap: wrap;
         }
 
         .trust-badge {
-            background: rgba(31, 31, 31, 0.8);
+            background: rgba(248, 250, 252, 0.95);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(20, 184, 166, 0.3);
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            border: 1px solid rgba(203, 213, 225, 0.3);
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
         .trust-badge:hover {
-            border-color: #14b8a6;
-            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
 
         /* Responsive adjustments */
@@ -272,7 +278,7 @@
             .app-card {
                 width: calc(50% - 10px) !important;
                 box-sizing: border-box;
-                padding: 10px !important;
+                padding: 15px !important;
             }
         }
 
@@ -283,9 +289,9 @@
         }
 
         h1, h2 {
-            color: #14b8a6;
+            color: #f8fafc;
             margin: 15px 0 10px;
-            text-shadow: 0 2px 10px rgba(20, 184, 166, 0.5);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
             text-transform: uppercase;
@@ -303,12 +309,13 @@
             text-transform: none;
             letter-spacing: 1px;
             font-style: italic;
+            color: #f1f5f9;
         }
 
         .subtitle {
             font-family: 'Rajdhani', sans-serif;
             font-size: 1.3rem;
-            color: #e0e0e0;
+            color: #e2e8f0;
             margin: 20px 0;
             font-weight: 500;
             letter-spacing: 1px;
@@ -329,33 +336,46 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.8);
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
         }
 
         .modal-content {
-            background: rgba(31, 31, 31, 0.95);
+            background: rgba(248, 250, 252, 0.98);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(20, 184, 166, 0.3);
+            border: 1px solid rgba(203, 213, 225, 0.3);
             margin: 15% auto;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 30px;
+            border-radius: 16px;
             width: 80%;
             max-width: 400px;
             text-align: center;
-            color: white;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            color: #1e293b;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-content h3 {
+            color: #0f172a;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
 
         .close {
-            color: #aaa;
+            color: #94a3b8;
             float: right;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            transition: color 0.3s ease;
         }
 
         .close:hover {
-            color: white;
+            color: #475569;
         }
     </style>
 </head>
@@ -365,7 +385,61 @@
 
         <!-- GAMES WAM Logo -->
         <div class="logo-container">
-            <h1 class="logo">GAMES WAM</h1>
+            <svg width="320" height="100" viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 10px;">
+                <defs>
+                    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#6366f1;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#06d6a0;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#118ab2;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                
+                <!-- Main text: games -->
+                <text x="20" y="45" font-family="'Montserrat', sans-serif" font-size="36" font-weight="300" fill="url(#mainGradient)" letter-spacing="2px">games</text>
+                
+                <!-- Accent text: wam -->
+                <text x="160" y="45" font-family="'Montserrat', sans-serif" font-size="42" font-weight="700" fill="url(#accentGradient)" letter-spacing="1px">wam</text>
+                
+                <!-- Gaming controller/chat bubble icon -->
+                <g transform="translate(250, 15)">
+                    <!-- Chat bubble background -->
+                    <path d="M5 8 C5 3, 10 0, 20 0 C30 0, 35 3, 35 8 C35 13, 30 16, 20 16 L12 16 L8 20 L10 16 C7 15, 5 12, 5 8 Z" 
+                          fill="url(#accentGradient)" opacity="0.9"/>
+                    
+                    <!-- Gaming elements inside bubble -->
+                    <circle cx="16" cy="8" r="2" fill="white" opacity="0.9"/>
+                    <circle cx="24" cy="8" r="2" fill="white" opacity="0.9"/>
+                    
+                    <!-- D-pad style cross -->
+                    <rect x="14.5" y="7" width="3" height="1" fill="url(#mainGradient)"/>
+                    <rect x="15.5" y="6" width="1" height="3" fill="url(#mainGradient)"/>
+                    
+                    <!-- Action buttons -->
+                    <rect x="22.5" y="7" width="3" height="1" fill="url(#mainGradient)"/>
+                    <rect x="23.5" y="6" width="1" height="3" fill="url(#mainGradient)"/>
+                </g>
+                
+                <!-- Cursor/pointer hand -->
+                <g transform="translate(270, 25)">
+                    <path d="M8 0 C10 0, 12 2, 12 4 L12 8 L14 8 C16 8, 18 10, 18 12 L18 20 C18 22, 16 24, 14 24 L6 24 C4 24, 2 22, 2 20 L2 12 C2 10, 4 8, 6 8 L8 8 L8 4 C8 2, 10 0, 12 0 Z" 
+                          fill="url(#mainGradient)" opacity="0.8" transform="scale(0.8)"/>
+                    <!-- Pointer finger -->
+                    <rect x="6" y="-2" width="2" height="10" rx="1" fill="url(#mainGradient)" opacity="0.8"/>
+                </g>
+                
+                <!-- Tagline -->
+                <text x="20" y="70" font-family="'Rajdhani', sans-serif" font-size="14" font-weight="400" fill="#e2e8f0" letter-spacing="1px" opacity="0.9">premium mobile gaming hub</text>
+                
+                <!-- Decorative stars -->
+                <g fill="url(#accentGradient)" opacity="0.6">
+                    <polygon points="10,20 12,16 14,20 18,20 15,23 16,27 12,25 8,27 9,23 6,20" transform="scale(0.3)"/>
+                    <polygon points="290,25 292,21 294,25 298,25 295,28 296,32 292,30 288,32 289,28 286,25" transform="scale(0.3)"/>
+                </g>
+            </svg>
         </div>
 
         <h1 class="main-title">Premium Mobile Mods Hub</h1>
