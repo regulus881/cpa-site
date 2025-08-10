@@ -65,7 +65,7 @@
 
         /* Main Logo */
         .main-logo {
-            max-width: 140px;
+            max-width: 320px;
             margin: 20px auto;
             display: block;
         }
@@ -385,62 +385,116 @@
 
         <!-- GAMES WAM Logo -->
         <div class="logo-container">
-            <svg width="320" height="120" viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 10px;">
+            <svg class="main-logo" viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" style="stop-color:#2c3e50;stop-opacity:1" />
-                        <stop offset="50%" style="stop-color:#34495e;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#2c3e50;stop-opacity:1" />
+                    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#87CEEB"/>
+                        <stop offset="30%" style="stop-color:#4A90E2"/>
+                        <stop offset="70%" style="stop-color:#2E86AB"/>
+                        <stop offset="100%" style="stop-color:#1E5F99"/>
                     </linearGradient>
-                    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" style="stop-color:#1abc9c;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#16a085;stop-opacity:1" />
+                    
+                    <linearGradient id="textShine" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#87CEEB"/>
+                        <stop offset="50%" style="stop-color:white"/>
+                        <stop offset="100%" style="stop-color:#4A90E2"/>
                     </linearGradient>
-                    <linearGradient id="controllerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#1abc9c;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#16a085;stop-opacity:1" />
-                    </linearGradient>
+                    
+                    <radialGradient id="glowEffect" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:0.8"/>
+                        <stop offset="100%" style="stop-color:#4A90E2;stop-opacity:0"/>
+                    </radialGradient>
+                    
+                    <filter id="megaGlow" x="-100%" y="-100%" width="300%" height="300%">
+                        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                        <feGaussianBlur stdDeviation="8" result="bigBlur"/>
+                        <feMerge> 
+                            <feMergeNode in="bigBlur"/>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                    
+                    <filter id="textGlow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feDropShadow dx="3" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.4"/>
+                        <feMerge> 
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
                 </defs>
                 
-                <!-- Main text: games -->
-                <text x="20" y="50" font-family="'Montserrat', sans-serif" font-size="48" font-weight="700" fill="url(#mainGradient)" letter-spacing="1px">games</text>
+                <!-- Radial glow background -->
+                <circle cx="40" cy="50" r="30" fill="url(#glowEffect)" opacity="0.6"/>
                 
-                <!-- Accent text: wam -->
-                <text x="170" y="50" font-family="'Montserrat', sans-serif" font-size="48" font-weight="700" fill="url(#accentGradient)" letter-spacing="1px">wam</text>
-                
-                <!-- Gaming controller icon matching your logo -->
-                <g transform="translate(260, 20)">
-                    <!-- Controller body -->
-                    <rect x="0" y="8" width="40" height="24" rx="12" ry="12" fill="url(#controllerGradient)" opacity="0.9"/>
+                <!-- Enhanced gaming controller -->
+                <g transform="translate(25, 30)">
+                    <path d="M0 20 C0 10, 8 2, 18 2 L32 2 C42 2, 50 10, 50 20 L50 25 C50 35, 42 43, 32 43 L18 43 C8 43, 0 35, 0 25 Z" 
+                          fill="url(#primaryGradient)" 
+                          filter="url(#megaGlow)"
+                          stroke="white" 
+                          stroke-width="0.5"/>
                     
-                    <!-- D-pad (left side) -->
-                    <g fill="#2c3e50">
-                        <rect x="8" y="18" width="8" height="2" rx="1"/>
-                        <rect x="11" y="15" width="2" height="8" rx="1"/>
+                    <!-- Enhanced controller elements -->
+                    <g filter="url(#megaGlow)">
+                        <circle cx="15" cy="18" r="3" fill="white" opacity="0.9"/>
+                        <circle cx="15" cy="27" r="3" fill="white" opacity="0.9"/>
+                        <circle cx="35" cy="18" r="2.5" fill="#87CEEB"/>
+                        <circle cx="39" cy="23" r="2.5" fill="#4A90E2"/>
+                        <rect x="31" y="13" width="2" height="8" rx="1" fill="white" opacity="0.7"/>
+                        <rect x="28" y="16" width="8" height="2" rx="1" fill="white" opacity="0.7"/>
                     </g>
-                    
-                    <!-- Action buttons (right side) -->
-                    <g fill="#2c3e50">
-                        <circle cx="26" cy="16" r="2.5"/>
-                        <circle cx="32" cy="16" r="2.5"/>
-                        <circle cx="29" cy="13" r="2"/>
-                        <circle cx="29" cy="19" r="2"/>
-                    </g>
-                    
-                    <!-- Controller grips -->
-                    <rect x="-2" y="20" width="6" height="12" rx="3" fill="url(#controllerGradient)" opacity="0.8"/>
-                    <rect x="36" y="20" width="6" height="12" rx="3" fill="url(#controllerGradient)" opacity="0.8"/>
                 </g>
                 
-                <!-- Tagline -->
-                <text x="20" y="75" font-family="'Rajdhani', sans-serif" font-size="16" font-weight="500" fill="#e2e8f0" letter-spacing="1px" opacity="0.9">premium mobile gaming hub</text>
+                <!-- GAMES text with white stroke and solid fill -->
+                <text x="88" y="43" 
+                      font-family="'Orbitron', 'Exo 2', 'Arial Black', Arial, sans-serif" 
+                      font-size="36" 
+                      font-weight="900" 
+                      fill="#4A90E2" 
+                      stroke="white"
+                      stroke-width="2"
+                      filter="url(#textGlow)"
+                      letter-spacing="3px"
+                      transform="rotate(-2)">GAMES</text>
+                      
+                <!-- WAM text positioned under GAMES with white stroke -->
+                <text x="92" y="77" 
+                      font-family="'Orbitron', 'Exo 2', 'Arial Black', Arial, sans-serif" 
+                      font-size="32" 
+                      font-weight="600" 
+                      fill="url(#primaryGradient)" 
+                      stroke="white"
+                      stroke-width="2"
+                      filter="url(#textGlow)"
+                      letter-spacing="6px"
+                      transform="rotate(1)">WAM</text>
+                      
+                <!-- Glowing separator with pulse effect -->
+                <line x1="90" y1="52" x2="240" y2="52" 
+                      stroke="url(#textShine)" 
+                      stroke-width="3" 
+                      filter="url(#megaGlow)" 
+                      opacity="0.8"/>
+                      
+                <!-- Enhanced pixel gaming effects -->
+                <g filter="url(#megaGlow)">
+                    <rect x="260" y="15" width="6" height="6" fill="#87CEEB"/>
+                    <rect x="268" y="22" width="6" height="6" fill="#4A90E2"/>
+                    <rect x="276" y="15" width="6" height="6" fill="#2E86AB"/>
+                    <rect x="284" y="8" width="6" height="6" fill="#87CEEB"/>
+                    
+                    <rect x="260" y="80" width="6" height="6" fill="#4A90E2"/>
+                    <rect x="268" y="73" width="6" height="6" fill="#87CEEB"/>
+                    <rect x="276" y="80" width="6" height="6" fill="#2E86AB"/>
+                    <rect x="284" y="87" width="6" height="6" fill="#4A90E2"/>
+                </g>
                 
-                <!-- Decorative elements -->
-                <g fill="url(#accentGradient)" opacity="0.4">
-                    <circle cx="15" cy="25" r="2"/>
-                    <circle cx="305" cy="35" r="1.5"/>
-                    <circle cx="25" cy="85" r="1"/>
-                    <circle cx="295" cy="85" r="1"/>
+                <!-- Power ring with intense glow -->
+                <g transform="translate(290, 50)">
+                    <circle cx="0" cy="0" r="15" fill="none" stroke="url(#primaryGradient)" stroke-width="3" filter="url(#megaGlow)" opacity="0.9"/>
+                    <line x1="0" y1="-10" x2="0" y2="2" stroke="url(#textShine)" stroke-width="3" stroke-linecap="round" filter="url(#megaGlow)"/>
                 </g>
             </svg>
         </div>
