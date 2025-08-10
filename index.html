@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sarpanch:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <title>GAMES WAM - Premium Mobile Mods Hub</title>
     <style>
         /* Body */
@@ -280,11 +280,19 @@
                 box-sizing: border-box;
                 padding: 15px !important;
             }
+            
+            .main-logo {
+                max-width: 280px;
+            }
         }
 
         @media (max-width: 480px) {
             .app-card {
                 width: 100% !important;
+            }
+            
+            .main-logo {
+                max-width: 250px;
             }
         }
 
@@ -304,12 +312,17 @@
         }
 
         .main-title {
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
+            font-family: 'Inter', 'Poppins', sans-serif;
+            font-weight: 400;
             text-transform: none;
-            letter-spacing: 1px;
-            font-style: italic;
+            letter-spacing: 0.5px;
+            font-style: normal;
             color: #f1f5f9;
+            font-size: 1.8rem;
+            line-height: 1.4;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .subtitle {
@@ -376,6 +389,27 @@
 
         .close:hover {
             color: #475569;
+        }
+
+        /* Mobile-specific improvements */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 1.4rem;
+                padding: 0 20px;
+                margin: 15px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 1.2rem;
+                padding: 0 15px;
+                margin: 10px 0;
+            }
+            
+            .logo-container {
+                margin: 30px auto;
+            }
         }
     </style>
 </head>
@@ -558,37 +592,3 @@
                 } else {
                     card.style.display = 'none';
                 }
-            });
-        }
-
-        function showInfo(gameName) {
-            const modal = document.getElementById('infoModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDescription = document.getElementById('modalDescription');
-            
-            modalTitle.textContent = gameName;
-            modalDescription.textContent = `Click "Start Download" to begin downloading ${gameName}. Make sure you have enabled "Unknown Sources" in your device settings.`;
-            
-            modal.style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('infoModal').style.display = 'none';
-        }
-
-        function startDownload() {
-            alert('Download will begin shortly. Please wait...');
-            closeModal();
-        }
-
-        // Close modal when clicking outside of it
-        window.onclick = function(event) {
-            const modal = document.getElementById('infoModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
-    </script>
-</body>
-
-</html>
