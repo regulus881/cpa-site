@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sarpanch:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <title>GAMES WAM - Premium Mobile Mods Hub</title>
     <style>
         /* Body */
@@ -97,10 +97,9 @@
 
         /* Search box style */
         input {
-            padding-left: 40px !important;
+            padding-left: 15px !important;
             color: #1e293b;
-            background: rgba(248, 250, 252, 0.95) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366f1'%3E%3Cpath d='M23.707,22.293l-5.969-5.969a10.016,10.016,0,1,0-1.414,1.414l5.969,5.969a1,1,0,0,0,1.414-1.414ZM10,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,10,18Z'/%3E%3C/svg%3E") no-repeat 15px center;
-            background-size: 20px;
+            background: rgba(248, 250, 252, 0.95);
             backdrop-filter: blur(10px);
             border: 2px solid rgba(99, 102, 241, 0.3);
             width: 80%;
@@ -127,6 +126,21 @@
         input:focus::placeholder {
             opacity: 0.6;
             transform: translateX(5px);
+        }
+
+        /* No results message */
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            color: #e2e8f0;
+            font-size: 18px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+        }
+
+        .no-results.show {
+            display: block;
         }
 
         /* Install Button */
@@ -304,12 +318,30 @@
         }
 
         .main-title {
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
             text-transform: none;
-            letter-spacing: 1px;
-            font-style: italic;
+            letter-spacing: 0.5px;
+            font-style: normal;
             color: #f1f5f9;
+            font-size: 1.4rem;
+            margin: 15px 0;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Mobile responsive for title */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 1.2rem;
+                margin: 10px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 1.1rem;
+                margin: 8px 0;
+            }
         }
 
         .subtitle {
@@ -513,6 +545,11 @@
             <input type="text" id="searchInput" placeholder="🔍 Search for a game..." onkeyup="filterGames()" />
         </div>
 
+        <!-- No Results Message -->
+        <div id="noResults" class="no-results">
+            <p>🔍 Nothing found. Try searching for something else!</p>
+        </div>
+
         <!-- App Grid -->
         <div class="app-container" id="gamesSection">
             <!-- Super Bear Adventure Card -->
@@ -550,45 +587,8 @@
         function filterGames() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const gameCards = document.querySelectorAll('.app-card');
+            const noResults = document.getElementById('noResults');
+            let hasResults = false;
             
             gameCards.forEach(card => {
-                const gameTitle = card.querySelector('h3').textContent.toLowerCase();
-                if (gameTitle.includes(searchTerm)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        function showInfo(gameName) {
-            const modal = document.getElementById('infoModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDescription = document.getElementById('modalDescription');
-            
-            modalTitle.textContent = gameName;
-            modalDescription.textContent = `Click "Start Download" to begin downloading ${gameName}. Make sure you have enabled "Unknown Sources" in your device settings.`;
-            
-            modal.style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('infoModal').style.display = 'none';
-        }
-
-        function startDownload() {
-            alert('Download will begin shortly. Please wait...');
-            closeModal();
-        }
-
-        // Close modal when clicking outside of it
-        window.onclick = function(event) {
-            const modal = document.getElementById('infoModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
-    </script>
-</body>
-
-</html>
+                const gameTitle = car
