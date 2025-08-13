@@ -13,7 +13,7 @@
         /* Body */
         body {
             font-family: 'Rajdhani', sans-serif;
-            background: linear-gradient(135deg, #1a0026 0%, #2d1b69 25%, #1a0026 50%, #2d1b69 75%, #1a0026 100%);
+            background: linear-gradient(135deg, #2d1b4e 0%, #4c3575 25%, #2d1b4e 50%, #4c3575 75%, #2d1b4e 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease-in-out infinite;
             color: #f0e6ff;
@@ -55,27 +55,42 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Logo Styles with Pop-out Animation */
+        /* Logo Styles with Fixed Mobile Animation */
         .logo-container {
             margin: 40px auto;
             text-align: center;
-            animation: logoEntrance 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-            transform: scale(0) rotate(180deg);
-            opacity: 0;
+            animation: logoEntrance 1.5s ease-out forwards;
+            transform: scale(1);
+            opacity: 1;
         }
 
+        /* Simplified animation for mobile compatibility */
         @keyframes logoEntrance {
             0% {
-                transform: scale(0) rotate(180deg);
+                transform: scale(0.8);
                 opacity: 0;
             }
-            70% {
-                transform: scale(1.1) rotate(-10deg);
-                opacity: 0.8;
-            }
             100% {
-                transform: scale(1) rotate(0deg);
+                transform: scale(1);
                 opacity: 1;
+            }
+        }
+
+        /* Reduced mobile animations */
+        @media (max-width: 768px) {
+            .logo-container {
+                animation: logoEntranceMobile 1s ease-out forwards;
+            }
+            
+            @keyframes logoEntranceMobile {
+                0% {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
         }
 
@@ -97,6 +112,14 @@
             }
         }
 
+        /* Disable complex animations on mobile */
+        @media (max-width: 768px) {
+            .logo-container svg {
+                animation: none;
+                filter: drop-shadow(0 0 20px rgba(138, 43, 226, 0.5));
+            }
+        }
+
         .logo-container:hover svg {
             transform: scale(1.05) rotateY(10deg);
             filter: drop-shadow(0 0 50px rgba(138, 43, 226, 0.8)) 
@@ -108,6 +131,18 @@
             max-width: 320px;
             margin: 20px auto;
             display: block;
+        }
+
+        @media (max-width: 768px) {
+            .main-logo {
+                max-width: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-logo {
+                max-width: 250px;
+            }
         }
 
         /* Platform Logos */
@@ -144,7 +179,7 @@
         /* Search box style */
         input {
             padding-left: 15px !important;
-            color: #1a0026;
+            color: #000000;
             background: rgba(240, 230, 255, 0.95);
             backdrop-filter: blur(15px);
             border: 2px solid rgba(138, 43, 226, 0.4);
@@ -180,7 +215,7 @@
         }
 
         input::placeholder {
-            color: #6b46c1;
+            color: #000000;
             transition: all 0.3s ease;
         }
 
@@ -381,14 +416,17 @@
             50% { transform: scale(1.05); }
         }
 
-        /* Trust badges */
+        /* Fixed Trust badges for mobile */
         .trust-badges {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            align-items: center;
+            gap: 15px;
             margin: 30px 0;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             animation: trustBadgesEntrance 1.2s ease-out 0.3s both;
+            overflow-x: auto;
+            padding: 0 20px;
         }
 
         @keyframes trustBadgesEntrance {
@@ -406,17 +444,47 @@
             background: rgba(240, 230, 255, 0.95);
             backdrop-filter: blur(15px);
             border: 2px solid rgba(138, 43, 226, 0.3);
-            padding: 12px 20px;
-            border-radius: 30px;
-            font-size: 13px;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 12px;
             font-weight: 600;
-            color: #4c1d95;
+            color: #000000;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             box-shadow: 0 8px 25px rgba(138, 43, 226, 0.15);
             animation: trustBadgeFloat 4s ease-in-out infinite;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* Mobile responsive trust badges */
+        @media (max-width: 768px) {
+            .trust-badges {
+                gap: 8px;
+                padding: 0 10px;
+                margin: 20px 0;
+            }
+            
+            .trust-badge {
+                padding: 8px 12px;
+                font-size: 11px;
+                border-radius: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .trust-badges {
+                gap: 6px;
+                padding: 0 5px;
+            }
+            
+            .trust-badge {
+                padding: 6px 10px;
+                font-size: 10px;
+                border-radius: 18px;
+            }
         }
 
         @keyframes trustBadgeFloat {
@@ -675,18 +743,6 @@
                       stroke="#f0e6ff"
                       stroke-width="2"
                       filter="url(#textGlow)"
-                      letter-spacing="3px"
-                      transform="rotate(-2)">GAMES</text>
-                      
-                <!-- WAM text positioned under GAMES -->
-                <text x="92" y="77" 
-                      font-family="'Orbitron', 'Exo 2', 'Arial Black', Arial, sans-serif" 
-                      font-size="32" 
-                      font-weight="600" 
-                      fill="url(#primaryGradient)" 
-                      stroke="#f0e6ff"
-                      stroke-width="2"
-                      filter="url(#textGlow)"
                       letter-spacing="6px"
                       transform="rotate(1)">WAM</text>
                       
@@ -837,4 +893,16 @@
         });
     </script>
 </body>
-</html>
+</html>)"
+                      letter-spacing="3px"
+                      transform="rotate(-2)">GAMES</text>
+                      
+                <!-- WAM text positioned under GAMES -->
+                <text x="92" y="77" 
+                      font-family="'Orbitron', 'Exo 2', 'Arial Black', Arial, sans-serif" 
+                      font-size="32" 
+                      font-weight="600" 
+                      fill="url(#primaryGradient)" 
+                      stroke="#f0e6ff"
+                      stroke-width="2"
+                      filter="url(#textGlow
