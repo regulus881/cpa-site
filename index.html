@@ -15,7 +15,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -25,7 +25,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
             background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 25%, #2d1b69 50%, #1a1a3e 75%, #0f0f23 100%);
             background-size: 400% 400%;
             animation: subtleGradient 30s ease-in-out infinite;
@@ -33,11 +33,20 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         @keyframes subtleGradient {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
         }
 
         /* Sticky Navigation */
@@ -63,7 +72,7 @@
         }
 
         .logo-nav {
-            font-family: 'Orbitron', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             font-size: 20px;
             font-weight: 700;
             color: #60a5fa;
@@ -71,6 +80,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            letter-spacing: -0.022em;
         }
 
         .logo-icon {
@@ -135,7 +145,7 @@
             transition: 0.3s;
         }
 
-        /* Hero Section */
+        /* Hero Section - JUST font change + better CTA */
         .hero {
             text-align: center;
             padding: 60px 20px 40px;
@@ -145,7 +155,7 @@
         }
 
         .hero h1 {
-            font-family: 'Orbitron', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             font-size: 4rem;
             font-weight: 900;
             margin-bottom: 20px;
@@ -155,16 +165,18 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             line-height: 1.1;
+            letter-spacing: -0.005em;
         }
 
         .hero-subtitle {
             font-size: 1.4rem;
             color: #cbd5e1;
             margin-bottom: 40px;
-            font-weight: 500;
+            font-weight: 400;
             max-width: 500px;
             margin-left: auto;
             margin-right: auto;
+            letter-spacing: -0.022em;
         }
 
         .trust-indicators {
@@ -192,27 +204,35 @@
             margin: 50px 0;
         }
 
+        /* Better Apple-style CTA button */
         .cta-button {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            background: linear-gradient(135deg, #34c759, #30d158);
             color: white;
             padding: 18px 40px;
             border: none;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: 700;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 24px rgba(52, 199, 89, 0.3);
+            letter-spacing: -0.022em;
+            animation: pulse 2s infinite;
+            min-height: 44px;
         }
 
         .cta-button:hover {
-            background: linear-gradient(135deg, #2563eb, #1e40af);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+            background: linear-gradient(135deg, #28a745, #34c759);
+            transform: scale(1.02);
+            box-shadow: 0 12px 32px rgba(52, 199, 89, 0.4);
+        }
+
+        .cta-button:active {
+            transform: scale(0.98);
         }
 
         /* Hero Slider */
@@ -359,22 +379,28 @@
             font-size: 12px;
         }
 
+        /* Apple-style mod CTA buttons */
         .mod-cta {
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
             padding: 12px 20px;
             border: none;
-            border-radius: 25px;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             width: 100%;
             font-size: 14px;
+            min-height: 44px;
         }
 
         .mod-cta:hover {
             background: linear-gradient(135deg, #2563eb, #1e40af);
-            transform: translateY(-2px);
+            transform: scale(1.02);
+        }
+
+        .mod-cta:active {
+            transform: scale(0.98);
         }
 
         .see-more-link {
@@ -510,11 +536,12 @@
             color: white;
             padding: 8px 16px;
             border: none;
-            border-radius: 15px;
+            border-radius: 12px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            min-height: 36px;
         }
 
         .category-browse:hover {
@@ -584,28 +611,31 @@
             font-size: 14px;
         }
 
-        /* Floating Download Button (Mobile) */
+        /* Sticky bottom bar for mobile */
         .floating-download {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 12px 20px;
             display: none;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
-            cursor: pointer;
-            transition: all 0.3s ease;
             z-index: 999;
+            border-top: 0.5px solid rgba(255, 255, 255, 0.1);
         }
 
-        .floating-download:hover {
-            transform: scale(1.1);
+        .floating-download.show {
+            display: flex;
+        }
+
+        .floating-download .cta-button {
+            margin: 0;
+            width: 100%;
+            max-width: 300px;
+            justify-content: center;
         }
 
         /* Mobile Responsive */
@@ -772,7 +802,10 @@
         </div>
 
         <div class="main-cta">
-            <a href="#mods" class="cta-button">Browse All Mods</a>
+            <a href="#mods" class="cta-button">
+                <span>↓</span>
+                Browse All Mods
+            </a>
         </div>
 
         <div class="hero-slider">
@@ -1009,8 +1042,11 @@
     </footer>
 
     <!-- Floating Download Button (Mobile) -->
-    <div class="floating-download" onclick="scrollToMods()">
-        📥
+    <div class="floating-download" id="floatingDownload">
+        <a href="#mods" class="cta-button" onclick="scrollToMods()">
+            <span>📥</span>
+            Download Mods
+        </a>
     </div>
 
     <!-- Search Modal -->
@@ -1049,9 +1085,8 @@
             }
         }
 
-        // Download mod function
+        // Download mod function with better Apple-style feedback
         function downloadMod(modName) {
-            // Simulate download process
             const button = event.target;
             const originalText = button.textContent;
             
@@ -1121,14 +1156,14 @@
         // Show floating download button on mobile when scrolling
         let lastScrollTop = 0;
         window.addEventListener('scroll', function() {
-            const floatingBtn = document.querySelector('.floating-download');
+            const floatingBtn = document.getElementById('floatingDownload');
             const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
             
             if (window.innerWidth <= 768) {
                 if (currentScroll > 300) {
-                    floatingBtn.style.display = 'flex';
+                    floatingBtn.classList.add('show');
                 } else {
-                    floatingBtn.style.display = 'none';
+                    floatingBtn.classList.remove('show');
                 }
             }
             
@@ -1167,29 +1202,6 @@
                 }
             });
         });
-
-        // Add dynamic typing effect to hero subtitle (optional enhancement)
-        function typeWriter(element, text, speed = 50) {
-            let i = 0;
-            element.textContent = '';
-            
-            function type() {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                }
-            }
-            
-            type();
-        }
-
-        // Initialize typing effect (optional)
-        // setTimeout(() => {
-        //     const subtitle = document.querySelector('.hero-subtitle');
-        //     const originalText = subtitle.textContent;
-        //     typeWriter(subtitle, originalText, 30);
-        // }, 1000);
     </script>
 </body>
 </html>
