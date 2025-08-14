@@ -41,33 +41,142 @@
             }
         }
 
-        /* Logo Styles */
+        /* Enhanced Logo Styles with Continuous Pop-up Effect */
         .logo-container {
             margin: 40px auto;
             text-align: center;
-            animation: logoFloat 8s ease-in-out infinite;
+            animation: logoContinuousPop 4s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            perspective: 1000px;
         }
 
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-3px); }
+        @keyframes logoContinuousPop {
+            0% {
+                transform: scale(0.9) rotateY(0deg) translateY(0px);
+                opacity: 0.8;
+                filter: drop-shadow(0 5px 15px rgba(99, 102, 241, 0.2)) brightness(0.9);
+            }
+            25% {
+                transform: scale(1.15) rotateY(5deg) translateY(-10px);
+                opacity: 1;
+                filter: drop-shadow(0 15px 35px rgba(99, 102, 241, 0.4)) brightness(1.2);
+            }
+            50% {
+                transform: scale(1.05) rotateY(0deg) translateY(-5px);
+                opacity: 0.95;
+                filter: drop-shadow(0 10px 25px rgba(99, 102, 241, 0.3)) brightness(1.1);
+            }
+            75% {
+                transform: scale(1.12) rotateY(-3deg) translateY(-8px);
+                opacity: 1;
+                filter: drop-shadow(0 12px 30px rgba(99, 102, 241, 0.35)) brightness(1.15);
+            }
+            100% {
+                transform: scale(0.9) rotateY(0deg) translateY(0px);
+                opacity: 0.8;
+                filter: drop-shadow(0 5px 15px rgba(99, 102, 241, 0.2)) brightness(0.9);
+            }
+        }
+
+        @keyframes logoMegaPop {
+            0%, 90% {
+                transform: scale(1) rotateZ(0deg);
+            }
+            95% {
+                transform: scale(1.25) rotateZ(5deg);
+            }
+            100% {
+                transform: scale(1) rotateZ(0deg);
+            }
+        }
+
+        .logo-container.mega-pop {
+            animation: logoMegaPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55), logoContinuousPop 4s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
         }
 
         .logo-container svg {
-            filter: drop-shadow(0 8px 20px rgba(99, 102, 241, 0.15));
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
         }
 
         .logo-container:hover svg {
-            transform: scale(1.02);
-            filter: drop-shadow(0 12px 30px rgba(99, 102, 241, 0.25));
+            transform: scale(1.08) rotateZ(2deg);
+            filter: drop-shadow(0 15px 40px rgba(99, 102, 241, 0.4)) brightness(1.15);
         }
 
-        /* Main Logo */
-        .main-logo {
-            max-width: 320px;
-            margin: 20px auto;
-            display: block;
+        .logo-container:active svg {
+            transform: scale(0.95) rotateZ(-1deg);
+            transition: all 0.1s ease;
+        }
+
+        /* Responsive logo sizing */
+        @media (max-width: 768px) {
+            .main-logo {
+                max-width: 280px;
+            }
+            
+            .logo-container {
+                margin: 30px auto;
+            }
+
+            @keyframes logoContinuousPop {
+                0% {
+                    transform: scale(0.92) rotateY(0deg) translateY(0px);
+                    opacity: 0.85;
+                    filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.2)) brightness(0.95);
+                }
+                25% {
+                    transform: scale(1.1) rotateY(3deg) translateY(-8px);
+                    opacity: 1;
+                    filter: drop-shadow(0 12px 28px rgba(99, 102, 241, 0.35)) brightness(1.15);
+                }
+                50% {
+                    transform: scale(1.02) rotateY(0deg) translateY(-4px);
+                    opacity: 0.95;
+                    filter: drop-shadow(0 8px 20px rgba(99, 102, 241, 0.28)) brightness(1.08);
+                }
+                75% {
+                    transform: scale(1.08) rotateY(-2deg) translateY(-6px);
+                    opacity: 1;
+                    filter: drop-shadow(0 10px 25px rgba(99, 102, 241, 0.32)) brightness(1.12);
+                }
+                100% {
+                    transform: scale(0.92) rotateY(0deg) translateY(0px);
+                    opacity: 0.85;
+                    filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.2)) brightness(0.95);
+                }
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-logo {
+                max-width: 240px;
+            }
+            
+            .logo-container {
+                margin: 20px auto;
+            }
+
+            .logo-container:hover svg {
+                transform: scale(1.05) rotateZ(1deg);
+            }
+
+            @keyframes logoContinuousPop {
+                0% {
+                    transform: scale(0.95) translateY(0px);
+                    opacity: 0.9;
+                    filter: drop-shadow(0 3px 10px rgba(99, 102, 241, 0.2)) brightness(0.98);
+                }
+                50% {
+                    transform: scale(1.08) translateY(-5px);
+                    opacity: 1;
+                    filter: drop-shadow(0 8px 20px rgba(99, 102, 241, 0.35)) brightness(1.1);
+                }
+                100% {
+                    transform: scale(0.95) translateY(0px);
+                    opacity: 0.9;
+                    filter: drop-shadow(0 3px 10px rgba(99, 102, 241, 0.2)) brightness(0.98);
+                }
+            }
         }
 
         /* Platform Logos */
@@ -93,6 +202,13 @@
 
         .windows-icon {
             fill: #0078d7;
+        }
+
+        /* Main Logo */
+        .main-logo {
+            max-width: 320px;
+            margin: 20px auto;
+            display: block;
         }
 
         /* Search box style */
@@ -416,7 +532,7 @@
     <div class="container">
 
         <!-- GAMES WAM Logo -->
-        <div class="logo-container">
+        <div class="logo-container" id="logoContainer">
             <svg class="main-logo" viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -584,6 +700,19 @@
     </div>
 
     <script>
+        // Logo continuous pop effect - no need for loaded class anymore
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoContainer = document.getElementById('logoContainer');
+            
+            // Add mega pop effect on click
+            logoContainer.addEventListener('click', function() {
+                this.classList.add('mega-pop');
+                setTimeout(() => {
+                    this.classList.remove('mega-pop');
+                }, 600);
+            });
+        });
+
         function filterGames() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const gameCards = document.querySelectorAll('.app-card');
@@ -591,4 +720,51 @@
             let hasResults = false;
             
             gameCards.forEach(card => {
-                const gameTitle = car
+                const gameTitle = card.querySelector('h3').textContent.toLowerCase();
+                const gameDescription = card.querySelector('p').textContent.toLowerCase();
+                
+                if (gameTitle.includes(searchTerm) || gameDescription.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            if (hasResults) {
+                noResults.classList.remove('show');
+            } else {
+                noResults.classList.add('show');
+            }
+        }
+
+        function showInfo(gameName) {
+            const modal = document.getElementById('infoModal');
+            const title = document.getElementById('modalTitle');
+            const description = document.getElementById('modalDescription');
+            
+            title.textContent = gameName;
+            description.textContent = 'This modded version includes unlimited resources, unlocked levels, and premium features. Download size: ~50MB. Compatible with Android 5.0+';
+            
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        function startDownload() {
+            alert('Download would start here in a real implementation!');
+            closeModal();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('infoModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
