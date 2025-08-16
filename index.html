@@ -18,7 +18,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
             background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 25%, #2d1b69 50%, #1a1a3e 75%, #0f0f23 100%);
             background-size: 400% 400%;
             animation: subtleGradient 30s ease-in-out infinite;
@@ -37,7 +37,7 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* Simplified Navigation */
+        /* Centered Navigation */
         .navbar {
             background: rgba(15, 15, 35, 0.95);
             backdrop-filter: blur(20px);
@@ -53,7 +53,7 @@
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             height: 100%;
         }
@@ -82,47 +82,10 @@
             font-size: 14px;
         }
 
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #e2e8f0;
-            text-decoration: none;
-            font-weight: 510;
-            font-size: 15px;
-            transition: color 0.3s ease;
-            letter-spacing: -0.009em;
-        }
-
-        .nav-links a:hover {
-            color: #60a5fa;
-        }
-
-        .help-button {
-            background: rgba(59, 130, 246, 0.2);
-            color: #60a5fa;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 590;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: -0.008em;
-        }
-
-        .help-button:hover {
-            background: rgba(59, 130, 246, 0.3);
-        }
-
         /* Streamlined Hero Section */
         .hero {
             text-align: center;
-            padding: 60px 20px 40px;
+            padding: 40px 20px 20px;
             color: white;
             max-width: 1000px;
             margin: 0 auto;
@@ -131,7 +94,7 @@
         .hero h1 {
             font-size: 3.2rem;
             font-weight: 800;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             background: linear-gradient(135deg, #ffffff, #60a5fa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -141,31 +104,23 @@
         }
 
         .hero-subtitle {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #cbd5e1;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
             font-weight: 400;
-            max-width: 480px;
+            max-width: 400px;
             margin-left: auto;
             margin-right: auto;
             letter-spacing: -0.012em;
         }
 
-        /* Enhanced Search Section */
+        /* Simple Search Section */
         .search-section {
-            background: rgba(248, 250, 252, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 40px 0;
-            backdrop-filter: blur(10px);
+            margin: 20px 0 40px;
         }
 
         .search-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
         }
 
@@ -179,48 +134,55 @@
 
         .search-input {
             flex: 1;
-            padding: 16px 20px;
+            padding: 16px 20px 16px 50px;
             border: none;
-            font-size: 16px;
+            font-size: 17px;
             outline: none;
             background: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
             font-weight: 400;
-            letter-spacing: -0.009em;
+            letter-spacing: -0.022em;
         }
 
-        .search-button {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            border: none;
-            padding: 16px 24px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            letter-spacing: -0.008em;
+        .search-emoji {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            pointer-events: none;
         }
 
-        .search-button:hover {
-            background: linear-gradient(135deg, #2563eb, #1e40af);
+        .main-search {
+            position: relative;
+            display: flex;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
+        /* Filter Pills (keeping original functionality) */
         .filter-pills {
             display: flex;
             justify-content: center;
             gap: 12px;
             flex-wrap: wrap;
+            margin-top: 20px;
         }
 
         .filter-pill {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
             padding: 8px 16px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 510;
             cursor: pointer;
             transition: all 0.3s ease;
-            letter-spacing: -0.006em;
+            letter-spacing: -0.016em;
         }
 
         .filter-pill:hover, .filter-pill.active {
@@ -230,7 +192,7 @@
 
         /* Cleaner Mod Cards */
         .featured-section {
-            padding: 60px 20px;
+            padding: 40px 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -426,71 +388,6 @@
             font-weight: 500;
         }
 
-        /* Help Modal */
-        .help-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .help-modal.active {
-            display: flex;
-        }
-
-        .help-content {
-            background: white;
-            border-radius: 20px;
-            padding: 32px;
-            max-width: 500px;
-            width: 100%;
-            text-align: left;
-        }
-
-        .help-content h3 {
-            font-weight: 700;
-            letter-spacing: -0.025em;
-        }
-
-        .help-steps {
-            list-style: none;
-            counter-reset: step-counter;
-        }
-
-        .help-steps li {
-            counter-increment: step-counter;
-            margin-bottom: 16px;
-            padding-left: 40px;
-            position: relative;
-            font-weight: 400;
-            letter-spacing: -0.009em;
-        }
-
-        .help-steps li::before {
-            content: counter(step-counter);
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: #3b82f6;
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
         /* Footer */
         .footer {
             background: rgba(15, 15, 35, 0.95);
@@ -527,10 +424,6 @@
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
             .hero h1 {
                 font-size: 2.4rem;
             }
@@ -559,44 +452,37 @@
 </head>
 
 <body>
-    <!-- Simplified Navigation -->
+    <!-- Centered Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="#home" class="logo-nav">
                 <div class="logo-icon">GW</div>
                 Games WAM
             </a>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#mods">Mods</a></li>
-                <li><a href="#reviews">Reviews</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <button class="help-button" onclick="openHelpModal()">Quick Help</button>
         </div>
     </nav>
 
-    <!-- Hero with Streamlined Onboarding -->
+    <!-- Hero with Simple Search -->
     <section class="hero" id="home">
         <h1>Trusted Mobile Game Mods</h1>
-        <p class="hero-subtitle">Browse top-rated mods with real user reviews. Simple, safe, and ready to enhance your gaming experience.</p>
+        <p class="hero-subtitle">Fast, safe, and ready to enhance your gaming.</p>
 
-        <!-- Enhanced Search -->
+        <!-- Simple Search -->
         <div class="search-section">
             <div class="search-container">
                 <div class="main-search">
+                    <span class="search-emoji">🔍</span>
                     <input type="text" class="search-input" placeholder="Search for any game mod..." id="mainSearch">
-                    <button class="search-button" onclick="performSearch()">Search</button>
-                </div>
-                
-                <div class="filter-pills">
-                    <div class="filter-pill active" onclick="setFilter('all')">📱 All Mods</div>
-                    <div class="filter-pill" onclick="setFilter('unlimited-coins')">💰 Unlimited Coins</div>
-                    <div class="filter-pill" onclick="setFilter('no-ads')">🚫 No Ads</div>
-                    <div class="filter-pill" onclick="setFilter('unlimited-lives')">❤️ Unlimited Lives</div>
-                    <div class="filter-pill" onclick="setFilter('premium-unlocked')">⭐ Premium Unlocked</div>
                 </div>
             </div>
+        </div>
+        
+        <!-- Filter Pills -->
+        <div class="filter-pills">
+            <div class="filter-pill active" onclick="setFilter('all')">📱 All Mods</div>
+            <div class="filter-pill" onclick="setFilter('unlimited-coins')">💰 Unlimited Coins</div>
+            <div class="filter-pill" onclick="setFilter('no-ads')">🚫 No Ads</div>
+            <div class="filter-pill" onclick="setFilter('premium-unlocked')">⭐ Premium Unlocked</div>
         </div>
     </section>
 
@@ -743,37 +629,8 @@
         <p>&copy; 2024 Games WAM. Trusted by mobile gamers worldwide.</p>
     </footer>
 
-    <!-- Help Modal -->
-    <div class="help-modal" id="helpModal">
-        <div class="help-content">
-            <h3>Quick Start Guide</h3>
-            <ol class="help-steps">
-                <li><strong>Search or browse</strong> for mods using the search bar or feature filters displayed above</li>
-                <li><strong>Check details and reviews</strong> by selecting "View Details" on any mod card</li>
-                <li><strong>Tap "Install"</strong> when you're ready to download the mod securely</li>
-                <li><strong>Follow installation prompts</strong> specific to your device platform (Android/iOS)</li>
-            </ol>
-            <p style="margin: 20px 0; color: #64748b; font-size: 14px;">
-                All modifications are thoroughly tested and reviewed. If you encounter any technical issues, please contact our support team for assistance.
-            </p>
-            <div style="display: flex; gap: 12px; margin-top: 24px;">
-                <button onclick="closeHelpModal()" style="flex: 1; padding: 10px; border: 1px solid #e2e8f0; background: white; border-radius: 8px; cursor: pointer; font-weight: 510; letter-spacing: -0.006em;">Close</button>
-                <button onclick="showInfo('contact')" style="flex: 1; padding: 10px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; letter-spacing: -0.006em;">Contact Support</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         let currentFilter = 'all';
-
-        // Help Modal Functions
-        function openHelpModal() {
-            document.getElementById('helpModal').classList.add('active');
-        }
-
-        function closeHelpModal() {
-            document.getElementById('helpModal').classList.remove('active');
-        }
 
         // Search and Filter Functions
         function performSearch() {
@@ -787,3 +644,35 @@
 
         function setFilter(filterType) {
             currentFilter = filterType;
+            
+            // Remove active class from all pills
+            document.querySelectorAll('.filter-pill').forEach(pill => {
+                pill.classList.remove('active');
+            });
+            
+            // Add active class to clicked pill
+            event.target.classList.add('active');
+        }
+
+        // Mod interaction functions
+        function viewDetails(modName) {
+            alert(`Viewing details for ${modName} mod...`);
+        }
+
+        function installMod(modName) {
+            alert(`Installing ${modName} mod...`);
+        }
+
+        function showInfo(type) {
+            alert(`Opening ${type} information...`);
+        }
+
+        // Enter key search functionality
+        document.getElementById('mainSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    </script>
+</body>
+</html>
