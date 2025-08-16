@@ -166,9 +166,12 @@
         .filter-pills {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 8px;
             flex-wrap: wrap;
             margin-top: 20px;
+            max-width: 100%;
+            overflow-x: auto;
+            padding: 0 10px;
         }
 
         .filter-pill {
@@ -176,18 +179,20 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 18px;
+            font-size: 13px;
             font-weight: 510;
             cursor: pointer;
             transition: all 0.3s ease;
             letter-spacing: -0.016em;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             position: relative;
             overflow: hidden;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .filter-pill:hover {
@@ -224,19 +229,19 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 18px;
-            height: 18px;
-            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            font-size: 14px;
             line-height: 1;
             text-align: center;
             transition: all 0.3s ease;
         }
 
         /* Individual icon size adjustments to make them visually consistent */
-        .filter-icon.mobile { font-size: 15px; }
-        .filter-icon.coins { font-size: 15px; }
-        .filter-icon.no-ads { font-size: 18px; }
-        .filter-icon.premium { font-size: 18px; }
+        .filter-icon.mobile { font-size: 13px; }
+        .filter-icon.coins { font-size: 13px; }
+        .filter-icon.no-ads { font-size: 16px; }
+        .filter-icon.premium { font-size: 16px; }
 
         /* Continuous color animations for mobile visibility */
         .filter-icon.premium {
@@ -557,8 +562,30 @@
             }
 
             .filter-pills {
-                gap: 8px;
+                gap: 6px;
+                justify-content: center;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding: 0 5px;
             }
+
+            .filter-pill {
+                padding: 5px 10px;
+                font-size: 12px;
+                border-radius: 16px;
+                min-width: fit-content;
+            }
+
+            .filter-icon {
+                width: 14px;
+                height: 14px;
+                font-size: 12px;
+            }
+
+            .filter-icon.mobile { font-size: 11px; }
+            .filter-icon.coins { font-size: 11px; }
+            .filter-icon.no-ads { font-size: 14px; }
+            .filter-icon.premium { font-size: 14px; }
 
             .mod-actions {
                 flex-direction: column;
@@ -601,7 +628,7 @@
         <div class="filter-pills">
             <div class="filter-pill active" onclick="setFilter('premium-unlocked')">
                 <span class="filter-icon premium">⭐</span>
-                Premium Unlocked
+                Premium
             </div>
             <div class="filter-pill" onclick="setFilter('safe')">
                 <span class="filter-icon safe">✅</span>
@@ -792,4 +819,15 @@
         }
 
         function showInfo(type) {
-            alert(`Opening
+            alert(`Opening ${type} information...`);
+        }
+
+        // Enter key search functionality
+        document.getElementById('mainSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    </script>
+</body>
+</html>
