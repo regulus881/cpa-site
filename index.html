@@ -162,7 +162,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
-        /* Filter Pills with Consistent Icon Sizing */
+        /* Filter Pills with Animation Effects */
         .filter-pills {
             display: flex;
             justify-content: center;
@@ -186,22 +186,97 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .filter-pill:hover, .filter-pill.active {
+        .filter-pill:hover {
             background: rgba(59, 130, 246, 0.3);
             border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
         }
 
-        /* Consistent emoji sizing */
+        .filter-pill.active {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: #3b82f6;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Animated background effect */
+        .filter-pill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .filter-pill:hover::before {
+            left: 100%;
+        }
+
+        /* Consistent emoji sizing with individual adjustments and animations */
         .filter-icon {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            font-size: 14px;
-            line-height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            font-size: 16px;
+            line-height: 1;
             text-align: center;
-            vertical-align: middle;
+            transition: all 0.3s ease;
+        }
+
+        /* Individual icon size adjustments to make them visually consistent */
+        .filter-icon.mobile { font-size: 15px; }
+        .filter-icon.coins { font-size: 15px; }
+        .filter-icon.no-ads { font-size: 18px; } /* Make smaller icons bigger */
+        .filter-icon.premium { font-size: 18px; } /* Make smaller icons bigger */
+
+        /* Icon hover animations */
+        .filter-pill:hover .filter-icon.mobile {
+            animation: bounce 0.6s ease-in-out;
+        }
+
+        .filter-pill:hover .filter-icon.coins {
+            animation: shake 0.6s ease-in-out;
+        }
+
+        .filter-pill:hover .filter-icon.no-ads {
+            animation: rotate 0.6s ease-in-out;
+        }
+
+        .filter-pill:hover .filter-icon.premium {
+            animation: pulse 0.6s ease-in-out;
+        }
+
+        /* Animation keyframes */
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+            80% { transform: translateY(-4px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
 
         /* Cleaner Mod Cards */
@@ -491,23 +566,23 @@
             </div>
         </div>
         
-        <!-- Filter Pills with Consistent Icons -->
+        <!-- Filter Pills with Swapped Positions and Animations -->
         <div class="filter-pills">
-            <div class="filter-pill active" onclick="setFilter('all')">
-                <span class="filter-icon">📱</span>
-                All Mods
+            <div class="filter-pill active" onclick="setFilter('premium-unlocked')">
+                <span class="filter-icon premium">⭐</span>
+                Premium Unlocked
             </div>
             <div class="filter-pill" onclick="setFilter('unlimited-coins')">
-                <span class="filter-icon">💰</span>
+                <span class="filter-icon coins">💰</span>
                 Unlimited Coins
             </div>
             <div class="filter-pill" onclick="setFilter('no-ads')">
-                <span class="filter-icon">🚫</span>
+                <span class="filter-icon no-ads">🚫</span>
                 No Ads
             </div>
-            <div class="filter-pill" onclick="setFilter('premium-unlocked')">
-                <span class="filter-icon">⭐</span>
-                Premium Unlocked
+            <div class="filter-pill" onclick="setFilter('all')">
+                <span class="filter-icon mobile">📱</span>
+                All Mods
             </div>
         </div>
     </section>
