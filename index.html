@@ -162,7 +162,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
-        /* Filter Pills (keeping original functionality) */
+        /* Filter Pills with Consistent Icon Sizing */
         .filter-pills {
             display: flex;
             justify-content: center;
@@ -183,11 +183,25 @@
             cursor: pointer;
             transition: all 0.3s ease;
             letter-spacing: -0.016em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .filter-pill:hover, .filter-pill.active {
             background: rgba(59, 130, 246, 0.3);
             border-color: #3b82f6;
+        }
+
+        /* Consistent emoji sizing */
+        .filter-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            font-size: 14px;
+            line-height: 16px;
+            text-align: center;
+            vertical-align: middle;
         }
 
         /* Cleaner Mod Cards */
@@ -477,12 +491,24 @@
             </div>
         </div>
         
-        <!-- Filter Pills -->
+        <!-- Filter Pills with Consistent Icons -->
         <div class="filter-pills">
-            <div class="filter-pill active" onclick="setFilter('all')">📱 All Mods</div>
-            <div class="filter-pill" onclick="setFilter('unlimited-coins')">💰 Unlimited Coins</div>
-            <div class="filter-pill" onclick="setFilter('no-ads')">🚫 No Ads</div>
-            <div class="filter-pill" onclick="setFilter('premium-unlocked')">⭐ Premium Unlocked</div>
+            <div class="filter-pill active" onclick="setFilter('all')">
+                <span class="filter-icon">📱</span>
+                All Mods
+            </div>
+            <div class="filter-pill" onclick="setFilter('unlimited-coins')">
+                <span class="filter-icon">💰</span>
+                Unlimited Coins
+            </div>
+            <div class="filter-pill" onclick="setFilter('no-ads')">
+                <span class="filter-icon">🚫</span>
+                No Ads
+            </div>
+            <div class="filter-pill" onclick="setFilter('premium-unlocked')">
+                <span class="filter-icon">⭐</span>
+                Premium Unlocked
+            </div>
         </div>
     </section>
 
