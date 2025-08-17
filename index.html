@@ -410,24 +410,6 @@
             gap: 10px;
         }
 
-        .view-details-btn {
-            background: #f1f5f9;
-            color: #475569;
-            border: 1px solid #e2e8f0;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 510;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            flex: 1;
-            letter-spacing: -0.006em;
-        }
-
-        .view-details-btn:hover {
-            background: #e2e8f0;
-        }
-
         .install-btn {
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
@@ -437,13 +419,94 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            flex: 2;
+            width: 100%;
             font-size: 13px;
             letter-spacing: -0.006em;
         }
 
         .install-btn:hover {
             background: linear-gradient(135deg, #2563eb, #1e40af);
+        }
+
+        /* Content Locker Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .popup-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .popup-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 90%;
+            max-height: 90%;
+            width: 600px;
+            height: 500px;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.3s ease-out;
+            overflow: hidden;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: scale(0.9) translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 10001;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .popup-close:hover {
+            background: rgba(0, 0, 0, 0.2);
+            color: #000;
+        }
+
+        .popup-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 20px;
         }
 
         /* Review Section */
@@ -587,12 +650,14 @@
             .filter-icon.no-ads { font-size: 14px; }
             .filter-icon.premium { font-size: 14px; }
 
-            .mod-actions {
-                flex-direction: column;
-            }
-
             .featured-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .popup-content {
+                width: 95%;
+                height: 80%;
+                margin: 10px;
             }
         }
     </style>
@@ -663,8 +728,7 @@
                         <span>47 reviews</span>
                     </div>
                     <div class="mod-actions">
-                        <button class="view-details-btn" onclick="viewDetails('Super Bear Adventure')">View Details</button>
-                        <button class="install-btn" onclick="installMod('Super Bear Adventure')">Install</button>
+                        <button class="install-btn" onclick="openContentLocker('Super Bear Adventure')">Install</button>
                     </div>
                 </div>
             </div>
@@ -686,8 +750,7 @@
                         <span>89 reviews</span>
                     </div>
                     <div class="mod-actions">
-                        <button class="view-details-btn" onclick="viewDetails('Subway Surfers')">View Details</button>
-                        <button class="install-btn" onclick="installMod('Subway Surfers')">Install</button>
+                        <button class="install-btn" onclick="openContentLocker('Subway Surfers')">Install</button>
                     </div>
                 </div>
             </div>
@@ -709,8 +772,7 @@
                         <span>132 reviews</span>
                     </div>
                     <div class="mod-actions">
-                        <button class="view-details-btn" onclick="viewDetails('Minecraft PE')">View Details</button>
-                        <button class="install-btn" onclick="installMod('Minecraft PE')">Install</button>
+                        <button class="install-btn" onclick="openContentLocker('Minecraft PE')">Install</button>
                     </div>
                 </div>
             </div>
@@ -732,13 +794,20 @@
                         <span>76 reviews</span>
                     </div>
                     <div class="mod-actions">
-                        <button class="view-details-btn" onclick="viewDetails('Among Us')">View Details</button>
-                        <button class="install-btn" onclick="installMod('Among Us')">Install</button>
+                        <button class="install-btn" onclick="openContentLocker('Among Us')">Install</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Content Locker Popup -->
+    <div class="popup-overlay" id="contentLockerPopup">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closeContentLocker()">×</button>
+            <iframe id="contentLockerFrame" class="popup-iframe" src=""></iframe>
+        </div>
+    </div>
 
     <!-- Improved Reviews Section -->
     <section class="reviews-section" id="reviews">
@@ -809,14 +878,50 @@
             event.target.classList.add('active');
         }
 
-        // Mod interaction functions
-        function viewDetails(modName) {
-            alert(`Viewing details for ${modName} mod...`);
+        // Content Locker Functions
+        function openContentLocker(modName) {
+            const popup = document.getElementById('contentLockerPopup');
+            const iframe = document.getElementById('contentLockerFrame');
+            
+            // Set the content locker URL
+            iframe.src = 'https://installchecker.com/cl/i/o6wn2d';
+            
+            // Show the popup
+            popup.classList.add('show');
+            
+            // Prevent body scrolling when popup is open
+            document.body.style.overflow = 'hidden';
+            
+            console.log(`Opening content locker for ${modName}`);
         }
 
-        function installMod(modName) {
-            alert(`Installing ${modName} mod...`);
+        function closeContentLocker() {
+            const popup = document.getElementById('contentLockerPopup');
+            const iframe = document.getElementById('contentLockerFrame');
+            
+            // Hide the popup
+            popup.classList.remove('show');
+            
+            // Clear the iframe source to stop any ongoing processes
+            iframe.src = '';
+            
+            // Restore body scrolling
+            document.body.style.overflow = 'auto';
         }
+
+        // Close popup when clicking outside the content
+        document.getElementById('contentLockerPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContentLocker();
+            }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeContentLocker();
+            }
+        });
 
         function showInfo(type) {
             alert(`Opening ${type} information...`);
