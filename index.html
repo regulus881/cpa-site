@@ -37,7 +37,7 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* VPN Block Styles */
+        /* VPN Block Styles - Simple and Hidden */
         .vpn-block {
             position: fixed;
             top: 0;
@@ -90,35 +90,6 @@
         @keyframes pulse {
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.1); opacity: 0.8; }
-        }
-
-        /* Loading indicator for VPN check */
-        .vpn-loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: rgba(59, 130, 246, 0.3);
-            z-index: 999998;
-            display: none;
-        }
-
-        .vpn-loading.show {
-            display: block;
-        }
-
-        .vpn-loading-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
-            width: 0%;
-            animation: vpnLoad 3s ease-in-out;
-        }
-
-        @keyframes vpnLoad {
-            0% { width: 0%; }
-            50% { width: 70%; }
-            100% { width: 100%; }
         }
 
         /* Centered Navigation */
@@ -756,11 +727,6 @@
 </head>
 
 <body>
-    <!-- VPN Detection Loading Bar -->
-    <div class="vpn-loading" id="vpnLoading">
-        <div class="vpn-loading-bar"></div>
-    </div>
-
     <!-- VPN Block Screen -->
     <div class="vpn-block" id="vpnBlock">
         <div class="vpn-block-content">
@@ -942,36 +908,21 @@
     <script>
         let currentFilter = 'all';
 
-        // VPN Detection Script - Enhanced with better user experience
+        // VPN Detection Script - Silent Background Check
         (async function() {
             try {
-                // Show loading indicator
-                const loadingElement = document.getElementById('vpnLoading');
-                loadingElement.classList.add('show');
-                
-                console.log('Starting VPN detection...');
+                console.log('Running silent VPN detection...');
                 
                 // Step 1: Get the user's public IP address
                 const ipRes = await fetch('https://api.ipify.org?format=json');
                 const ipData = await ipRes.json();
                 
-                console.log('User IP:', ipData.ip);
-                
                 // Step 2: Check if IP is using VPN/Proxy using vpnapi.io
                 const vpnRes = await fetch('https://vpnapi.io/api/' + ipData.ip + '?key=d4f2116e2ff14e6abf3ecd0ae5d96667');
                 const vpnData = await vpnRes.json();
                 
-                console.log('VPN Check Result:', vpnData);
-                
-                // Hide loading indicator
-                setTimeout(() => {
-                    loadingElement.classList.remove('show');
-                }, 1000);
-                
                 // Step 3: Check if VPN or Proxy is detected
                 if (vpnData.security && (vpnData.security.vpn || vpnData.security.proxy)) {
-                    console.log('VPN/Proxy detected - blocking access');
-                    
                     // Show VPN block screen
                     const vpnBlockElement = document.getElementById('vpnBlock');
                     vpnBlockElement.classList.add('show');
@@ -979,23 +930,11 @@
                     // Disable scrolling
                     document.body.style.overflow = 'hidden';
                     
-                    // Optional: Log the detection for analytics
-                    console.warn('Access blocked: VPN/Proxy detected', {
-                        ip: ipData.ip,
-                        vpn: vpnData.security.vpn,
-                        proxy: vpnData.security.proxy,
-                        location: vpnData.location
-                    });
-                } else {
-                    console.log('VPN check passed - allowing access');
+                    console.warn('Access blocked: VPN/Proxy detected');
                 }
             } catch (error) {
                 console.error("VPN check failed:", error);
-                // Hide loading indicator on error
-                const loadingElement = document.getElementById('vpnLoading');
-                loadingElement.classList.remove('show');
                 // Script continues normally if VPN check fails
-                console.log('VPN check failed, allowing access by default');
             }
         })();
 
