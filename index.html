@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Advanced VPN/Proxy Detection System - Silent Mode -->
+    <!-- Improved VPN/Proxy Detection System -->
     <script>
     (function() {
         'use strict';
@@ -21,11 +21,11 @@
         
         // Configuration
         const config = {
-            blockThreshold: 70, // Block if score >= 70
+            blockThreshold: 60, // Lowered threshold for more accurate detection
             redirectUrl: '', // Leave empty to show block message instead of redirect
-            allowedCountries: [], // Empty means all countries allowed, add ['US', 'CA', 'GB'] to whitelist
+            allowedCountries: [], // Empty means all countries allowed
             logEndpoint: '', // Optional: add your API endpoint to log detections
-            silentMode: true // Set to false for debugging
+            silentMode: false // Set to true to hide console logs
         };
         
         // Utility functions
@@ -41,20 +41,23 @@
             log(`+${points} for ${method}. Total: ${detectionScore}`);
         }
         
-        // Method 1: WebRTC IP Leak Detection
+        // Method 1: Enhanced WebRTC IP Detection
         function checkWebRTCLeak() {
             return new Promise((resolve) => {
                 const ips = [];
                 const RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
                 
                 if (!RTCPeerConnection) {
-                    addScore(15, 'WebRTC Disabled');
+                    addScore(20, 'WebRTC Disabled');
                     resolve();
                     return;
                 }
                 
                 const pc = new RTCPeerConnection({
-                    iceServers: [{urls: 'stun:stun.l.google.com:19302'}]
+                    iceServers: [
+                        {urls: 'stun:stun.l.google.com:19302'},
+                        {urls: 'stun:stun1.l.google.com:19302'}
+                    ]
                 });
                 
                 pc.createDataChannel('');
@@ -62,324 +65,313 @@
                 pc.onicecandidate = (event) => {
                     if (!event.candidate) return;
                     
-                    const ip = event.candidate.candidate.match(/\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b/);
-                    if (ip && !ips.includes(ip[0])) {
-                        ips.push(ip[0]);
+                    const ipMatch = event.candidate.candidate.match(/\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b/);
+                    if (ipMatch && !ips.includes(ipMatch[0])) {
+                        ips.push(ipMatch[0]);
+                        log(`WebRTC IP found: ${ipMatch[0]}`);
                     }
                 };
                 
-                pc.createOffer().then((offer) => pc.setLocalDescription(offer));
+                pc.createOffer().then((offer) => pc.setLocalDescription(offer)).catch(() => {
+                    addScore(15, 'WebRTC CreateOffer Failed');
+                });
                 
                 setTimeout(() => {
                     pc.close();
                     
-                    // Check for multiple IPs or private IP exposure
-                    if (ips.length > 2) {
-                        addScore(25, 'Multiple WebRTC IPs');
-                    }
+                    // Analyze collected IPs
+                    const publicIPs = ips.filter(ip => 
+                        !ip.startsWith('192.168.') && 
+                        !ip.startsWith('10.') && 
+                        !ip.startsWith('172.') &&
+                        !ip.startsWith('169.254.') &&
+                        ip !== '127.0.0.1'
+                    );
                     
-                    const hasPrivateIP = ips.some(ip => 
+                    const privateIPs = ips.filter(ip => 
                         ip.startsWith('192.168.') || 
                         ip.startsWith('10.') || 
                         ip.startsWith('172.')
                     );
                     
-                    if (hasPrivateIP && ips.length > 1) {
-                        addScore(20, 'Private IP Leak');
+                    if (publicIPs.length > 1) {
+                        addScore(30, 'Multiple Public IPs');
+                    }
+                    
+                    if (privateIPs.length > 0 && publicIPs.length > 0) {
+                        addScore(15, 'IP Leak Detected');
+                    }
+                    
+                    if (ips.length === 0) {
+                        addScore(25, 'No WebRTC IPs');
                     }
                     
                     resolve();
-                }, 2000);
+                }, 3000);
             });
         }
         
-        // Method 2: DNS Leak Test
-        function checkDNSLeak() {
-            return new Promise((resolve) => {
-                // Check if DNS requests go through expected servers
-                const testDomains = ['dns-test-1.com', 'dns-test-2.net'];
-                let dnsInconsistencies = 0;
-                
-                testDomains.forEach(domain => {
-                    fetch(`https://1.1.1.1/dns-query?name=${domain}&type=A`, {
-                        headers: {'Accept': 'application/dns-json'}
-                    })
-                    .then(response => response.json())
-                    .catch(() => {
-                        dnsInconsistencies++;
-                        if (dnsInconsistencies > 0) {
-                            addScore(15, 'DNS Leak Detected');
-                        }
-                    });
-                });
-                
-                setTimeout(resolve, 1500);
-            });
-        }
-        
-        // Method 3: Timezone Inconsistency
+        // Method 2: Timezone Inconsistency Check
         function checkTimezone() {
-            return fetch('https://ipapi.co/json/')
-                .then(response => response.json())
+            return new Promise((resolve) => {
+                // Use a working IP geolocation service
+                fetch('https://ipapi.co/json/', {
+                    method: 'GET',
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('API request failed');
+                    return response.json();
+                })
                 .then(data => {
                     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                    const expectedTimezone = data.timezone;
+                    const detectedCity = data.city;
+                    const detectedCountry = data.country_code;
                     
-                    if (userTimezone !== expectedTimezone) {
-                        addScore(20, 'Timezone Mismatch');
+                    log(`User timezone: ${userTimezone}, Detected location: ${detectedCity}, ${detectedCountry}`);
+                    
+                    // Check for common VPN hosting countries
+                    const vpnCountries = ['NL', 'CH', 'PA', 'VG', 'SC', 'SG', 'BZ', 'KY'];
+                    if (vpnCountries.includes(detectedCountry)) {
+                        addScore(20, `VPN-Popular Country: ${detectedCountry}`);
                     }
                     
-                    // Check for common VPN countries
-                    const vpnCountries = ['NL', 'CH', 'PA', 'VG', 'SC', 'SG'];
-                    if (vpnCountries.includes(data.country_code)) {
-                        addScore(15, 'VPN-Popular Country');
+                    // Check for data center locations
+                    if (data.org && /data.?center|hosting|cloud|server|digital.?ocean|amazon|google|microsoft|linode/i.test(data.org)) {
+                        addScore(25, 'Data Center IP');
                     }
                     
                     // Check country whitelist if configured
-                    if (config.allowedCountries.length > 0 && !config.allowedCountries.includes(data.country_code)) {
+                    if (config.allowedCountries.length > 0 && !config.allowedCountries.includes(detectedCountry)) {
                         addScore(30, 'Country Not Whitelisted');
                     }
+                    
+                    resolve();
                 })
-                .catch(() => addScore(10, 'IP API Blocked'));
+                .catch(error => {
+                    log(`IP API failed: ${error.message}`);
+                    addScore(15, 'IP Geolocation Blocked');
+                    resolve();
+                });
+            });
         }
         
-        // Method 4: Browser Fingerprinting
+        // Method 3: Enhanced Browser Fingerprinting
         function checkBrowserFingerprint() {
-            const fingerprint = {
-                userAgent: navigator.userAgent,
-                language: navigator.language,
-                platform: navigator.platform,
-                cookieEnabled: navigator.cookieEnabled,
-                screenResolution: `${screen.width}x${screen.height}`,
-                timezone: new Date().getTimezoneOffset(),
-                plugins: Array.from(navigator.plugins).map(p => p.name).join(',')
-            };
-            
-            // Check for common VPN browser modifications
+            // Check for automation indicators
             if (navigator.webdriver) {
-                addScore(25, 'Automated Browser');
+                addScore(35, 'Webdriver Detected');
             }
             
+            // Check for headless browser
+            if (!window.chrome && /Chrome/.test(navigator.userAgent)) {
+                addScore(25, 'Possible Headless Browser');
+            }
+            
+            // Check plugins (most VPNs/bots have no plugins)
             if (navigator.plugins.length === 0) {
                 addScore(15, 'No Browser Plugins');
             }
             
-            // Check for headless browser indicators
-            if (!window.chrome && /Chrome/.test(navigator.userAgent)) {
-                addScore(20, 'Headless Browser');
+            // Check for suspicious user agent patterns
+            const suspiciousUA = ['headless', 'phantom', 'selenium', 'crawler', 'bot'];
+            const userAgent = navigator.userAgent.toLowerCase();
+            suspiciousUA.forEach(pattern => {
+                if (userAgent.includes(pattern)) {
+                    addScore(30, `Suspicious User Agent: ${pattern}`);
+                }
+            });
+            
+            // Check for missing expected properties
+            if (typeof navigator.permissions === 'undefined') {
+                addScore(10, 'Missing Navigator Permissions');
             }
             
-            // Check for suspicious user agent patterns
-            const suspiciousUA = ['headless', 'phantom', 'selenium', 'crawler'];
-            if (suspiciousUA.some(pattern => navigator.userAgent.toLowerCase().includes(pattern))) {
-                addScore(30, 'Suspicious User Agent');
+            // Check screen resolution (common bot resolutions)
+            const commonBotResolutions = ['1024x768', '1280x1024', '800x600'];
+            const currentRes = `${screen.width}x${screen.height}`;
+            if (commonBotResolutions.includes(currentRes)) {
+                addScore(10, 'Common Bot Resolution');
             }
         }
         
-        // Method 5: Network Latency Analysis
+        // Method 4: Network Latency Analysis
         function checkLatency() {
             return new Promise((resolve) => {
                 const startTime = performance.now();
+                const testUrl = 'https://www.google.com/favicon.ico';
                 
-                fetch('https://www.google.com/favicon.ico', {mode: 'no-cors'})
-                    .then(() => {
-                        const latency = performance.now() - startTime;
-                        
-                        // High latency often indicates VPN
-                        if (latency > 500) {
-                            addScore(15, 'High Network Latency');
-                        }
-                        if (latency > 1000) {
-                            addScore(10, 'Very High Latency');
-                        }
-                    })
-                    .catch(() => addScore(20, 'Network Request Blocked'))
-                    .finally(resolve);
-            });
-        }
-        
-        // Method 6: HTTP Header Analysis
-        function checkHeaders() {
-            return fetch('https://httpbin.org/headers')
-                .then(response => response.json())
-                .then(data => {
-                    const headers = data.headers;
-                    
-                    // Check for proxy headers
-                    const proxyHeaders = [
-                        'X-Forwarded-For',
-                        'X-Forwarded-Proto',
-                        'X-Real-IP',
-                        'Via',
-                        'X-Proxy-Id',
-                        'Forwarded'
-                    ];
-                    
-                    proxyHeaders.forEach(header => {
-                        if (headers[header]) {
-                            addScore(20, `Proxy Header: ${header}`);
-                        }
-                    });
+                fetch(testUrl, { 
+                    mode: 'no-cors',
+                    cache: 'no-cache'
                 })
-                .catch(() => addScore(10, 'Header Check Failed'));
-        }
-        
-        // Method 7: Multiple IP Service Cross-Check
-        function crossCheckIPs() {
-            const services = [
-                'https://api.ipify.org?format=json',
-                'https://ipinfo.io/json',
-                'https://api.myip.com'
-            ];
-            
-            const promises = services.map(service => 
-                fetch(service)
-                    .then(response => response.json())
-                    .then(data => data.ip || data.query)
-                    .catch(() => null)
-            );
-            
-            return Promise.all(promises).then(ips => {
-                const uniqueIPs = [...new Set(ips.filter(ip => ip))];
-                
-                if (uniqueIPs.length > 1) {
-                    addScore(30, 'IP Inconsistency');
-                }
-                if (uniqueIPs.length === 0) {
-                    addScore(25, 'All IP Services Blocked');
-                }
-            });
-        }
-        
-        // Method 8: Known VPN/Proxy Detection
-        function checkKnownVPNs() {
-            return fetch('https://vpnapi.io/api/?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.security && data.security.vpn) {
-                        addScore(40, 'Known VPN Service');
-                    }
-                    if (data.security && data.security.proxy) {
-                        addScore(40, 'Known Proxy Service');
-                    }
-                    if (data.security && data.security.tor) {
-                        addScore(50, 'Tor Network');
-                    }
-                    if (data.security && data.security.relay) {
-                        addScore(20, 'Relay Service');
+                .then(() => {
+                    const latency = performance.now() - startTime;
+                    log(`Network latency: ${latency.toFixed(2)}ms`);
+                    
+                    // Higher latency often indicates VPN routing
+                    if (latency > 800) {
+                        addScore(20, 'High Network Latency');
+                    } else if (latency > 1200) {
+                        addScore(10, 'Very High Latency');
                     }
                 })
                 .catch(() => {
-                    // Fallback: check against basic VPN IP ranges
-                    fetch('https://ipapi.co/json/')
-                        .then(response => response.json())
-                        .then(data => {
-                            const vpnASNs = [
-                                'AS13335', // Cloudflare
-                                'AS14061', // DigitalOcean
-                                'AS16276', // OVH
-                                'AS62814', // VPN services
-                                'AS16509', // Amazon AWS
-                                'AS14618'  // Amazon AWS
-                            ];
-                            
-                            if (data.asn && vpnASNs.includes(data.asn)) {
-                                addScore(25, 'VPN ASN Detected');
-                            }
-                            
-                            // Check for data center IPs
-                            if (data.org && /data.?center|hosting|cloud|server/i.test(data.org)) {
-                                addScore(20, 'Data Center IP');
-                            }
-                        });
-                });
+                    addScore(25, 'Network Test Failed');
+                })
+                .finally(resolve);
+            });
         }
         
-        // Method 9: Behavioral Analysis
-        function behavioralAnalysis() {
-            // Mouse movement analysis
-            let mouseMovements = 0;
-            let rapidMovements = 0;
-            let lastX = 0, lastY = 0;
-            
-            const mouseHandler = (e) => {
-                mouseMovements++;
-                if (mouseMovements > 1) {
-                    const deltaX = Math.abs(e.clientX - lastX);
-                    const deltaY = Math.abs(e.clientY - lastY);
-                    const speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        // Method 5: DNS Resolution Check
+        function checkDNSResolution() {
+            return new Promise((resolve) => {
+                // Test DNS resolution speed and consistency
+                const testDomains = ['google.com', 'cloudflare.com', 'github.com'];
+                let dnsTests = 0;
+                let dnsFailed = 0;
+                
+                testDomains.forEach(domain => {
+                    const startTime = performance.now();
                     
-                    if (speed > 100) rapidMovements++;
-                }
-                lastX = e.clientX;
-                lastY = e.clientY;
-            };
-            
-            document.addEventListener('mousemove', mouseHandler);
-            
-            setTimeout(() => {
-                document.removeEventListener('mousemove', mouseHandler);
+                    fetch(`https://${domain}/favicon.ico`, {
+                        mode: 'no-cors',
+                        cache: 'no-cache'
+                    })
+                    .then(() => {
+                        dnsTests++;
+                        const resolveTime = performance.now() - startTime;
+                        if (resolveTime > 2000) {
+                            dnsFailed++;
+                        }
+                    })
+                    .catch(() => {
+                        dnsFailed++;
+                        dnsTests++;
+                    })
+                    .finally(() => {
+                        if (dnsTests === testDomains.length) {
+                            if (dnsFailed >= 2) {
+                                addScore(20, 'DNS Resolution Issues');
+                            }
+                            resolve();
+                        }
+                    });
+                });
                 
-                // Automated behavior indicators
-                if (mouseMovements === 0) {
-                    addScore(15, 'No Mouse Activity');
-                } else if (rapidMovements > mouseMovements * 0.8) {
-                    addScore(20, 'Automated Mouse Movement');
-                }
-            }, 3000);
-            
-            // Check for automated scrolling
-            let scrollEvents = 0;
-            const scrollHandler = () => scrollEvents++;
-            
-            window.addEventListener('scroll', scrollHandler);
-            setTimeout(() => {
-                window.removeEventListener('scroll', scrollHandler);
-                if (scrollEvents > 20) {
-                    addScore(10, 'Rapid Scrolling');
-                }
-            }, 2000);
-            
-            // Check for touch events on non-mobile devices
-            if (!navigator.userAgentData || !navigator.userAgentData.mobile) {
-                let touchEvents = 0;
-                const touchHandler = () => touchEvents++;
-                
-                document.addEventListener('touchstart', touchHandler);
+                // Timeout fallback
                 setTimeout(() => {
-                    document.removeEventListener('touchstart', touchHandler);
-                    if (touchEvents > 0) {
-                        addScore(15, 'Touch Events on Desktop');
+                    if (dnsTests === 0) {
+                        addScore(30, 'All DNS Tests Failed');
                     }
-                }, 2000);
+                    resolve();
+                }, 5000);
+            });
+        }
+        
+        // Method 6: Behavioral Analysis
+        function behavioralAnalysis() {
+            return new Promise((resolve) => {
+                let mouseMovements = 0;
+                let keyboardEvents = 0;
+                let scrollEvents = 0;
+                
+                // Mouse movement tracking
+                const mouseHandler = (e) => {
+                    mouseMovements++;
+                };
+                
+                // Keyboard tracking
+                const keyHandler = (e) => {
+                    keyboardEvents++;
+                };
+                
+                // Scroll tracking
+                const scrollHandler = () => {
+                    scrollEvents++;
+                };
+                
+                document.addEventListener('mousemove', mouseHandler);
+                document.addEventListener('keydown', keyHandler);
+                window.addEventListener('scroll', scrollHandler);
+                
+                setTimeout(() => {
+                    // Remove event listeners
+                    document.removeEventListener('mousemove', mouseHandler);
+                    document.removeEventListener('keydown', keyHandler);
+                    window.removeEventListener('scroll', scrollHandler);
+                    
+                    // Analyze behavior
+                    if (mouseMovements === 0 && keyboardEvents === 0) {
+                        addScore(20, 'No Human Interaction');
+                    } else if (mouseMovements < 5 && keyboardEvents === 0) {
+                        addScore(10, 'Limited Human Activity');
+                    }
+                    
+                    log(`Behavioral analysis: Mouse:${mouseMovements}, Keyboard:${keyboardEvents}, Scroll:${scrollEvents}`);
+                    resolve();
+                }, 4000);
+            });
+        }
+        
+        // Method 7: Canvas Fingerprinting
+        function checkCanvasFingerprint() {
+            try {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Draw test pattern
+                ctx.textBaseline = 'top';
+                ctx.font = '14px Arial';
+                ctx.fillText('VPN Detection Test 🔍', 2, 2);
+                
+                const canvasData = canvas.toDataURL();
+                
+                // Common VPN/bot canvas signatures
+                const commonHashes = [
+                    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+                    // Add more known bot signatures
+                ];
+                
+                if (commonHashes.includes(canvasData)) {
+                    addScore(25, 'Common Bot Canvas Signature');
+                }
+                
+                // Check if canvas rendering is blocked
+                if (canvasData.length < 100) {
+                    addScore(15, 'Canvas Rendering Blocked');
+                }
+                
+            } catch (e) {
+                addScore(20, 'Canvas Access Denied');
             }
         }
         
         // Main detection function
         async function runFullDetection() {
-            log('Starting VPN/Proxy detection...');
+            log('Starting enhanced VPN/Proxy detection...');
             
-            // Run all detection methods
-            await Promise.all([
-                checkWebRTCLeak(),
-                checkDNSLeak(),
-                checkTimezone(),
-                checkLatency(),
-                checkHeaders(),
-                crossCheckIPs(),
-                checkKnownVPNs()
-            ]);
-            
-            // Synchronous checks
-            checkBrowserFingerprint();
-            behavioralAnalysis();
-            
-            // Wait for behavioral analysis to complete
-            setTimeout(() => {
-                const confidence = Math.min(detectionScore, maxScore);
+            try {
+                // Run all detection methods
+                await Promise.all([
+                    checkWebRTCLeak(),
+                    checkTimezone(),
+                    checkLatency(),
+                    checkDNSResolution(),
+                    behavioralAnalysis()
+                ]);
                 
-                log(`Detection completed. Score: ${detectionScore}/${maxScore} (${confidence}%)`);
-                log('Detected methods:', detectedMethods);
+                // Run synchronous checks
+                checkBrowserFingerprint();
+                checkCanvasFingerprint();
+                
+                // Calculate final score
+                const confidence = Math.min((detectionScore / maxScore) * 100, 100);
+                
+                log(`Detection completed. Score: ${detectionScore}/${maxScore} (${confidence.toFixed(1)}%)`);
+                log('Detection methods triggered:', detectedMethods);
                 
                 // Log detection if endpoint provided
                 if (config.logEndpoint) {
@@ -398,13 +390,16 @@
                 }
                 
                 // Take action based on score
-                if (confidence >= config.blockThreshold) {
-                    log('VPN/Proxy detected! Taking action...');
+                if (detectionScore >= config.blockThreshold) {
+                    log('VPN/Proxy detected! Blocking access...');
                     handleDetection();
                 } else {
-                    log('User appears legitimate.');
+                    log('User appears legitimate. Access granted.');
                 }
-            }, 5000);
+                
+            } catch (error) {
+                log('Detection error:', error);
+            }
         }
         
         // Handle detection
@@ -449,28 +444,38 @@
                             margin-bottom: 30px;
                             border-left: 4px solid #007bff;
                         ">
-                            <strong style="color: #333;">Why is this happening?</strong><br>
+                            <strong style="color: #333;">Detection Score: ${detectionScore}/${maxScore}</strong><br>
                             <span style="color: #666; font-size: 14px;">
-                                For security and licensing reasons, we restrict access from VPN and proxy connections.
+                                Methods detected: ${detectedMethods.join(', ')}
                             </span>
                         </div>
-                        <button onclick="window.location.reload()" style="
-                            background: linear-gradient(135deg, #007bff, #0056b3);
-                            color: white;
-                            border: none;
-                            padding: 12px 30px;
-                            border-radius: 8px;
-                            font-size: 16px;
-                            font-weight: 600;
-                            cursor: pointer;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                            Try Again
-                        </button>
-                        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                            <p style="color: #999; font-size: 12px; margin: 0;">
-                                Need help? Contact support@gameswam.com
-                            </p>
+                        <div style="display: flex; gap: 15px; justify-content: center;">
+                            <button onclick="window.location.reload()" style="
+                                background: linear-gradient(135deg, #007bff, #0056b3);
+                                color: white;
+                                border: none;
+                                padding: 12px 30px;
+                                border-radius: 8px;
+                                font-size: 16px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                            ">
+                                Try Again
+                            </button>
+                            <button onclick="alert('Contact: support@gameswam.com')" style="
+                                background: transparent;
+                                color: #007bff;
+                                border: 2px solid #007bff;
+                                padding: 10px 30px;
+                                border-radius: 8px;
+                                font-size: 16px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                            ">
+                                Contact Support
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -715,9 +720,8 @@
         }
 
         /* Individual icon size adjustments to make them visually consistent */
-        .filter-icon.mobile { font-size: 13px; }
-        .filter-icon.coins { font-size: 13px; }
-        .filter-icon.no-ads { font-size: 16px; }
+        .filter-icon.safe { font-size: 13px; }
+        .filter-icon.secure { font-size: 13px; }
         .filter-icon.premium { font-size: 16px; }
 
         /* Continuous color animations for mobile visibility */
@@ -725,16 +729,12 @@
             animation: starGlow 2s ease-in-out infinite alternate;
         }
 
-        .filter-icon.coins {
-            animation: goldShine 2.5s ease-in-out infinite alternate;
+        .filter-icon.safe {
+            animation: greenPulse 2.5s ease-in-out infinite alternate;
         }
 
-        .filter-icon.no-ads {
-            animation: redPulse 3s ease-in-out infinite alternate;
-        }
-
-        .filter-icon.mobile {
-            animation: blueWave 2.2s ease-in-out infinite alternate;
+        .filter-icon.secure {
+            animation: blueLock 3s ease-in-out infinite alternate;
         }
 
         /* Color animation keyframes */
@@ -749,29 +749,18 @@
             }
         }
 
-        @keyframes goldShine {
+        @keyframes greenPulse {
             0% { 
                 filter: hue-rotate(0deg) brightness(1) saturate(1);
-                text-shadow: 0 0 3px rgba(255, 193, 7, 0.3);
+                text-shadow: 0 0 3px rgba(34, 197, 94, 0.3);
             }
             100% { 
                 filter: hue-rotate(30deg) brightness(1.2) saturate(1.4);
-                text-shadow: 0 0 12px rgba(255, 193, 7, 0.7);
+                text-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
             }
         }
 
-        @keyframes redPulse {
-            0% { 
-                filter: hue-rotate(0deg) brightness(1) saturate(1);
-                text-shadow: 0 0 3px rgba(239, 68, 68, 0.3);
-            }
-            100% { 
-                filter: hue-rotate(-20deg) brightness(1.1) saturate(1.3);
-                text-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
-            }
-        }
-
-        @keyframes blueWave {
+        @keyframes blueLock {
             0% { 
                 filter: hue-rotate(0deg) brightness(1) saturate(1);
                 text-shadow: 0 0 3px rgba(59, 130, 246, 0.3);
@@ -1122,9 +1111,8 @@
                 font-size: 12px;
             }
 
-            .filter-icon.mobile { font-size: 11px; }
-            .filter-icon.coins { font-size: 11px; }
-            .filter-icon.no-ads { font-size: 14px; }
+            .filter-icon.safe { font-size: 11px; }
+            .filter-icon.secure { font-size: 11px; }
             .filter-icon.premium { font-size: 14px; }
 
             .featured-grid {
