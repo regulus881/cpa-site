@@ -3,622 +3,1126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced VPN Detection Demo</title>
+    <title>Games WAM | Trusted Mobile Game Mods</title>
+    <meta name="description" content="Top-rated mobile game mods for Android & iOS. Browse trusted mods with reviews.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 25%, #2d1b69 50%, #1a1a3e 75%, #0f0f23 100%);
+            background-size: 400% 400%;
+            animation: subtleGradient 30s ease-in-out infinite;
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
+            line-height: 1.47059;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-feature-settings: "kern";
+        }
+
+        @keyframes subtleGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* VPN Block Styles */
+        .vpn-block {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999999;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .vpn-block.show {
+            display: flex;
+        }
+
+        .vpn-block-content {
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .vpn-block h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #fef2f2;
+        }
+
+        .vpn-block p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #fecaca;
+            margin-bottom: 10px;
+        }
+
+        .vpn-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        /* Loading indicator for VPN check */
+        .vpn-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(59, 130, 246, 0.3);
+            z-index: 999998;
+            display: none;
+        }
+
+        .vpn-loading.show {
+            display: block;
+        }
+
+        .vpn-loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            width: 0%;
+            animation: vpnLoad 3s ease-in-out;
+        }
+
+        @keyframes vpnLoad {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        /* Centered Navigation */
+        .navbar {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 60px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo-nav {
+            font-size: 18px;
+            font-weight: 700;
+            color: #60a5fa;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.022em;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
+            font-weight: 900;
+            font-size: 14px;
         }
-        
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-        }
-        
-        .status {
+
+        /* Streamlined Hero Section */
+        .hero {
             text-align: center;
-            margin-bottom: 30px;
+            padding: 40px 20px 20px;
+            color: white;
+            max-width: 1000px;
+            margin: 0 auto;
         }
-        
-        .status h1 {
-            color: #333;
-            margin-bottom: 10px;
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            letter-spacing: -0.055em;
         }
-        
-        .progress {
-            width: 100%;
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 25px;
+            font-weight: 400;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            letter-spacing: -0.012em;
+        }
+
+        /* Fixed Search Section - Made smaller */
+        .search-section {
+            margin: 20px 0 40px;
+        }
+
+        .search-container {
+            max-width: 420px; /* Reduced from 500px */
+            margin: 0 auto;
+        }
+
+        .main-search {
+            position: relative;
+            display: flex;
+            background: rgba(40, 40, 40, 0.95);
+            border-radius: 10px; /* Slightly smaller radius */
             overflow: hidden;
-            margin: 20px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            height: 44px; /* Made smaller from default */
         }
-        
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #45a049);
-            width: 0%;
-            transition: width 0.3s ease;
+
+        .search-emoji {
+            position: absolute;
+            left: 14px; /* Adjusted positioning */
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            pointer-events: none;
+            color: rgba(255, 255, 255, 0.8);
+            z-index: 10;
         }
-        
-        .results {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
+
+        .search-input {
+            flex: 1;
+            padding: 10px 16px 10px 42px; /* Reduced padding and adjusted left padding for emoji */
+            border: none;
+            font-size: 15px; /* Slightly smaller font */
+            outline: none;
+            background: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+            font-weight: 400;
+            letter-spacing: -0.022em;
+            color: white;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Filter Pills with Mobile-Friendly Color Animations */
+        .filter-pills {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
             margin-top: 20px;
+            max-width: 100%;
+            overflow-x: auto;
+            padding: 0 10px;
         }
-        
-        .result-item {
+
+        .filter-pill {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 18px;
+            font-size: 13px;
+            font-weight: 510;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: -0.016em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .filter-pill:hover {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .filter-pill.active {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: #3b82f6;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Animated background effect */
+        .filter-pill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .filter-pill:hover::before {
+            left: 100%;
+        }
+
+        /* Consistent emoji sizing with individual adjustments and continuous color animations */
+        .filter-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            font-size: 14px;
+            line-height: 1;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        /* Individual icon size adjustments to make them visually consistent */
+        .filter-icon.mobile { font-size: 13px; }
+        .filter-icon.coins { font-size: 13px; }
+        .filter-icon.no-ads { font-size: 16px; }
+        .filter-icon.premium { font-size: 16px; }
+
+        /* Continuous color animations for mobile visibility */
+        .filter-icon.premium {
+            animation: starGlow 2s ease-in-out infinite alternate;
+        }
+
+        .filter-icon.coins {
+            animation: goldShine 2.5s ease-in-out infinite alternate;
+        }
+
+        .filter-icon.no-ads {
+            animation: redPulse 3s ease-in-out infinite alternate;
+        }
+
+        .filter-icon.mobile {
+            animation: blueWave 2.2s ease-in-out infinite alternate;
+        }
+
+        /* Color animation keyframes */
+        @keyframes starGlow {
+            0% { 
+                filter: hue-rotate(0deg) brightness(1) saturate(1);
+                text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+            }
+            100% { 
+                filter: hue-rotate(60deg) brightness(1.3) saturate(1.5);
+                text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        @keyframes goldShine {
+            0% { 
+                filter: hue-rotate(0deg) brightness(1) saturate(1);
+                text-shadow: 0 0 3px rgba(255, 193, 7, 0.3);
+            }
+            100% { 
+                filter: hue-rotate(30deg) brightness(1.2) saturate(1.4);
+                text-shadow: 0 0 12px rgba(255, 193, 7, 0.7);
+            }
+        }
+
+        @keyframes redPulse {
+            0% { 
+                filter: hue-rotate(0deg) brightness(1) saturate(1);
+                text-shadow: 0 0 3px rgba(239, 68, 68, 0.3);
+            }
+            100% { 
+                filter: hue-rotate(-20deg) brightness(1.1) saturate(1.3);
+                text-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+            }
+        }
+
+        @keyframes blueWave {
+            0% { 
+                filter: hue-rotate(0deg) brightness(1) saturate(1);
+                text-shadow: 0 0 3px rgba(59, 130, 246, 0.3);
+            }
+            100% { 
+                filter: hue-rotate(40deg) brightness(1.15) saturate(1.2);
+                text-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+            }
+        }
+
+        /* Cleaner Mod Cards */
+        .featured-section {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 50px;
+            letter-spacing: -0.045em;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .mod-card {
+            background: rgba(248, 250, 252, 0.98);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .mod-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.2);
+        }
+
+        .mod-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .mod-content {
+            padding: 20px;
+        }
+
+        .mod-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .mod-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0f172a;
+            flex: 1;
+            letter-spacing: -0.019em;
+        }
+
+        .mod-rating {
+            background: #f59e0b;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 12px;
+            letter-spacing: -0.003em;
+        }
+
+        .mod-features {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .feature-tag {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: -0.002em;
+        }
+
+        .mod-stats {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 400;
+            letter-spacing: -0.006em;
         }
-        
-        .result-item:last-child {
-            border-bottom: none;
+
+        .mod-actions {
+            display: flex;
+            gap: 10px;
         }
-        
-        .score {
-            font-weight: bold;
-            padding: 4px 8px;
-            border-radius: 4px;
+
+        .install-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 13px;
+            letter-spacing: -0.006em;
         }
-        
-        .score.low { background: #4CAF50; }
-        .score.medium { background: #FF9800; }
-        .score.high { background: #f44336; }
-        
-        .final-result {
+
+        .install-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+        }
+
+        /* Content Locker Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .popup-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .popup-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 90%;
+            max-height: 90%;
+            width: 600px;
+            height: 500px;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.3s ease-out;
+            overflow: hidden;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: scale(0.9) translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 10001;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .popup-close:hover {
+            background: rgba(0, 0, 0, 0.2);
+            color: #000;
+        }
+
+        .popup-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 20px;
+        }
+
+        /* Review Section */
+        .reviews-section {
+            background: rgba(15, 15, 35, 0.8);
+            padding: 60px 20px;
+            margin: 40px 20px;
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+        }
+
+        .reviews-container {
+            max-width: 1000px;
+            margin: 0 auto;
             text-align: center;
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            font-weight: bold;
         }
-        
-        .final-result.safe {
-            background: #e8f5e8;
-            color: #2e7d32;
-            border: 2px solid #4caf50;
+
+        .reviews-title {
+            color: #60a5fa;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            font-weight: 700;
+            letter-spacing: -0.035em;
         }
-        
-        .final-result.suspicious {
-            background: #fff3e0;
-            color: #f57c00;
-            border: 2px solid #ff9800;
+
+        .review-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
         }
-        
-        .final-result.blocked {
-            background: #ffebee;
-            color: #c62828;
-            border: 2px solid #f44336;
+
+        .review-card {
+            background: rgba(248, 250, 252, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px;
+            border-radius: 16px;
+            color: #e2e8f0;
+        }
+
+        .review-content {
+            font-style: italic;
+            margin-bottom: 16px;
+            line-height: 1.6;
+            font-weight: 400;
+            letter-spacing: -0.009em;
+        }
+
+        .review-author {
+            font-weight: 600;
+            color: #60a5fa;
+            letter-spacing: -0.009em;
+        }
+
+        .review-rating {
+            color: #f59e0b;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(15, 15, 35, 0.95);
+            color: #e2e8f0;
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            transition: color 0.3s ease;
+            letter-spacing: -0.006em;
+        }
+
+        .footer-links a:hover {
+            color: #60a5fa;
+        }
+
+        .footer p {
+            font-weight: 400;
+            letter-spacing: -0.009em;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+
+            .search-container {
+                max-width: 350px; /* Smaller on mobile */
+            }
+
+            .main-search {
+                height: 42px; /* Even smaller on mobile */
+            }
+
+            .search-input {
+                font-size: 14px; /* Smaller font on mobile */
+                padding: 9px 14px 9px 40px;
+            }
+
+            .search-emoji {
+                left: 12px;
+                font-size: 15px;
+            }
+
+            .filter-pills {
+                gap: 6px;
+                justify-content: center;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding: 0 5px;
+            }
+
+            .filter-pill {
+                padding: 5px 10px;
+                font-size: 12px;
+                border-radius: 16px;
+                min-width: fit-content;
+            }
+
+            .filter-icon {
+                width: 14px;
+                height: 14px;
+                font-size: 12px;
+            }
+
+            .filter-icon.mobile { font-size: 11px; }
+            .filter-icon.coins { font-size: 11px; }
+            .filter-icon.no-ads { font-size: 14px; }
+            .filter-icon.premium { font-size: 14px; }
+
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .popup-content {
+                width: 95%;
+                height: 80%;
+                margin: 10px;
+            }
+
+            .vpn-block h1 {
+                font-size: 2rem;
+            }
+
+            .vpn-block-content {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <div class="status">
-            <h1>🔍 Enhanced VPN Detection</h1>
-            <p id="statusText">Initializing security checks...</p>
-            <div class="progress">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-        </div>
-        
-        <div class="results" id="results" style="display: none;">
-            <h3>Detection Results</h3>
-            <div id="resultsList"></div>
-            <div id="finalResult"></div>
+    <!-- VPN Detection Loading Bar -->
+    <div class="vpn-loading" id="vpnLoading">
+        <div class="vpn-loading-bar"></div>
+    </div>
+
+    <!-- VPN Block Screen -->
+    <div class="vpn-block" id="vpnBlock">
+        <div class="vpn-block-content">
+            <div class="vpn-icon">🚫</div>
+            <h1>Access Blocked</h1>
+            <p>VPN or Proxy connection detected.</p>
+            <p>Please disable your VPN/Proxy and refresh the page to continue.</p>
+            <p><small>This restriction helps us maintain security and comply with regional policies.</small></p>
         </div>
     </div>
 
+    <!-- Centered Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo-nav">
+                <div class="logo-icon">GW</div>
+                Games WAM
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero with Simple Search -->
+    <section class="hero" id="home">
+        <h1>Trusted Mobile Game Mods</h1>
+        <p class="hero-subtitle">Fast, safe, and ready to enhance your gaming.</p>
+
+        <!-- Simple Search -->
+        <div class="search-section">
+            <div class="search-container">
+                <div class="main-search">
+                    <span class="search-emoji">🔍</span>
+                    <input type="text" class="search-input" placeholder="Search for any game mod..." id="mainSearch">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Filter Pills with New Icons -->
+        <div class="filter-pills">
+            <div class="filter-pill active" onclick="setFilter('premium-unlocked')">
+                <span class="filter-icon premium">⭐</span>
+                Premium
+            </div>
+            <div class="filter-pill" onclick="setFilter('safe')">
+                <span class="filter-icon safe">✅</span>
+                100% Safe
+            </div>
+            <div class="filter-pill" onclick="setFilter('secure')">
+                <span class="filter-icon secure">🔒</span>
+                No Virus
+            </div>
+        </div>
+    </section>
+
+    <!-- Cleaner Mod Listings -->
+    <section class="featured-section" id="mods">
+        <h2 class="section-title">Top-Rated Mods</h2>
+        
+        <div class="featured-grid">
+            <div class="mod-card">
+                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgyq6op9zGDY5yhQnUdiryRhgkfesfiOpvBZERJ1ihiqSPe2fc2_0FscfyexKKrC2ZmCdWLwMQnIBmB78btu3-K2L1FAU2-5qTr4A09p_riZ8d9emRlzRwd9zKrrepMJT7fadLxFyWYDaLLmsNubOk9QNC7Y7AiPggjqMOWYOhSFOMMxnViCBLfSIrqx2Y=w300-h160" alt="Super Bear Adventure" class="mod-image">
+                <div class="mod-content">
+                    <div class="mod-header">
+                        <h3 class="mod-title">Super Bear Adventure</h3>
+                        <div class="mod-rating">★ 4.9</div>
+                    </div>
+                    <div class="mod-features">
+                        <span class="feature-tag">Unlimited Lives</span>
+                        <span class="feature-tag">All Levels</span>
+                        <span class="feature-tag">No Ads</span>
+                    </div>
+                    <div class="mod-stats">
+                        <span>2.1K downloads</span>
+                        <span>47 reviews</span>
+                    </div>
+                    <div class="mod-actions">
+                        <button class="install-btn" onclick="openContentLocker('Super Bear Adventure')">Install</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mod-card">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiVzBi49nHQDuVwebcSXxqh-0KJt8qfbXvsAEe4xyjqHJ13yvKlVdvSREtBqhO_QCE74u6Iw7QZjntNi2UbGEwhmE5JPeOEYsgPceb60kLM0cE0vq_I2no5JBJ16MtoUoT7RAH8olCzqGGvdVAJrZ-hJSPlqcAVnT35HDdZQnWar7USTThb9wVw9riKSbY/w298-h271/Minecraft_%20Play%20with%20Game%20Pass%20_%20Xbox.jpeg" alt="Minecraft PE" class="mod-image">
+                <div class="mod-content">
+                    <div class="mod-header">
+                        <h3 class="mod-title">Minecraft PE</h3>
+                        <div class="mod-rating">★ 4.9</div>
+                    </div>
+                    <div class="mod-features">
+                        <span class="feature-tag">Unlimited Resources</span>
+                        <span class="feature-tag">All Items</span>
+                        <span class="feature-tag">Texture Packs</span>
+                    </div>
+                    <div class="mod-stats">
+                        <span>8.1K downloads</span>
+                        <span>132 reviews</span>
+                    </div>
+                    <div class="mod-actions">
+                        <button class="install-btn" onclick="openContentLocker('Minecraft PE')">Install</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mod-card">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSujz4CS-G9Dcd2VU1KuYeGwXKntoM8CVi5B_WzQQu7Q5Ld8sXsHjb8G4SGl0cruQLC4E43ygUPD5Hb69bd46kpEGZZEIWg3RxXIo-ZHsPNomtSI6z94ntCo2LZl2WzDBd7a_QQFnilHL6r7_6y0rpZZZNz-173UqRwRl1K1iKiM_sOVpm92Do6D15jbE/s320/Among%20us.jpeg" alt="Among Us" class="mod-image">
+                <div class="mod-content">
+                    <div class="mod-header">
+                        <h3 class="mod-title">Among Us</h3>
+                        <div class="mod-rating">★ 4.7</div>
+                    </div>
+                    <div class="mod-features">
+                        <span class="feature-tag">All Skins</span>
+                        <span class="feature-tag">Premium Features</span>
+                        <span class="feature-tag">No Ads</span>
+                    </div>
+                    <div class="mod-stats">
+                        <span>3.4K downloads</span>
+                        <span>76 reviews</span>
+                    </div>
+                    <div class="mod-actions">
+                        <button class="install-btn" onclick="openContentLocker('Among Us')">Install</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Locker Popup -->
+    <div class="popup-overlay" id="contentLockerPopup">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closeContentLocker()">×</button>
+            <iframe id="contentLockerFrame" class="popup-iframe" src=""></iframe>
+        </div>
+    </div>
+
+    <!-- Improved Reviews Section -->
+    <section class="reviews-section" id="reviews">
+        <div class="reviews-container">
+            <h3 class="reviews-title">What Our Users Say</h3>
+            
+            <div class="review-cards">
+                <div class="review-card">
+                    <div class="review-rating">★★★★★</div>
+                    <div class="review-content">
+                        "The Super Bear Adventure mod works flawlessly! Unlimited lives and all levels unlocked. Installation took just two minutes and I haven't experienced any issues whatsoever."
+                    </div>
+                    <div class="review-author">— Alex M., Pro Gamer</div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-rating">★★★★☆</div>
+                    <div class="review-content">
+                        "Downloaded five mods so far and most work exceptionally well. The Subway Surfers mod required a couple attempts to install properly, but overall I'm very satisfied with the quality."
+                    </div>
+                    <div class="review-author">— Sarah K., Mobile Enthusiast</div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-rating">★★★★★</div>
+                    <div class="review-content">
+                        "Clean downloads with no suspicious redirects or intrusive pop-ups. The user reviews helped me select the perfect mods. This site has become my primary destination for mobile modifications."
+                    </div>
+                    <div class="review-author">— Jordan R., Android Developer</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-links">
+            <a href="#" onclick="showInfo('contact')">Contact</a>
+            <a href="#" onclick="showInfo('privacy')">Privacy</a>
+            <a href="#" onclick="showInfo('terms')">Terms</a>
+            <a href="#" onclick="showInfo('about')">About</a>
+        </div>
+        <p>&copy; 2024 Games WAM. Trusted by mobile gamers worldwide.</p>
+    </footer>
+
     <script>
-        (function() {
-            'use strict';
-            
-            // Enhanced VPN Detection System
-            class VPNDetector {
-                constructor() {
-                    this.score = 0;
-                    this.maxScore = 100;
-                    this.results = [];
-                    this.isBlocked = false;
-                    this.config = {
-                        blockThreshold: 65,
-                        suspiciousThreshold: 40,
-                        timeoutMs: 8000,
-                        enableLogging: true
-                    };
-                }
+        let currentFilter = 'all';
+
+        // VPN Detection Script - Enhanced with better user experience
+        (async function() {
+            try {
+                // Show loading indicator
+                const loadingElement = document.getElementById('vpnLoading');
+                loadingElement.classList.add('show');
                 
-                log(message, data = null) {
-                    if (this.config.enableLogging) {
-                        console.log(`[VPN Detector] ${message}`, data || '');
-                    }
-                }
+                console.log('Starting VPN detection...');
                 
-                addScore(points, method, details = '') {
-                    this.score += points;
-                    this.results.push({
-                        method,
-                        points,
-                        details,
-                        timestamp: Date.now()
+                // Step 1: Get the user's public IP address
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                
+                console.log('User IP:', ipData.ip);
+                
+                // Step 2: Check if IP is using VPN/Proxy using vpnapi.io
+                const vpnRes = await fetch('https://vpnapi.io/api/' + ipData.ip + '?key=d4f2116e2ff14e6abf3ecd0ae5d96667');
+                const vpnData = await vpnRes.json();
+                
+                console.log('VPN Check Result:', vpnData);
+                
+                // Hide loading indicator
+                setTimeout(() => {
+                    loadingElement.classList.remove('show');
+                }, 1000);
+                
+                // Step 3: Check if VPN or Proxy is detected
+                if (vpnData.security && (vpnData.security.vpn || vpnData.security.proxy)) {
+                    console.log('VPN/Proxy detected - blocking access');
+                    
+                    // Show VPN block screen
+                    const vpnBlockElement = document.getElementById('vpnBlock');
+                    vpnBlockElement.classList.add('show');
+                    
+                    // Disable scrolling
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Optional: Log the detection for analytics
+                    console.warn('Access blocked: VPN/Proxy detected', {
+                        ip: ipData.ip,
+                        vpn: vpnData.security.vpn,
+                        proxy: vpnData.security.proxy,
+                        location: vpnData.location
                     });
-                    this.log(`+${points} for ${method}. Total: ${this.score}`, details);
+                } else {
+                    console.log('VPN check passed - allowing access');
                 }
-                
-                updateProgress(percentage, text) {
-                    document.getElementById('progressBar').style.width = `${percentage}%`;
-                    document.getElementById('statusText').textContent = text;
-                }
-                
-                // Method 1: Fast WebRTC IP Detection (Optimized)
-                async checkWebRTC() {
-                    return new Promise((resolve) => {
-                        const timeout = setTimeout(() => {
-                            this.addScore(20, 'WebRTC Timeout', 'WebRTC failed to respond');
-                            resolve();
-                        }, 2000);
-                        
-                        try {
-                            const pc = new (window.RTCPeerConnection || window.webkitRTCPeerConnection)({
-                                iceServers: [
-                                    { urls: 'stun:stun.l.google.com:19302' },
-                                    { urls: 'stun:stun1.l.google.com:19302' }
-                                ]
-                            });
-                            
-                            const ips = new Set();
-                            let candidateCount = 0;
-                            
-                            pc.onicecandidate = (event) => {
-                                if (!event.candidate) return;
-                                
-                                candidateCount++;
-                                const match = event.candidate.candidate.match(/([0-9]{1,3}\.){3}[0-9]{1,3}/);
-                                if (match) {
-                                    ips.add(match[0]);
-                                }
-                                
-                                // Quick analysis after collecting some candidates
-                                if (candidateCount >= 5) {
-                                    this.analyzeWebRTCResults(ips, candidateCount);
-                                    clearTimeout(timeout);
-                                    pc.close();
-                                    resolve();
-                                }
-                            };
-                            
-                            pc.createDataChannel('test');
-                            pc.createOffer().then(offer => pc.setLocalDescription(offer));
-                            
-                        } catch (error) {
-                            this.addScore(25, 'WebRTC Error', error.message);
-                            clearTimeout(timeout);
-                            resolve();
-                        }
-                    });
-                }
-                
-                analyzeWebRTCResults(ips, candidateCount) {
-                    const ipArray = Array.from(ips);
-                    const publicIPs = ipArray.filter(ip => this.isPublicIP(ip));
-                    const privateIPs = ipArray.filter(ip => this.isPrivateIP(ip));
-                    
-                    if (publicIPs.length > 1) {
-                        this.addScore(35, 'Multiple Public IPs', `Found ${publicIPs.length} public IPs`);
-                    }
-                    
-                    if (candidateCount > 10) {
-                        this.addScore(15, 'Excessive ICE Candidates', `${candidateCount} candidates`);
-                    }
-                    
-                    if (ipArray.length === 0) {
-                        this.addScore(30, 'No WebRTC IPs', 'WebRTC completely blocked');
-                    }
-                    
-                    // Check for VPN IP patterns
-                    publicIPs.forEach(ip => {
-                        if (this.isVPNPattern(ip)) {
-                            this.addScore(25, 'VPN IP Pattern', ip);
-                        }
-                    });
-                }
-                
-                isPublicIP(ip) {
-                    return !this.isPrivateIP(ip) && ip !== '127.0.0.1' && !ip.startsWith('169.254.');
-                }
-                
-                isPrivateIP(ip) {
-                    return ip.startsWith('192.168.') || ip.startsWith('10.') || 
-                           (ip.startsWith('172.') && parseInt(ip.split('.')[1]) >= 16 && parseInt(ip.split('.')[1]) <= 31);
-                }
-                
-                isVPNPattern(ip) {
-                    // Common VPN IP ranges and patterns
-                    const vpnPatterns = [
-                        /^185\./, /^194\./, /^91\./, /^37\./, /^46\./,  // European VPN ranges
-                        /^103\./, /^45\./, /^104\./, /^199\./,          // US VPN ranges
-                        /^5\./, /^31\./, /^89\./                       // Other common VPN ranges
-                    ];
-                    return vpnPatterns.some(pattern => pattern.test(ip));
-                }
-                
-                // Method 2: Fast Geolocation Check
-                async checkGeolocation() {
-                    try {
-                        const controller = new AbortController();
-                        const timeoutId = setTimeout(() => controller.abort(), 3000);
-                        
-                        const response = await fetch('https://ipapi.co/json/', {
-                            signal: controller.signal,
-                            headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Security-Check/1.0)' }
-                        });
-                        
-                        clearTimeout(timeoutId);
-                        
-                        if (!response.ok) throw new Error('API failed');
-                        
-                        const data = await response.json();
-                        this.analyzeGeolocation(data);
-                        
-                    } catch (error) {
-                        this.addScore(20, 'Geo API Blocked', error.message);
-                    }
-                }
-                
-                analyzeGeolocation(data) {
-                    // VPN hosting countries
-                    const vpnCountries = new Set(['NL', 'CH', 'PA', 'VG', 'SC', 'SG', 'BZ', 'KY', 'LU', 'MT']);
-                    
-                    if (vpnCountries.has(data.country_code)) {
-                        this.addScore(25, 'VPN Country', `${data.country_code} - ${data.country_name}`);
-                    }
-                    
-                    // Check for hosting/datacenter
-                    const org = (data.org || '').toLowerCase();
-                    const hostingKeywords = ['hosting', 'datacenter', 'server', 'cloud', 'digital ocean', 'linode', 'vultr', 'hetzner'];
-                    
-                    if (hostingKeywords.some(keyword => org.includes(keyword))) {
-                        this.addScore(30, 'Datacenter IP', data.org);
-                    }
-                    
-                    // Timezone mismatch
-                    try {
-                        const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                        const expectedTz = data.timezone;
-                        if (expectedTz && userTz !== expectedTz) {
-                            this.addScore(15, 'Timezone Mismatch', `User: ${userTz}, Expected: ${expectedTz}`);
-                        }
-                    } catch (e) {
-                        this.addScore(10, 'Timezone Error', 'Cannot read timezone');
-                    }
-                }
-                
-                // Method 3: Enhanced Browser Fingerprinting
-                checkBrowserFingerprint() {
-                    // Automation detection
-                    if (navigator.webdriver) {
-                        this.addScore(40, 'Webdriver Detected', 'Automated browser');
-                    }
-                    
-                    // Headless browser detection
-                    if (window.outerHeight === 0 || window.outerWidth === 0) {
-                        this.addScore(35, 'Headless Browser', 'Zero outer dimensions');
-                    }
-                    
-                    // Missing expected properties
-                    const expectedProps = ['chrome', 'permissions', 'mediaDevices', 'serviceWorker'];
-                    const missingProps = expectedProps.filter(prop => !(prop in navigator));
-                    
-                    if (missingProps.length > 1) {
-                        this.addScore(20, 'Missing Browser Features', missingProps.join(', '));
-                    }
-                    
-                    // Plugin analysis
-                    if (navigator.plugins.length === 0 && !(/Mobile|Android|iPhone|iPad/.test(navigator.userAgent))) {
-                        this.addScore(15, 'No Plugins', 'Desktop browser with no plugins');
-                    }
-                    
-                    // Screen resolution patterns
-                    const suspiciousResolutions = ['1024x768', '800x600', '1280x1024'];
-                    const currentRes = `${screen.width}x${screen.height}`;
-                    
-                    if (suspiciousResolutions.includes(currentRes)) {
-                        this.addScore(15, 'Bot Resolution', currentRes);
-                    }
-                    
-                    // Language inconsistencies
-                    const languages = navigator.languages || [navigator.language];
-                    if (languages.length === 1 && languages[0] === 'en-US') {
-                        this.addScore(10, 'Single Language', 'Only en-US detected');
-                    }
-                }
-                
-                // Method 4: Performance Timing Analysis
-                checkPerformanceTiming() {
-                    try {
-                        const timing = performance.timing;
-                        const navigation = performance.navigation;
-                        
-                        // Suspiciously fast loading times
-                        const loadTime = timing.loadEventEnd - timing.navigationStart;
-                        if (loadTime < 100) {
-                            this.addScore(20, 'Too Fast Loading', `${loadTime}ms`);
-                        }
-                        
-                        // Check if timing values are missing or zero
-                        const criticalTimings = [timing.domainLookupStart, timing.connectStart, timing.responseStart];
-                        if (criticalTimings.some(time => time === 0)) {
-                            this.addScore(15, 'Missing Timing Data', 'Performance timing incomplete');
-                        }
-                        
-                    } catch (error) {
-                        this.addScore(10, 'Performance API Error', error.message);
-                    }
-                }
-                
-                // Method 5: Canvas and Hardware Fingerprinting
-                checkCanvasFingerprint() {
-                    try {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        
-                        // Enhanced canvas test
-                        ctx.textBaseline = 'alphabetic';
-                        ctx.fillStyle = '#f60';
-                        ctx.fillRect(125, 1, 62, 20);
-                        ctx.fillStyle = '#069';
-                        ctx.font = '11pt Arial';
-                        ctx.fillText('VPN Detection 🔍', 2, 15);
-                        ctx.fillStyle = 'rgba(102, 204, 0, 0.2)';
-                        ctx.font = '18pt Arial';
-                        ctx.fillText('VPN Detection 🔍', 4, 45);
-                        
-                        const canvasData = canvas.toDataURL();
-                        
-                        // Check for blocked canvas
-                        if (canvasData.length < 100 || canvasData === 'data:,') {
-                            this.addScore(25, 'Canvas Blocked', 'Canvas rendering prevented');
-                        }
-                        
-                        // Check for common bot signatures
-                        const hash = this.simpleHash(canvasData);
-                        const commonBotHashes = [0, 1, 2147483647]; // Common empty/default hashes
-                        
-                        if (commonBotHashes.includes(hash)) {
-                            this.addScore(20, 'Bot Canvas Signature', `Hash: ${hash}`);
-                        }
-                        
-                    } catch (error) {
-                        this.addScore(25, 'Canvas Error', error.message);
-                    }
-                }
-                
-                simpleHash(str) {
-                    let hash = 0;
-                    for (let i = 0; i < str.length; i++) {
-                        const char = str.charCodeAt(i);
-                        hash = ((hash << 5) - hash) + char;
-                        hash = hash & hash; // Convert to 32-bit integer
-                    }
-                    return Math.abs(hash);
-                }
-                
-                // Method 6: Network Latency Test
-                async checkNetworkLatency() {
-                    const testUrls = [
-                        'https://www.google.com/favicon.ico',
-                        'https://www.cloudflare.com/favicon.ico'
-                    ];
-                    
-                    let totalLatency = 0;
-                    let tests = 0;
-                    
-                    for (const url of testUrls) {
-                        try {
-                            const start = performance.now();
-                            await fetch(url, { 
-                                mode: 'no-cors', 
-                                cache: 'no-cache',
-                                signal: AbortSignal.timeout(2000)
-                            });
-                            const latency = performance.now() - start;
-                            totalLatency += latency;
-                            tests++;
-                        } catch (error) {
-                            // Network blocked or slow
-                            this.addScore(15, 'Network Test Failed', url);
-                        }
-                    }
-                    
-                    if (tests > 0) {
-                        const avgLatency = totalLatency / tests;
-                        if (avgLatency > 1000) {
-                            this.addScore(20, 'High Latency', `${avgLatency.toFixed(0)}ms average`);
-                        }
-                    } else {
-                        this.addScore(30, 'All Network Tests Failed', 'Complete network blocking');
-                    }
-                }
-                
-                // Method 7: Behavioral Analysis (Quick)
-                async checkBehavior() {
-                    return new Promise((resolve) => {
-                        let mouseEvents = 0;
-                        let keyEvents = 0;
-                        
-                        const mouseHandler = () => mouseEvents++;
-                        const keyHandler = () => keyEvents++;
-                        
-                        document.addEventListener('mousemove', mouseHandler);
-                        document.addEventListener('keydown', keyHandler);
-                        
-                        setTimeout(() => {
-                            document.removeEventListener('mousemove', mouseHandler);
-                            document.removeEventListener('keydown', keyHandler);
-                            
-                            if (mouseEvents === 0 && keyEvents === 0) {
-                                this.addScore(25, 'No Human Interaction', 'No mouse/keyboard activity');
-                            }
-                            
-                            resolve();
-                        }, 1500); // Reduced from 4 seconds
-                    });
-                }
-                
-                // Main detection orchestrator
-                async runDetection() {
-                    this.log('Starting enhanced VPN detection...');
-                    
-                    try {
-                        // Phase 1: Instant checks (0-20%)
-                        this.updateProgress(10, 'Checking browser fingerprint...');
-                        this.checkBrowserFingerprint();
-                        
-                        this.updateProgress(15, 'Analyzing performance metrics...');
-                        this.checkPerformanceTiming();
-                        
-                        this.updateProgress(20, 'Testing canvas fingerprint...');
-                        this.checkCanvasFingerprint();
-                        
-                        // Phase 2: Network checks (20-70%)
-                        this.updateProgress(30, 'Checking WebRTC...');
-                        await this.checkWebRTC();
-                        
-                        this.updateProgress(50, 'Verifying geolocation...');
-                        await this.checkGeolocation();
-                        
-                        this.updateProgress(70, 'Testing network latency...');
-                        await this.checkNetworkLatency();
-                        
-                        // Phase 3: Behavioral analysis (70-100%)
-                        this.updateProgress(85, 'Analyzing user behavior...');
-                        await this.checkBehavior();
-                        
-                        this.updateProgress(100, 'Analysis complete!');
-                        
-                        // Display results
-                        this.displayResults();
-                        
-                    } catch (error) {
-                        this.log('Detection error:', error);
-                        this.addScore(20, 'System Error', error.message);
-                        this.displayResults();
-                    }
-                }
-                
-                displayResults() {
-                    const resultsDiv = document.getElementById('results');
-                    const resultsList = document.getElementById('resultsList');
-                    const finalResult = document.getElementById('finalResult');
-                    
-                    // Show results
-                    resultsDiv.style.display = 'block';
-                    
-                    // Display individual results
-                    resultsList.innerHTML = this.results.map(result => {
-                        const scoreClass = result.points >= 25 ? 'high' : result.points >= 15 ? 'medium' : 'low';
-                        return `
-                            <div class="result-item">
-                                <span>${result.method}${result.details ? `: ${result.details}` : ''}</span>
-                                <span class="score ${scoreClass}">+${result.points}</span>
-                            </div>
-                        `;
-                    }).join('');
-                    
-                    // Calculate final assessment
-                    const percentage = Math.min((this.score / this.maxScore) * 100, 100);
-                    let status, className, action;
-                    
-                    if (this.score >= this.config.blockThreshold) {
-                        status = '🚫 VPN/Proxy Detected - Access Blocked';
-                        className = 'blocked';
-                        action = 'High risk detected. Please disable VPN/proxy and try again.';
-                        this.isBlocked = true;
-                    } else if (this.score >= this.config.suspiciousThreshold) {
-                        status = '⚠️ Suspicious Activity Detected';
-                        className = 'suspicious';
-                        action = 'Some unusual patterns detected. Please verify you are not using a VPN.';
-                    } else {
-                        status = '✅ User Verified - Access Granted';
-                        className = 'safe';
-                        action = 'All security checks passed successfully.';
-                    }
-                    
-                    finalResult.innerHTML = `
-                        <div class="final-result ${className}">
-                            <div style="font-size: 24px; margin-bottom: 10px;">${status}</div>
-                            <div style="font-size: 16px; margin-bottom: 10px;">
-                                Detection Score: ${this.score}/${this.maxScore} (${percentage.toFixed(1)}%)
-                            </div>
-                            <div style="font-size: 14px; font-weight: normal;">${action}</div>
-                        </div>
-                    `;
-                    
-                    // Log final result
-                    this.log(`Detection completed. Score: ${this.score}/${this.maxScore} (${percentage.toFixed(1)}%)`);
-                    this.log(`Status: ${className.toUpperCase()}`);
-                    
-                    // If blocked, could redirect or hide content here
-                    if (this.isBlocked) {
-                        this.handleBlocking();
-                    }
-                }
-                
-                handleBlocking() {
-                    // In a real implementation, you might:
-                    // 1. Redirect to a blocked page
-                    // 2. Hide main content
-                    // 3. Show alternative content
-                    // 4. Log the detection
-                    
-                    this.log('User blocked due to VPN/proxy detection');
-                    
-                    // Example: Could replace page content
-                    // document.body.innerHTML = this.getBlockedPageHTML();
-                }
-                
-                getBlockedPageHTML() {
-                    return `
-                        <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-family: -apple-system, BlinkMacSystemFont, sans-serif;">
-                            <div style="background: rgba(255,255,255,0.95); padding: 40px; border-radius: 20px; text-align: center; max-width: 500px;">
-                                <div style="font-size: 60px; margin-bottom: 20px;">🚫</div>
-                                <h2>Access Restricted</h2>
-                                <p>VPN or proxy detected. Please disable it and try again.</p>
-                                <button onclick="window.location.reload()" style="background: #007bff; color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer;">Try Again</button>
-                            </div>
-                        </div>
-                    `;
-                }
+            } catch (error) {
+                console.error("VPN check failed:", error);
+                // Hide loading indicator on error
+                const loadingElement = document.getElementById('vpnLoading');
+                loadingElement.classList.remove('show');
+                // Script continues normally if VPN check fails
+                console.log('VPN check failed, allowing access by default');
             }
-            
-            // Initialize and run detection
-            const detector = new VPNDetector();
-            
-            // Start detection when page loads
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', () => detector.runDetection());
-            } else {
-                detector.runDetection();
-            }
-            
         })();
+
+        // Search and Filter Functions
+        function performSearch() {
+            const searchTerm = document.getElementById('mainSearch').value;
+            if (searchTerm.trim()) {
+                alert(`Searching for "${searchTerm}" mods with ${currentFilter} filter applied...`);
+            } else {
+                alert('Please enter a search term to continue');
+            }
+        }
+
+        function setFilter(filterType) {
+            currentFilter = filterType;
+            
+            // Remove active class from all pills
+            document.querySelectorAll('.filter-pill').forEach(pill => {
+                pill.classList.remove('active');
+            });
+            
+            // Add active class to clicked pill
+            event.target.classList.add('active');
+        }
+
+        // Content Locker Functions
+        function openContentLocker(modName) {
+            const popup = document.getElementById('contentLockerPopup');
+            const iframe = document.getElementById('contentLockerFrame');
+            
+            // Set the content locker URL
+            iframe.src = 'https://installchecker.com/cl/i/o6wn2d';
+            
+            // Show the popup
+            popup.classList.add('show');
+            
+            // Prevent body scrolling when popup is open
+            document.body.style.overflow = 'hidden';
+            
+            console.log(`Opening content locker for ${modName}`);
+        }
+
+        function closeContentLocker() {
+            const popup = document.getElementById('contentLockerPopup');
+            const iframe = document.getElementById('contentLockerFrame');
+            
+            // Hide the popup
+            popup.classList.remove('show');
+            
+            // Clear the iframe source to stop any ongoing processes
+            iframe.src = '';
+            
+            // Restore body scrolling
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close popup when clicking outside the content
+        document.getElementById('contentLockerPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContentLocker();
+            }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeContentLocker();
+            }
+        });
+
+        function showInfo(type) {
+            alert(`Opening ${type} information...`);
+        }
+
+        // Enter key search functionality
+        document.getElementById('mainSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Additional security measure: Detect common VPN/Proxy indicators
+        function additionalVpnChecks() {
+            // Check for common VPN browser extensions
+            const vpnExtensions = [
+                'chrome-extension://fgddmllnllkalaagkghckoinaemmogpe', // Hola
+                'chrome-extension://bihmplhobchoageeokmgbdihknkjbknd', // NordVPN
+                'chrome-extension://mlomiejdfkolichcflejclcbmpeaniij'  // ExpressVPN
+            ];
+            
+            // Check WebRTC for potential leaks (additional security)
+            if (typeof RTCPeerConnection !== 'undefined') {
+                const rtc = new RTCPeerConnection({iceServers: [{urls: 'stun:stun.l.google.com:19302'}]});
+                rtc.createDataChannel('');
+                rtc.onicecandidate = function(e) {
+                    if (e.candidate && e.candidate.candidate.includes('srflx')) {
+                        console.log('WebRTC check completed');
+                    }
+                };
+                rtc.createOffer().then(offer => rtc.setLocalDescription(offer));
+            }
+        }
+        
+        // Run additional checks
+        additionalVpnChecks();
     </script>
 </body>
-</html>
+</html>xl/AVvXsEjmIQtTK5ockJB6PRNEoeJ4TsqGsDcN-ddctNqv0isSXhD9l9BUAMN6ter4U2UmYrM74IKhPb9FYBczvyU5K_-4qNgCa14P34Bh_xZIUECvCAhui6-CFVowVBVK_LhOsL2H4-NtbkeOOo13cAqp09H-rkBxUSzrrqYS5APHsHqc4TGx_2QarJDgcEz8Yk4/w371-h296/SUBWAY%20SURFERS%20-%20Jouez%20en%20Ligne%20Gratuitement%20!%20_%20Poki.jpeg" alt="Subway Surfers" class="mod-image">
+                <div class="mod-content">
+                    <div class="mod-header">
+                        <h3 class="mod-title">Subway Surfers</h3>
+                        <div class="mod-rating">★ 4.8</div>
+                    </div>
+                    <div class="mod-features">
+                        <span class="feature-tag">Unlimited Coins</span>
+                        <span class="feature-tag">All Characters</span>
+                        <span class="feature-tag">Keys Unlocked</span>
+                    </div>
+                    <div class="mod-stats">
+                        <span>5.2K downloads</span>
+                        <span>89 reviews</span>
+                    </div>
+                    <div class="mod-actions">
+                        <button class="install-btn" onclick="openContentLocker('Subway Surfers')">Install</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mod-card">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2
