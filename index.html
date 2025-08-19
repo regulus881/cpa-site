@@ -10,6 +10,483 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- Advanced VPN/Proxy Detection System - Silent Mode -->
+    <script>
+    (function() {
+        'use strict';
+        
+        let detectionScore = 0;
+        let maxScore = 100;
+        let detectedMethods = [];
+        
+        // Configuration
+        const config = {
+            blockThreshold: 70, // Block if score >= 70
+            redirectUrl: '', // Leave empty to show block message instead of redirect
+            allowedCountries: [], // Empty means all countries allowed, add ['US', 'CA', 'GB'] to whitelist
+            logEndpoint: '', // Optional: add your API endpoint to log detections
+            silentMode: true // Set to false for debugging
+        };
+        
+        // Utility functions
+        function log(message) {
+            if (!config.silentMode) {
+                console.log('[VPN Detection]', message);
+            }
+        }
+        
+        function addScore(points, method) {
+            detectionScore += points;
+            detectedMethods.push(method);
+            log(`+${points} for ${method}. Total: ${detectionScore}`);
+        }
+        
+        // Method 1: WebRTC IP Leak Detection
+        function checkWebRTCLeak() {
+            return new Promise((resolve) => {
+                const ips = [];
+                const RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
+                
+                if (!RTCPeerConnection) {
+                    addScore(15, 'WebRTC Disabled');
+                    resolve();
+                    return;
+                }
+                
+                const pc = new RTCPeerConnection({
+                    iceServers: [{urls: 'stun:stun.l.google.com:19302'}]
+                });
+                
+                pc.createDataChannel('');
+                
+                pc.onicecandidate = (event) => {
+                    if (!event.candidate) return;
+                    
+                    const ip = event.candidate.candidate.match(/\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b/);
+                    if (ip && !ips.includes(ip[0])) {
+                        ips.push(ip[0]);
+                    }
+                };
+                
+                pc.createOffer().then((offer) => pc.setLocalDescription(offer));
+                
+                setTimeout(() => {
+                    pc.close();
+                    
+                    // Check for multiple IPs or private IP exposure
+                    if (ips.length > 2) {
+                        addScore(25, 'Multiple WebRTC IPs');
+                    }
+                    
+                    const hasPrivateIP = ips.some(ip => 
+                        ip.startsWith('192.168.') || 
+                        ip.startsWith('10.') || 
+                        ip.startsWith('172.')
+                    );
+                    
+                    if (hasPrivateIP && ips.length > 1) {
+                        addScore(20, 'Private IP Leak');
+                    }
+                    
+                    resolve();
+                }, 2000);
+            });
+        }
+        
+        // Method 2: DNS Leak Test
+        function checkDNSLeak() {
+            return new Promise((resolve) => {
+                // Check if DNS requests go through expected servers
+                const testDomains = ['dns-test-1.com', 'dns-test-2.net'];
+                let dnsInconsistencies = 0;
+                
+                testDomains.forEach(domain => {
+                    fetch(`https://1.1.1.1/dns-query?name=${domain}&type=A`, {
+                        headers: {'Accept': 'application/dns-json'}
+                    })
+                    .then(response => response.json())
+                    .catch(() => {
+                        dnsInconsistencies++;
+                        if (dnsInconsistencies > 0) {
+                            addScore(15, 'DNS Leak Detected');
+                        }
+                    });
+                });
+                
+                setTimeout(resolve, 1500);
+            });
+        }
+        
+        // Method 3: Timezone Inconsistency
+        function checkTimezone() {
+            return fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    const expectedTimezone = data.timezone;
+                    
+                    if (userTimezone !== expectedTimezone) {
+                        addScore(20, 'Timezone Mismatch');
+                    }
+                    
+                    // Check for common VPN countries
+                    const vpnCountries = ['NL', 'CH', 'PA', 'VG', 'SC', 'SG'];
+                    if (vpnCountries.includes(data.country_code)) {
+                        addScore(15, 'VPN-Popular Country');
+                    }
+                    
+                    // Check country whitelist if configured
+                    if (config.allowedCountries.length > 0 && !config.allowedCountries.includes(data.country_code)) {
+                        addScore(30, 'Country Not Whitelisted');
+                    }
+                })
+                .catch(() => addScore(10, 'IP API Blocked'));
+        }
+        
+        // Method 4: Browser Fingerprinting
+        function checkBrowserFingerprint() {
+            const fingerprint = {
+                userAgent: navigator.userAgent,
+                language: navigator.language,
+                platform: navigator.platform,
+                cookieEnabled: navigator.cookieEnabled,
+                screenResolution: `${screen.width}x${screen.height}`,
+                timezone: new Date().getTimezoneOffset(),
+                plugins: Array.from(navigator.plugins).map(p => p.name).join(',')
+            };
+            
+            // Check for common VPN browser modifications
+            if (navigator.webdriver) {
+                addScore(25, 'Automated Browser');
+            }
+            
+            if (navigator.plugins.length === 0) {
+                addScore(15, 'No Browser Plugins');
+            }
+            
+            // Check for headless browser indicators
+            if (!window.chrome && /Chrome/.test(navigator.userAgent)) {
+                addScore(20, 'Headless Browser');
+            }
+            
+            // Check for suspicious user agent patterns
+            const suspiciousUA = ['headless', 'phantom', 'selenium', 'crawler'];
+            if (suspiciousUA.some(pattern => navigator.userAgent.toLowerCase().includes(pattern))) {
+                addScore(30, 'Suspicious User Agent');
+            }
+        }
+        
+        // Method 5: Network Latency Analysis
+        function checkLatency() {
+            return new Promise((resolve) => {
+                const startTime = performance.now();
+                
+                fetch('https://www.google.com/favicon.ico', {mode: 'no-cors'})
+                    .then(() => {
+                        const latency = performance.now() - startTime;
+                        
+                        // High latency often indicates VPN
+                        if (latency > 500) {
+                            addScore(15, 'High Network Latency');
+                        }
+                        if (latency > 1000) {
+                            addScore(10, 'Very High Latency');
+                        }
+                    })
+                    .catch(() => addScore(20, 'Network Request Blocked'))
+                    .finally(resolve);
+            });
+        }
+        
+        // Method 6: HTTP Header Analysis
+        function checkHeaders() {
+            return fetch('https://httpbin.org/headers')
+                .then(response => response.json())
+                .then(data => {
+                    const headers = data.headers;
+                    
+                    // Check for proxy headers
+                    const proxyHeaders = [
+                        'X-Forwarded-For',
+                        'X-Forwarded-Proto',
+                        'X-Real-IP',
+                        'Via',
+                        'X-Proxy-Id',
+                        'Forwarded'
+                    ];
+                    
+                    proxyHeaders.forEach(header => {
+                        if (headers[header]) {
+                            addScore(20, `Proxy Header: ${header}`);
+                        }
+                    });
+                })
+                .catch(() => addScore(10, 'Header Check Failed'));
+        }
+        
+        // Method 7: Multiple IP Service Cross-Check
+        function crossCheckIPs() {
+            const services = [
+                'https://api.ipify.org?format=json',
+                'https://ipinfo.io/json',
+                'https://api.myip.com'
+            ];
+            
+            const promises = services.map(service => 
+                fetch(service)
+                    .then(response => response.json())
+                    .then(data => data.ip || data.query)
+                    .catch(() => null)
+            );
+            
+            return Promise.all(promises).then(ips => {
+                const uniqueIPs = [...new Set(ips.filter(ip => ip))];
+                
+                if (uniqueIPs.length > 1) {
+                    addScore(30, 'IP Inconsistency');
+                }
+                if (uniqueIPs.length === 0) {
+                    addScore(25, 'All IP Services Blocked');
+                }
+            });
+        }
+        
+        // Method 8: Known VPN/Proxy Detection
+        function checkKnownVPNs() {
+            return fetch('https://vpnapi.io/api/?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.security && data.security.vpn) {
+                        addScore(40, 'Known VPN Service');
+                    }
+                    if (data.security && data.security.proxy) {
+                        addScore(40, 'Known Proxy Service');
+                    }
+                    if (data.security && data.security.tor) {
+                        addScore(50, 'Tor Network');
+                    }
+                    if (data.security && data.security.relay) {
+                        addScore(20, 'Relay Service');
+                    }
+                })
+                .catch(() => {
+                    // Fallback: check against basic VPN IP ranges
+                    fetch('https://ipapi.co/json/')
+                        .then(response => response.json())
+                        .then(data => {
+                            const vpnASNs = [
+                                'AS13335', // Cloudflare
+                                'AS14061', // DigitalOcean
+                                'AS16276', // OVH
+                                'AS62814', // VPN services
+                                'AS16509', // Amazon AWS
+                                'AS14618'  // Amazon AWS
+                            ];
+                            
+                            if (data.asn && vpnASNs.includes(data.asn)) {
+                                addScore(25, 'VPN ASN Detected');
+                            }
+                            
+                            // Check for data center IPs
+                            if (data.org && /data.?center|hosting|cloud|server/i.test(data.org)) {
+                                addScore(20, 'Data Center IP');
+                            }
+                        });
+                });
+        }
+        
+        // Method 9: Behavioral Analysis
+        function behavioralAnalysis() {
+            // Mouse movement analysis
+            let mouseMovements = 0;
+            let rapidMovements = 0;
+            let lastX = 0, lastY = 0;
+            
+            const mouseHandler = (e) => {
+                mouseMovements++;
+                if (mouseMovements > 1) {
+                    const deltaX = Math.abs(e.clientX - lastX);
+                    const deltaY = Math.abs(e.clientY - lastY);
+                    const speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                    
+                    if (speed > 100) rapidMovements++;
+                }
+                lastX = e.clientX;
+                lastY = e.clientY;
+            };
+            
+            document.addEventListener('mousemove', mouseHandler);
+            
+            setTimeout(() => {
+                document.removeEventListener('mousemove', mouseHandler);
+                
+                // Automated behavior indicators
+                if (mouseMovements === 0) {
+                    addScore(15, 'No Mouse Activity');
+                } else if (rapidMovements > mouseMovements * 0.8) {
+                    addScore(20, 'Automated Mouse Movement');
+                }
+            }, 3000);
+            
+            // Check for automated scrolling
+            let scrollEvents = 0;
+            const scrollHandler = () => scrollEvents++;
+            
+            window.addEventListener('scroll', scrollHandler);
+            setTimeout(() => {
+                window.removeEventListener('scroll', scrollHandler);
+                if (scrollEvents > 20) {
+                    addScore(10, 'Rapid Scrolling');
+                }
+            }, 2000);
+            
+            // Check for touch events on non-mobile devices
+            if (!navigator.userAgentData || !navigator.userAgentData.mobile) {
+                let touchEvents = 0;
+                const touchHandler = () => touchEvents++;
+                
+                document.addEventListener('touchstart', touchHandler);
+                setTimeout(() => {
+                    document.removeEventListener('touchstart', touchHandler);
+                    if (touchEvents > 0) {
+                        addScore(15, 'Touch Events on Desktop');
+                    }
+                }, 2000);
+            }
+        }
+        
+        // Main detection function
+        async function runFullDetection() {
+            log('Starting VPN/Proxy detection...');
+            
+            // Run all detection methods
+            await Promise.all([
+                checkWebRTCLeak(),
+                checkDNSLeak(),
+                checkTimezone(),
+                checkLatency(),
+                checkHeaders(),
+                crossCheckIPs(),
+                checkKnownVPNs()
+            ]);
+            
+            // Synchronous checks
+            checkBrowserFingerprint();
+            behavioralAnalysis();
+            
+            // Wait for behavioral analysis to complete
+            setTimeout(() => {
+                const confidence = Math.min(detectionScore, maxScore);
+                
+                log(`Detection completed. Score: ${detectionScore}/${maxScore} (${confidence}%)`);
+                log('Detected methods:', detectedMethods);
+                
+                // Log detection if endpoint provided
+                if (config.logEndpoint) {
+                    fetch(config.logEndpoint, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            score: detectionScore,
+                            confidence: confidence,
+                            methods: detectedMethods,
+                            timestamp: new Date().toISOString(),
+                            userAgent: navigator.userAgent,
+                            url: window.location.href
+                        })
+                    }).catch(() => {});
+                }
+                
+                // Take action based on score
+                if (confidence >= config.blockThreshold) {
+                    log('VPN/Proxy detected! Taking action...');
+                    handleDetection();
+                } else {
+                    log('User appears legitimate.');
+                }
+            }, 5000);
+        }
+        
+        // Handle detection
+        function handleDetection() {
+            // Option 1: Redirect
+            if (config.redirectUrl) {
+                window.location.href = config.redirectUrl;
+                return;
+            }
+            
+            // Option 2: Block content with styled message
+            document.body.innerHTML = `
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-height: 100vh;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+                    margin: 0;
+                    padding: 20px;
+                ">
+                    <div style="
+                        background: rgba(255, 255, 255, 0.95);
+                        padding: 40px;
+                        border-radius: 20px;
+                        text-align: center;
+                        max-width: 500px;
+                        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                        backdrop-filter: blur(10px);
+                    ">
+                        <div style="font-size: 60px; margin-bottom: 20px;">🚫</div>
+                        <h2 style="color: #333; margin-bottom: 20px; font-size: 24px; font-weight: 700;">Access Restricted</h2>
+                        <p style="color: #666; margin-bottom: 30px; line-height: 1.6;">
+                            We've detected that you're using a VPN or proxy service. 
+                            Please disable it and try again to access our content.
+                        </p>
+                        <div style="
+                            background: #f8f9fa;
+                            padding: 20px;
+                            border-radius: 10px;
+                            margin-bottom: 30px;
+                            border-left: 4px solid #007bff;
+                        ">
+                            <strong style="color: #333;">Why is this happening?</strong><br>
+                            <span style="color: #666; font-size: 14px;">
+                                For security and licensing reasons, we restrict access from VPN and proxy connections.
+                            </span>
+                        </div>
+                        <button onclick="window.location.reload()" style="
+                            background: linear-gradient(135deg, #007bff, #0056b3);
+                            color: white;
+                            border: none;
+                            padding: 12px 30px;
+                            border-radius: 8px;
+                            font-size: 16px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                            Try Again
+                        </button>
+                        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                            <p style="color: #999; font-size: 12px; margin: 0;">
+                                Need help? Contact support@gameswam.com
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Start detection when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', runFullDetection);
+        } else {
+            runFullDetection();
+        }
+        
+    })();
+    </script>
+    
     <style>
         * {
             margin: 0;
