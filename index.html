@@ -216,6 +216,100 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
+        /* Offer Notification Styles */
+        .offer-notification {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(147, 51, 234, 0.15));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            padding: 12px 24px;
+            margin: 30px auto 20px;
+            max-width: 500px;
+            color: #e2e8f0;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            position: relative;
+            overflow: hidden;
+            animation: gentleFloat 4s ease-in-out infinite, glowPulse 6s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1);
+        }
+
+        .offer-notification::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: shimmer 3s linear infinite;
+            pointer-events: none;
+        }
+
+        .offer-icon {
+            font-size: 20px;
+            animation: bounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));
+        }
+
+        .offer-text {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .offer-highlight {
+            color: #60a5fa;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-6px);
+            }
+            60% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        /* Pulsing glow effect */
+        @keyframes glowPulse {
+            0%, 100% {
+                box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1), 0 0 0 rgba(59, 130, 246, 0.1);
+            }
+            50% {
+                box-shadow: 0 8px 35px rgba(59, 130, 246, 0.2), 0 0 25px rgba(59, 130, 246, 0.15);
+            }
+        }
+
         /* Filter Pills with Mobile-Friendly Color Animations */
         .filter-pills {
             display: flex;
@@ -667,6 +761,21 @@
                 font-size: 15px;
             }
 
+            .offer-notification {
+                max-width: 90%;
+                margin: 20px auto 15px;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+
+            .offer-icon {
+                font-size: 18px;
+            }
+
+            .offer-text {
+                font-size: 12px;
+            }
+
             .filter-pills {
                 gap: 6px;
                 justify-content: center;
@@ -763,6 +872,15 @@
                 <span class="filter-icon secure">🔒</span>
                 No Virus
             </div>
+        </div>
+        
+        <!-- Animated Offer Notification -->
+        <div class="offer-notification">
+            <div class="offer-icon">🎁</div>
+            <div class="offer-text">
+                Complete a <span class="offer-highlight">quick offer</span> to unlock premium mods instantly!
+            </div>
+            <div class="offer-icon">🚀</div>
         </div>
     </section>
 
