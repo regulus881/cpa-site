@@ -216,7 +216,7 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        /* Offer Notification Styles */
+        /* Offer Notification Styles - Updated icon positioning */
         .offer-notification {
             display: flex;
             align-items: center;
@@ -255,6 +255,8 @@
             font-size: 20px;
             animation: bounce 2s ease-in-out infinite;
             filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));
+            /* Added slight downward positioning */
+            transform: translateY(2px);
         }
 
         .offer-text {
@@ -281,13 +283,13 @@
 
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
+                transform: translateY(2px); /* Updated to include the base offset */
             }
             40% {
-                transform: translateY(-6px);
+                transform: translateY(-4px); /* Adjusted from -6px */
             }
             60% {
-                transform: translateY(-3px);
+                transform: translateY(-1px); /* Adjusted from -3px */
             }
         }
 
@@ -462,11 +464,18 @@
 
         .section-title {
             text-align: center;
-            font-size: 2.4rem;
-            font-weight: 700;
+            font-size: 2.8rem;
+            font-weight: 600;
             color: white;
             margin-bottom: 50px;
-            letter-spacing: -0.045em;
+            letter-spacing: -0.05em;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 30%, #e2e8f0 70%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+            line-height: 1.15;
         }
 
         .featured-grid {
@@ -770,10 +779,15 @@
 
             .offer-icon {
                 font-size: 18px;
+                transform: translateY(3px); /* Slightly more offset on mobile */
             }
 
             .offer-text {
                 font-size: 12px;
+            }
+
+            .section-title {
+                font-size: 2.2rem; /* Smaller on mobile */
             }
 
             .filter-pills {
