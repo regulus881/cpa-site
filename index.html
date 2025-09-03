@@ -2,398 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Games WAM | Catalog</title>
     <meta name="description" content="Browse the latest items in a clean, fast catalog layout.">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GN1K1JFT39"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-GN1K1JFT39');
-    </script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        :root{
-            --bg:#0f0f17;
-            --surface:#13131f;
-            --surface-2:#171727;
-            --surface-3:#1b1b2d;
-            --text:#e5e7eb;
-            --muted:#a3a7b2;
-            --border:#23233a;
-            --accent-1:#7c3aed; /* purple */
-            --accent-2:#ec4899; /* pink */
-            --accent:#a855f7;
-            --badge:#f59e0b;
-            --radius:14px;
-        }
-
-        *{margin:0;padding:0;box-sizing:border-box}
-        html,body{height:100%}
-        body{
-            font-family:-apple-system,BlinkMacSystemFont,"Inter","SF Pro Display","SF Pro Text",sans-serif;
-            background:var(--bg);
-            color:var(--text);
-            -webkit-font-smoothing:antialiased;
-            -moz-osx-font-smoothing:grayscale;
-            line-height:1.5;
-        }
-
-        /* Top bar */
-        .topbar{
-            background:linear-gradient(180deg, rgba(124,58,237,0.15), transparent);
-            border-bottom:1px solid var(--border);
-        }
-        .container{
-            max-width:1200px;
-            margin:0 auto;
-            padding:0 16px;
-        }
-        .nav{
-            height:64px;
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:16px;
-        }
-        .brand{
-            display:flex;
-            align-items:center;
-            gap:10px;
-            text-decoration:none;
-            color:var(--text);
-            font-weight:800;
-            letter-spacing:-0.02em;
-        }
-        .brand-mark{
-            width:34px;height:34px;border-radius:8px;
-            background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
-            display:flex;align-items:center;justify-content:center;
-            font-weight:900;color:#fff;font-size:14px;
-        }
-
-        /* Search */
-        .search{
-            flex:1;
-            display:flex;
-            align-items:center;
-            gap:10px;
-            max-width:560px;
-            margin:0 16px;
-        }
-        .search-input{
-            flex:1;
-            background:var(--surface-2);
-            border:1px solid var(--border);
-            height:44px;
-            border-radius:12px;
-            padding:0 14px;
-            color:var(--text);
-            outline:none;
-            transition:border-color .2s ease;
-        }
-        .search-input::placeholder{color:#8b8ea1}
-        .search-input:focus{border-color:#3b82f6}
-        .search-btn{
-            height:44px;
-            padding:0 16px;
-            border:none;cursor:pointer;
-            border-radius:12px;
-            color:#fff;
-            background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
-            font-weight:600;
-        }
-
-        /* Category strip (horizontal scroll like anime4up) */
-        .categories{
-            background:var(--surface);
-            border-bottom:1px solid var(--border);
-        }
-        .cat-row{
-            display:flex;
-            gap:10px;
-            overflow:auto;
-            padding:12px 0;
-            scrollbar-width:none;
-        }
-        .cat-row::-webkit-scrollbar{display:none}
-        .cat{
-            white-space:nowrap;
-            padding:8px 14px;
-            border-radius:999px;
-            border:1px solid var(--border);
-            background:var(--surface-2);
-            color:var(--muted);
-            font-size:13px;
-            cursor:pointer;
-            transition:all .2s ease;
-            user-select:none;
-        }
-        .cat:hover{border-color:#3b82f6;color:#dbeafe}
-        .cat.active{
-            color:#fff;
-            border-color:transparent;
-            background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(236,72,153,.25));
-            box-shadow:0 0 0 1px rgba(124,58,237,.35) inset;
-        }
-
-        /* Layout */
-        .page{
-            padding:22px 0 40px;
-        }
-
-        /* Section header */
-        .section{
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            margin:8px 0 16px;
-        }
-        .section-title{
-            font-size:22px;
-            font-weight:700;
-            letter-spacing:-0.02em;
-            color:#fff;
-        }
-        .section-sub{
-            color:var(--muted);
-            font-size:13px;
-        }
-
-        /* Grid like anime4up cards */
-        .grid{
-            display:grid;
-            grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
-            gap:14px;
-        }
-        .card{
-            background:var(--surface);
-            border:1px solid var(--border);
-            border-radius:var(--radius);
-            overflow:hidden;
-            position:relative;
-            transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-        }
-        .card:hover{
-            transform:translateY(-4px);
-            border-color:rgba(124,58,237,.45);
-            box-shadow:0 16px 40px rgba(0,0,0,.35), 0 0 0 1px rgba(124,58,237,.18) inset;
-        }
-
-        /* Poster placeholder (no images, no names) */
-        .poster{
-            height:230px;
-            background:
-                radial-gradient(120% 120% at 0% 0%, rgba(236,72,153,.14) 0%, transparent 50%),
-                radial-gradient(120% 120% at 100% 0%, rgba(124,58,237,.18) 0%, transparent 52%),
-                linear-gradient(135deg, #171727, #1b1b2d);
-            border-bottom:1px solid var(--border);
-            position:relative;
-        }
-        .badge{
-            position:absolute;
-            top:10px;left:10px;
-            background:linear-gradient(135deg,#f59e0b,#d97706);
-            color:#111827;
-            font-weight:800;
-            font-size:11px;
-            padding:6px 8px;
-            border-radius:8px;
-            letter-spacing:.04em;
-            opacity:.0; /* hidden; toggle if you need */
-        }
-        .overlay{
-            position:absolute;inset:0;
-            background:linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0) 55%);
-            opacity:0;transition:opacity .2s ease;
-        }
-        .card:hover .overlay{opacity:1}
-
-        /* Meta area (kept but empty by default) */
-        .meta{
-            padding:12px 12px 14px;
-        }
-        .title{
-            height:16px; /* keeps spacing without showing text */
-            color:#fff;
-            font-weight:700;
-            font-size:14px;
-            letter-spacing:-0.01em;
-            overflow:hidden;
-        }
-        .tags{
-            margin-top:8px;
-            display:flex;
-            gap:8px;
-            flex-wrap:wrap;
-        }
-        .tag{
-            font-size:11px;
-            color:#cbd5e1;
-            border:1px solid var(--border);
-            background:var(--surface-2);
-            padding:4px 8px;
-            border-radius:999px;
-            display:none; /* hidden so it's all empty */
-        }
-
-        /* Card actions (optional) */
-        .actions{
-            display:flex;
-            gap:8px;
-            margin-top:12px;
-        }
-        .btn{
-            flex:1;
-            height:36px;
-            border:none;cursor:pointer;
-            border-radius:10px;
-            font-weight:700;
-            font-size:12px;
-            color:#fff;
-            background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
-            display:none; /* hidden so it's empty */
-        }
-
-        /* Pagination-like row */
-        .pager{
-            margin-top:22px;
-            display:flex;
-            justify-content:center;
-            gap:8px;
-        }
-        .page-btn{
-            background:var(--surface);
-            color:var(--muted);
-            border:1px solid var(--border);
-            height:40px;min-width:40px;
-            border-radius:10px;
-            padding:0 12px;
-            cursor:pointer;
-            transition:all .2s ease;
-        }
-        .page-btn:hover{border-color:#3b82f6;color:#dbeafe}
-        .page-btn.active{
-            color:#fff;border-color:transparent;
-            background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(236,72,153,.25));
-        }
-
-        /* Footer */
-        .footer{
-            margin-top:36px;
-            background:var(--surface);
-            border-top:1px solid var(--border);
-            padding:24px 0 28px;
-            color:var(--muted);
-            text-align:center;
-        }
-        .foot-links{
-            display:flex;justify-content:center;gap:18px;flex-wrap:wrap;
-            margin-bottom:10px;
-        }
-        .foot-links a{
-            color:#c8cbe0;text-decoration:none;font-size:13px;
-        }
-        .foot-links a:hover{color:#fff}
-
-        /* VPN Block Styles */
-        .vpn-block{
-            position:fixed;inset:0;
-            background:linear-gradient(135deg,#dc2626,#991b1b);
-            color:#fff;display:none;align-items:center;justify-content:center;
-            z-index:99999;text-align:center;padding:20px;
-        }
-        .vpn-block-content{max-width:600px}
-        .vpn-block h1{font-size:2.2rem;margin-bottom:12px;font-weight:800}
-        .vpn-block p{opacity:.95}
-
-        /* Content Locker Popup */
-        .popup-overlay{
-            position:fixed;inset:0;
-            background:rgba(0,0,0,.8);
-            backdrop-filter:blur(10px);
-            z-index:10000;display:none;align-items:center;justify-content:center;
-        }
-        .popup-overlay.show{display:flex}
-        .popup-content{
-            background:#fff;border-radius:20px;
-            width:600px;max-width:92vw;height:520px;max-height:85vh;
-            position:relative;overflow:hidden;
-            box-shadow:0 25px 50px rgba(0,0,0,.5);
-        }
-        .popup-close{
-            position:absolute;top:12px;right:12px;
-            width:32px;height:32px;border-radius:50%;
-            border:none;background:rgba(0,0,0,.08);cursor:pointer;
-            color:#333;font-size:18px;
-        }
-        .popup-iframe{width:100%;height:100%;border:none}
-
-        /* Responsive */
-        @media (max-width:768px){
-            .nav{height:60px}
-            .search{max-width:none}
-            .grid{grid-template-columns:repeat(3,1fr);gap:10px}
-            .poster{height:160px}
-            .section{margin:4px 0 10px}
-            .section-title{font-size:18px}
-        }
-        @media (max-width:520px){
-            .grid{grid-template-columns:repeat(2,1fr)}
-            .poster{height:150px}
-        }
-    </style>
-</head>
-<body>
-
-    <!-- VPN Block Screen -->
-    <div class="vpn-block" id="vpnBlock">
-        <div class="vpn-block-content">
-            <h1>Access Blocked</h1>
-            <p>VPN or Proxy connections are not allowed on this site.</p>
-            <p>Please disable your VPN/Proxy and refresh the page to continue.</p>
-        </div>
-    </div>
-
-    <!-- Topbar -->
-    <header class="topbar">
-        <div class="container">
-            <div class="nav">
-                <a class="brand" href="#">
-                    <div class="brand-mark">GW</div>
-                    Games WAM
-                </a>
-                <div class="search">
-                    <input id="mainSearch" class="search-input" type="text" placeholder="Search..." />
-                    <button class="search-btn" onclick="performSearch()">Search</button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Categories strip -->
-    <div class="categories">
-        <div class="container">
-            <div class="cat-row" id="catRow">
-                <div class="cat active" data-filter="all" onclick="setFilter('all', this)">All</div>
-                <div class="cat" data-filter="new" onclick="setFilter('new', this)">New</div>
-                <div class="cat" data-filter="updated" onclick="setFilter
-Thought for 32s
-Continuing — here’s the complete, ready-to-use page
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Games WAM | Catalog</title>
-    <meta name="description" content="Browse the latest items in a clean, fast catalog layout.">
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GN1K1JFT39"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -420,6 +31,7 @@ Continuing — here’s the complete, ready-to-use page
             --accent:#a855f7;
             --badge:#f59e0b;
             --radius:14px;
+            --ring:rgba(124,58,237,.28);
         }
 
         *{margin:0;padding:0;box-sizing:border-box}
@@ -435,7 +47,9 @@ Continuing — here’s the complete, ready-to-use page
 
         /* Top bar */
         .topbar{
-            background:linear-gradient(180deg, rgba(124,58,237,0.15), transparent);
+            background:
+                linear-gradient(180deg, rgba(124,58,237,0.12), transparent 60%),
+                linear-gradient(180deg, rgba(236,72,153,0.06), transparent 70%);
             border-bottom:1px solid var(--border);
         }
         .container{
@@ -448,7 +62,7 @@ Continuing — here’s the complete, ready-to-use page
             display:flex;
             align-items:center;
             justify-content:space-between;
-            gap:16px;
+            gap:12px;
         }
         .brand{
             display:flex;
@@ -464,6 +78,7 @@ Continuing — here’s the complete, ready-to-use page
             background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
             display:flex;align-items:center;justify-content:center;
             font-weight:900;color:#fff;font-size:14px;
+            box-shadow:0 0 0 1px rgba(255,255,255,.06) inset;
         }
 
         /* Search */
@@ -471,9 +86,9 @@ Continuing — here’s the complete, ready-to-use page
             flex:1;
             display:flex;
             align-items:center;
-            gap:10px;
+            gap:8px;
             max-width:560px;
-            margin:0 16px;
+            margin:0 12px 0 16px;
         }
         .search-input{
             flex:1;
@@ -484,30 +99,111 @@ Continuing — here’s the complete, ready-to-use page
             padding:0 14px;
             color:var(--text);
             outline:none;
-            transition:border-color .2s ease;
+            transition:border-color .2s ease, box-shadow .2s ease;
         }
         .search-input::placeholder{color:#8b8ea1}
-        .search-input:focus{border-color:#3b82f6}
+        .search-input:focus{
+            border-color:#3b82f6;
+            box-shadow:0 0 0 3px rgba(59,130,246,.15);
+        }
         .search-btn{
             height:44px;
-            padding:0 16px;
+            padding:0 14px;
             border:none;cursor:pointer;
             border-radius:12px;
             color:#fff;
             background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
-            font-weight:600;
+            font-weight:700;
+            letter-spacing:.01em;
+            box-shadow:0 8px 24px rgba(124,58,237,.25);
         }
 
-        /* Category strip (horizontal scroll like anime4up) */
+        /* Hero slider (top images area) */
+        .hero{
+            background:var(--surface);
+            border-bottom:1px solid var(--border);
+        }
+        .hero-wrap{
+            padding:14px 0 18px;
+        }
+        .slider{
+            position:relative;
+            overflow:hidden;
+            border-radius:16px;
+            border:1px solid var(--border);
+            background:var(--surface-2);
+            isolation:isolate;
+        }
+        .slider::before{
+            content:"";
+            position:absolute;inset:-2px;
+            background:conic-gradient(from 180deg at 50% 50%, rgba(124,58,237,.35), rgba(236,72,153,.35), rgba(124,58,237,.35));
+            filter:blur(18px);
+            z-index:-1;opacity:.35;
+            animation:spin 12s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg) } }
+
+        .slides{
+            display:flex;
+            will-change:transform;
+            transition:transform 420ms cubic-bezier(.22,.61,.36,1);
+            touch-action:pan-y;
+        }
+        .slide{
+            min-width:100%;
+            aspect-ratio:21/9;
+            background:
+                radial-gradient(120% 120% at 0% 0%, rgba(236,72,153,.14) 0%, transparent 50%),
+                radial-gradient(120% 120% at 100% 0%, rgba(124,58,237,.18) 0%, transparent 52%),
+                linear-gradient(135deg, #171727, #1b1b2d);
+            position:relative;
+            overflow:hidden;
+        }
+        .slide[data-bg]{background-size:cover;background-position:center}
+        .slide::after{
+            content:"";
+            position:absolute;inset:0;
+            background:linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0) 60%);
+        }
+
+        .slider-nav{
+            position:absolute;inset:0;
+            display:flex;align-items:center;justify-content:space-between;
+            padding:0 6px;
+            pointer-events:none;
+        }
+        .nav-btn{
+            pointer-events:auto;
+            width:36px;height:36px;border-radius:999px;border:1px solid var(--border);
+            background:rgba(17,17,27,.6);
+            color:#fff;display:flex;align-items:center;justify-content:center;
+            cursor:pointer;backdrop-filter:blur(4px);
+            transition:transform .15s ease, background .2s ease;
+        }
+        .nav-btn:active{transform:scale(.96)}
+        .dots{
+            position:absolute;left:0;right:0;bottom:10px;
+            display:flex;gap:6px;justify-content:center;align-items:center;
+        }
+        .dot{
+            width:8px;height:8px;border-radius:999px;
+            background:#3b3b54;border:1px solid var(--border);
+            transition:width .2s ease, background .2s ease;
+        }
+        .dot.active{width:20px;background:linear-gradient(135deg,var(--accent-1),var(--accent-2))}
+
+        /* Categories */
         .categories{
             background:var(--surface);
             border-bottom:1px solid var(--border);
+            position:sticky;top:64px;z-index:50;
         }
         .cat-row{
             display:flex;
             gap:10px;
             overflow:auto;
-            padding:12px 0;
+            padding:10px 0;
             scrollbar-width:none;
         }
         .cat-row::-webkit-scrollbar{display:none}
@@ -528,37 +224,26 @@ Continuing — here’s the complete, ready-to-use page
             color:#fff;
             border-color:transparent;
             background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(236,72,153,.25));
-            box-shadow:0 0 0 1px rgba(124,58,237,.35) inset;
+            box-shadow:0 0 0 1px var(--ring) inset;
         }
 
-        /* Layout */
-        .page{
-            padding:22px 0 40px;
-        }
+        /* Page */
+        .page{padding:18px 0 40px}
 
-        /* Section header */
         .section{
             display:flex;
             align-items:center;
             justify-content:space-between;
-            margin:8px 0 16px;
+            margin:6px 0 14px;
         }
-        .section-title{
-            font-size:22px;
-            font-weight:700;
-            letter-spacing:-0.02em;
-            color:#fff;
-        }
-        .section-sub{
-            color:var(--muted);
-            font-size:13px;
-        }
+        .section-title{font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#fff}
+        .section-sub{color:var(--muted);font-size:13px}
 
-        /* Grid like anime4up cards */
+        /* Grid */
         .grid{
             display:grid;
-            grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
-            gap:14px;
+            grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+            gap:12px;
         }
         .card{
             background:var(--surface);
@@ -566,17 +251,17 @@ Continuing — here’s the complete, ready-to-use page
             border-radius:var(--radius);
             overflow:hidden;
             position:relative;
-            transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+            transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+            will-change:transform;
         }
         .card:hover{
-            transform:translateY(-4px);
+            transform:translateY(-3px);
             border-color:rgba(124,58,237,.45);
-            box-shadow:0 16px 40px rgba(0,0,0,.35), 0 0 0 1px rgba(124,58,237,.18) inset;
+            box-shadow:0 10px 28px rgba(0,0,0,.35), 0 0 0 1px rgba(124,58,237,.18) inset;
         }
 
-        /* Poster placeholder (no images, no names) */
         .poster{
-            height:230px;
+            height:220px;
             background:
                 radial-gradient(120% 120% at 0% 0%, rgba(236,72,153,.14) 0%, transparent 50%),
                 radial-gradient(120% 120% at 100% 0%, rgba(124,58,237,.18) 0%, transparent 52%),
@@ -585,86 +270,32 @@ Continuing — here’s the complete, ready-to-use page
             position:relative;
         }
         .badge{
-            position:absolute;
-            top:10px;left:10px;
+            position:absolute;top:10px;left:10px;
             background:linear-gradient(135deg,#f59e0b,#d97706);
-            color:#111827;
-            font-weight:800;
-            font-size:11px;
-            padding:6px 8px;
-            border-radius:8px;
-            letter-spacing:.04em;
-            opacity:.0;
+            color:#111827;font-weight:800;font-size:11px;
+            padding:6px 8px;border-radius:8px;letter-spacing:.04em;
+            opacity:0;
         }
         .overlay{
             position:absolute;inset:0;
-            background:linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0) 55%);
-            opacity:0;transition:opacity .2s ease;
+            background:linear-gradient(to top, rgba(0,0,0,.50), rgba(0,0,0,0) 60%);
+            opacity:0;transition:opacity .18s ease;
         }
         .card:hover .overlay{opacity:1}
 
-        /* Meta area (kept but empty by default) */
-        .meta{
-            padding:12px 12px 14px;
-        }
-        .title{
-            height:16px;
-            color:#fff;
-            font-weight:700;
-            font-size:14px;
-            letter-spacing:-0.01em;
-            overflow:hidden;
-        }
-        .tags{
-            margin-top:8px;
-            display:flex;
-            gap:8px;
-            flex-wrap:wrap;
-        }
-        .tag{
-            font-size:11px;
-            color:#cbd5e1;
-            border:1px solid var(--border);
-            background:var(--surface-2);
-            padding:4px 8px;
-            border-radius:999px;
-            display:none;
-        }
+        .meta{padding:10px 12px 12px}
+        .title{height:16px;overflow:hidden}
+        .tags{display:none}
+        .actions{display:none}
 
-        /* Card actions (optional) */
-        .actions{
-            display:flex;
-            gap:8px;
-            margin-top:12px;
-        }
-        .btn{
-            flex:1;
-            height:36px;
-            border:none;cursor:pointer;
-            border-radius:10px;
-            font-weight:700;
-            font-size:12px;
-            color:#fff;
-            background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
-            display:none;
-        }
-
-        /* Pagination-like row */
-        .pager{
-            margin-top:22px;
-            display:flex;
-            justify-content:center;
-            gap:8px;
-        }
+        /* Pager */
+        .pager{margin-top:18px;display:flex;justify-content:center;gap:8px}
         .page-btn{
             background:var(--surface);
             color:var(--muted);
             border:1px solid var(--border);
-            height:40px;min-width:40px;
-            border-radius:10px;
-            padding:0 12px;
-            cursor:pointer;
-            transition:all .2s ease;
+            height:40px;min-width:40px;border-radius:10px;padding:0 12px;cursor:pointer;
+            transition:all .18s ease;
         }
         .page-btn:hover{border-color:#3b82f6;color:#dbeafe}
         .page-btn.active{
@@ -674,67 +305,68 @@ Continuing — here’s the complete, ready-to-use page
 
         /* Footer */
         .footer{
-            margin-top:36px;
-            background:var(--surface);
-            border-top:1px solid var(--border);
-            padding:24px 0 28px;
-            color:var(--muted);
-            text-align:center;
+            margin-top:30px;background:var(--surface);
+            border-top:1px solid var(--border);padding:22px 0 26px;color:var(--muted);text-align:center;
         }
-        .foot-links{
-            display:flex;justify-content:center;gap:18px;flex-wrap:wrap;
-            margin-bottom:10px;
-        }
-        .foot-links a{
-            color:#c8cbe0;text-decoration:none;font-size:13px;
-        }
+        .foot-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+        .foot-links a{color:#c8cbe0;text-decoration:none;font-size:13px}
         .foot-links a:hover{color:#fff}
 
-        /* VPN Block Styles */
+        /* VPN Block */
         .vpn-block{
-            position:fixed;inset:0;
-            background:linear-gradient(135deg,#dc2626,#991b1b);
-            color:#fff;display:none;align-items:center;justify-content:center;
-            z-index:99999;text-align:center;padding:20px;
+            position:fixed;inset:0;background:linear-gradient(135deg,#dc2626,#991b1b);
+            color:#fff;display:none;align-items:center;justify-content:center;z-index:99999;text-align:center;padding:20px;
         }
         .vpn-block-content{max-width:600px}
-        .vpn-block h1{font-size:2.2rem;margin-bottom:12px;font-weight:800}
+        .vpn-block h1{font-size:2.1rem;margin-bottom:12px;font-weight:800}
         .vpn-block p{opacity:.95}
 
-        /* Content Locker Popup */
+        /* Popup */
         .popup-overlay{
-            position:fixed;inset:0;
-            background:rgba(0,0,0,.8);
-            backdrop-filter:blur(10px);
+            position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);
             z-index:10000;display:none;align-items:center;justify-content:center;
         }
         .popup-overlay.show{display:flex}
         .popup-content{
-            background:#fff;border-radius:20px;
-            width:600px;max-width:92vw;height:520px;max-height:85vh;
-            position:relative;overflow:hidden;
-            box-shadow:0 25px 50px rgba(0,0,0,.5);
+            background:#fff;border-radius:20px;width:600px;max-width:92vw;height:520px;max-height:85vh;
+            position:relative;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,.5);
         }
         .popup-close{
-            position:absolute;top:12px;right:12px;
-            width:32px;height:32px;border-radius:50%;
-            border:none;background:rgba(0,0,0,.08);cursor:pointer;
-            color:#333;font-size:18px;
+            position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;
+            border:none;background:rgba(0,0,0,.08);cursor:pointer;color:#333;font-size:18px;
         }
         .popup-iframe{width:100%;height:100%;border:none}
 
+        /* Motion preferences */
+        @media (prefers-reduced-motion: reduce){
+            .slides{transition:none}
+            .slider::before{animation:none}
+            .card:hover{transform:none}
+        }
+
         /* Responsive */
+        @media (max-width:992px){
+            .slides .slide{aspect-ratio:16/9}
+        }
         @media (max-width:768px){
             .nav{height:60px}
-            .search{max-width:none}
+            .categories{top:60px}
+            .search{gap:6px;margin:0 0 0 8px}
+            .search-input{height:40px}
+            .search-btn{height:40px;padding:0 12px}
+            .hero-wrap{padding:10px 0 14px}
             .grid{grid-template-columns:repeat(3,1fr);gap:10px}
             .poster{height:160px}
             .section{margin:4px 0 10px}
             .section-title{font-size:18px}
+            .card:hover{transform:translateY(-2px)}
         }
         @media (max-width:520px){
-            .grid{grid-template-columns:repeat(2,1fr)}
+            .grid{grid-template-columns:repeat(2,1fr);gap:10px}
             .poster{height:150px}
+            .nav{gap:8px}
+            .brand{gap:8px}
+            .brand-mark{width:30px;height:30px}
         }
     </style>
 </head>
@@ -764,6 +396,24 @@ Continuing — here’s the complete, ready-to-use page
             </div>
         </div>
     </header>
+
+    <!-- Hero slider (add your pics) -->
+    <section class="hero">
+        <div class="container hero-wrap">
+            <div class="slider" id="slider">
+                <div class="slides" id="slides">
+                    <div class="slide" data-bg=""></div>
+                    <div class="slide" data-bg=""></div>
+                    <div class="slide" data-bg=""></div>
+                </div>
+                <div class="slider-nav">
+                    <button class="nav-btn" id="prev" aria-label="Previous">‹</button>
+                    <button class="nav-btn" id="next" aria-label="Next">›</button>
+                </div>
+                <div class="dots" id="dots"></div>
+            </div>
+        </div>
+    </section>
 
     <!-- Categories strip -->
     <div class="categories">
@@ -1076,9 +726,7 @@ Continuing — here’s the complete, ready-to-use page
                     let validChecks = 0;
 
                     apiResults.forEach(result => {
-                        if (result.detected) {
-                            totalScore += result.confidence;
-                        }
+                        if (result.detected) totalScore += result.confidence;
                         validChecks++;
                     });
 
@@ -1091,9 +739,7 @@ Continuing — here’s the complete, ready-to-use page
                     ];
 
                     additionalChecks.forEach(check => {
-                        if (check.detected) {
-                            totalScore += check.weight;
-                        }
+                        if (check.detected) totalScore += check.weight;
                         validChecks++;
                     });
 
@@ -1105,9 +751,7 @@ Continuing — here’s the complete, ready-to-use page
                         _0xa0b1();
                     }
 
-                } catch (error) {
-                    return;
-                }
+                } catch (error) { return; }
             }
 
             if (document.readyState === 'loading') {
@@ -1117,15 +761,12 @@ Continuing — here’s the complete, ready-to-use page
             }
         })();
 
-        // Basic catalog logic (empty cards like anime tiles)
+        // Basic catalog logic
         let currentFilter = 'all';
 
         function performSearch() {
             const searchTerm = document.getElementById('mainSearch').value.trim();
-            if (!searchTerm) {
-                alert('Please enter a search term to continue');
-                return;
-            }
+            if (!searchTerm) { alert('Please enter a search term to continue'); return; }
             alert(`Searching for "${searchTerm}" with filter "${currentFilter}"...`);
         }
 
@@ -1172,15 +813,13 @@ Continuing — here’s the complete, ready-to-use page
             if (e.key === 'Escape') closeContentLocker();
         });
 
-        function showInfo(type) {
-            alert(`Opening ${type} information...`);
-        }
+        function showInfo(type) { alert(`Opening ${type} information...`); }
 
         document.getElementById('mainSearch').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') performSearch();
         });
 
-        // Generate empty cards with categories (ready for you to fill)
+        // Populate empty cards (ready for your assets)
         (function populateGrid() {
             const grid = document.getElementById('grid');
             const categories = ['action','adventure','racing','strategy','casual','sports','puzzle'];
@@ -1196,7 +835,7 @@ Continuing — here’s the complete, ready-to-use page
                 card.setAttribute('data-category', cat);
                 card.setAttribute('data-new', isNew);
                 card.setAttribute('data-updated', isUpdated);
-                card.title = 'Click to open';
+                card.title = 'Tap to open';
 
                 const poster = document.createElement('div');
                 poster.className = 'poster';
@@ -1215,18 +854,84 @@ Continuing — here’s the complete, ready-to-use page
                 meta.className = 'meta';
                 const title = document.createElement('div');
                 title.className = 'title';
-                title.textContent = ''; // intentionally empty (you can fill later)
+                title.textContent = '';
                 meta.appendChild(title);
 
                 card.appendChild(poster);
                 card.appendChild(meta);
-
                 card.addEventListener('click', () => openContentLocker('Item'));
 
                 frag.appendChild(card);
             }
             grid.appendChild(frag);
             applyFilter();
+        })();
+
+        // Hero slider logic
+        (function setupSlider(){
+            const slidesEl = document.getElementById('slides');
+            const slides = Array.from(slidesEl.children);
+            const dotsEl = document.getElementById('dots');
+            const prev = document.getElementById('prev');
+            const next = document.getElementById('next');
+
+            let index = 0;
+            let autoTimer = null;
+            const delay = 4500;
+
+            slides.forEach((_, i) => {
+                const d = document.createElement('div');
+                d.className = 'dot' + (i===0 ? ' active' : '');
+                d.addEventListener('click', () => goTo(i));
+                dotsEl.appendChild(d);
+            });
+
+            function update(){
+                slidesEl.style.transform = `translateX(-${index*100}%)`;
+                dotsEl.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active', i===index));
+                lazy(index); // ensure background is applied
+            }
+
+            function goTo(i){
+                index = (i + slides.length) % slides.length;
+                update();
+                restart();
+            }
+
+            function nextSlide(){ goTo(index+1) }
+            function prevSlide(){ goTo(index-1) }
+
+            function start(){ autoTimer = setInterval(nextSlide, delay) }
+            function stop(){ clearInterval(autoTimer) }
+            function restart(){ stop(); start() }
+
+            // Lazy set background from data-bg (put URLs there)
+            function lazy(i){
+                const s = slides[i];
+                const url = s.getAttribute('data-bg');
+                if (url && !s.style.backgroundImage){
+                    s.style.backgroundImage = `url('${url}')`;
+                }
+            }
+            lazy(0);
+
+            // Buttons
+            next.addEventListener('click', nextSlide);
+            prev.addEventListener('click', prevSlide);
+
+            // Swipe support
+            let startX = 0, dx = 0, isDown = false;
+            slidesEl.addEventListener('pointerdown', (e)=>{ isDown=true; startX=e.clientX; dx=0; stop(); slidesEl.setPointerCapture(e.pointerId); });
+            slidesEl.addEventListener('pointermove', (e)=>{ if(!isDown) return; dx=e.clientX-startX; slidesEl.style.transform=`translateX(calc(-${index*100}% + ${dx}px))`; });
+            slidesEl.addEventListener('pointerup', (e)=>{ if(!isDown) return; isDown=false; slidesEl.releasePointerCapture(e.pointerId); if (Math.abs(dx) > 60){ dx<0 ? nextSlide() : prevSlide(); } else { update(); start(); } });
+            slidesEl.addEventListener('pointercancel', ()=>{ isDown=false; update(); start(); });
+
+            // Pause on hover (desktop)
+            slidesEl.addEventListener('mouseenter', stop);
+            slidesEl.addEventListener('mouseleave', start);
+
+            start();
+            window.addEventListener('visibilitychange', ()=>{ document.hidden ? stop() : start(); });
         })();
     </script>
 </body>
