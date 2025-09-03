@@ -5,6 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Games WAM | Catalog</title>
 	<meta name="description" content="Browse the latest items in a clean, fast catalog layout.">
+	<!-- Favicon -->
+	<link rel="icon" href="/logo-icon.svg" type="image/svg+xml">
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-GN1K1JFT39"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
@@ -79,12 +81,9 @@
 			font-weight:800;
 			letter-spacing:-0.02em;
 		}
-		.brand-mark{
-			width:32px;height:32px;border-radius:8px;
-			background:var(--gradient-1);
-			display:flex;align-items:center;justify-content:center;
-			font-weight:900;color:#fff;font-size:13px;
-			box-shadow:0 0 0 1px rgba(255,255,255,.1) inset, 0 0 20px rgba(0,180,216,.3);
+		.brand img{
+			height:40px;
+			width:auto;
 		}
 
 		/* Search */
@@ -196,32 +195,6 @@
 			transition:width .2s ease, background .2s ease;cursor:pointer;
 		}
 		.dot.active{width:20px;background:var(--gradient-1);border-color:var(--accent-1)}
-
-		/* Categories */
-		.categories{
-			background:var(--surface);
-			border-bottom:1px solid var(--border);
-			position:sticky;top:60px;z-index:50;
-		}
-		.cat-row{
-			display:flex;gap:10px;overflow:auto;padding:10px 0;scrollbar-width:none;
-		}
-		.cat-row::-webkit-scrollbar{display:none}
-		.cat{
-			white-space:nowrap;padding:8px 14px;border-radius:999px;border:1px solid var(--border);
-			background:var(--surface-2);color:var(--muted);font-size:13px;cursor:pointer;
-			transition:all .2s ease;user-select:none;
-		}
-		.cat:hover{
-			border-color:var(--accent-1);
-			color:#f9fafb;
-			background:rgba(0,180,216,.1);
-		}
-		.cat.active{
-			color:#fff;border-color:transparent;
-			background:var(--gradient-1);
-			box-shadow:0 0 0 1px var(--ring) inset, 0 4px 12px rgba(0,180,216,.3);
-		}
 
 		/* Page */
 		.page{padding:16px 0 36px}
@@ -349,7 +322,9 @@
 				flex:0 0 auto;
 				margin-top:4px;
 			}
-			.categories{top:110px}
+			.brand img{
+				height:32px;
+			}
 			.hero-wrap{padding:10px 0 12px}
 			.search{
 				flex:1 0 100%;
@@ -373,7 +348,6 @@
 				min-height:120px;
 				padding:12px 0 8px 0;
 			}
-			.categories{top:120px}
 			.search{
 				grid-template-columns:1fr;
 				gap:8px;
@@ -386,7 +360,9 @@
 			.grid{grid-template-columns:repeat(2,1fr);gap:10px}
 			.poster{height:150px}
 			.brand{gap:8px}
-			.brand-mark{width:30px;height:30px}
+			.brand img{
+				height:28px;
+			}
 		}
 	</style>
 </head>
@@ -406,8 +382,7 @@
 		<div class="container">
 			<div class="nav">
 				<a class="brand" href="#">
-					<div class="brand-mark">GW</div>
-					Games WAM
+					<img src="/logo-horizontal.svg" alt="Games WAM" height="40">
 				</a>
 				<div class="search">
 					<input id="mainSearch" class="search-input" type="text" placeholder="Search games..." />
@@ -434,24 +409,6 @@
 			</div>
 		</div>
 	</section>
-
-	<!-- Categories -->
-	<div class="categories">
-		<div class="container">
-			<div class="cat-row" id="catRow">
-				<div class="cat active" data-filter="all" onclick="setFilter('all', this)">All</div>
-				<div class="cat" data-filter="new" onclick="setFilter('new', this)">New</div>
-				<div class="cat" data-filter="updated" onclick="setFilter('updated', this)">Updated</div>
-				<div class="cat" data-filter="action" onclick="setFilter('action', this)">Action</div>
-				<div class="cat" data-filter="adventure" onclick="setFilter('adventure', this)">Adventure</div>
-				<div class="cat" data-filter="racing" onclick="setFilter('racing', this)">Racing</div>
-				<div class="cat" data-filter="strategy" onclick="setFilter('strategy', this)">Strategy</div>
-				<div class="cat" data-filter="casual" onclick="setFilter('casual', this)">Casual</div>
-				<div class="cat" data-filter="sports" onclick="setFilter('sports', this)">Sports</div>
-				<div class="cat" data-filter="puzzle" onclick="setFilter('puzzle', this)">Puzzle</div>
-			</div>
-		</div>
-	</div>
 
 	<!-- Page -->
 	<main class="page">
@@ -649,22 +606,7 @@
 		function performSearch() {
 			const q = document.getElementById('mainSearch').value.trim();
 			if (!q) { alert('Please enter a search term to continue'); return; }
-			alert(`Searching for "${q}" with filter "${currentFilter}"...`);
-		}
-		function setFilter(type, el) {
-			currentFilter = type;
-			document.querySelectorAll('.cat').forEach(c => c.classList.remove('active'));
-			el.classList.add('active');
-			applyFilter();
-		}
-		function applyFilter() {
-			document.querySelectorAll('.card').forEach(card => {
-				const category = card.getAttribute('data-category');
-				const isNew = card.dataset.new === '1';
-				const isUpd = card.dataset.updated === '1';
-				const show = currentFilter === 'all' || category === currentFilter || (currentFilter==='new' && isNew) || (currentFilter==='updated' && isUpd);
-				card.style.display = show ? '' : 'none';
-			});
+			alert(`Searching for "${q}"...`);
 		}
 		function openContentLocker(name) {
 			const popup = document.getElementById('contentLockerPopup');
@@ -711,7 +653,6 @@
 				frag.appendChild(card);
 			}
 			grid.appendChild(frag);
-			applyFilter();
 		})();
 
 		/* Hero slider */
