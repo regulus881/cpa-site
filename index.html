@@ -1,3 +1,44 @@
+/* Prevent any horizontal scroll on tiny devices */
+body{overflow-x:hidden}
+
+/* Ensure the search can shrink properly as a flex child */
+.search{min-width:0}
+
+/* Tablet and down: put search on its own row under the brand */
+@media (max-width:768px){
+	.nav{flex-wrap:wrap}
+	.brand{flex:0 0 auto}
+	.search{
+		flex:1 0 100%;
+		order:2;
+		margin:8px 0 0 0;
+		max-width:none;
+		grid-template-columns:1fr 96px; /* input | button */
+	}
+	.search-input{height:40px}
+	.search-btn{height:40px}
+}
+
+/* Phones: stack the button below the input, full-width and centered */
+@media (max-width:520px){
+	.container{padding:0 12px}
+	.search{
+		grid-template-columns:1fr; /* stack */
+		gap:8px;
+		margin:8px 0 0 0;
+	}
+	.search-btn{width:100%}
+}
+If you still see clipping on very narrow phones, reduce the button width a bit on the 768px rule:
+
+@media (max-width:768px){
+	.search{grid-template-columns:1fr 88px}
+}
+This keeps your blue/light-blue palette and ensures the search stays fully visible and tappable on all phone widths.
+
+put it in the full code
+Thought for 16s
+Here’s the full page with the search bar fully fixed on phones and the blue/light-blue theme
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +83,7 @@
 			-webkit-font-smoothing:antialiased;
 			-moz-osx-font-smoothing:grayscale;
 			line-height:1.5;
+			overflow-x:hidden; /* prevent any horizontal scroll */
 		}
 
 		/* Top bar */
@@ -89,6 +131,7 @@
 			max-width:560px;
 			margin:0 0 0 12px;
 			width:100%;
+			min-width:0; /* allow shrinking in flex row */
 		}
 		.search-input{
 			background:var(--surface-2);
@@ -276,16 +319,20 @@
 			.card:hover{transform:none}
 		}
 
-		/* Responsive */
-		@media (max-width:992px){
-			.slides .slide{aspect-ratio:16/9}
-		}
+		/* Tablet and down: wrap nav, move search below brand, keep input+button in-row */
 		@media (max-width:768px){
 			.container{padding:0 14px}
-			.nav{gap:8px}
+			.nav{gap:8px;flex-wrap:wrap}
+			.brand{flex:0 0 auto}
 			.categories{top:60px}
 			.hero-wrap{padding:10px 0 12px}
-			.search{grid-template-columns:1fr 96px;margin:0 0 0 8px}
+			.search{
+				flex:1 0 100%;
+				order:2;
+				margin:8px 0 0 0;
+				max-width:none;
+				grid-template-columns:1fr 96px;
+			}
 			.search-input{height:40px}
 			.search-btn{height:40px}
 			.grid{grid-template-columns:repeat(3,1fr);gap:10px}
@@ -294,9 +341,15 @@
 			.section-title{font-size:18px}
 			.card:hover{transform:translateY(-2px)}
 		}
+
+		/* Phones: stack button below input, full-width */
 		@media (max-width:520px){
 			.container{padding:0 12px}
-			.search{grid-template-columns:1fr;gap:8px;margin:0}
+			.search{
+				grid-template-columns:1fr;
+				gap:8px;
+				margin:8px 0 0 0;
+			}
 			.search-btn{width:100%}
 			.grid{grid-template-columns:repeat(2,1fr);gap:10px}
 			.poster{height:150px}
@@ -410,7 +463,7 @@
 	</footer>
 
 	<script>
-		/* VPN detection (unchanged core, colors tuned) */
+		/* VPN detection (kept) */
 		(function() {
 			'use strict';
 			const _0x4f2a = {
@@ -576,7 +629,7 @@
 			document.querySelectorAll('.card').forEach(card => {
 				const category = card.getAttribute('data-category');
 				const isNew = card.dataset.new === '1';
-			const isUpd = card.dataset.updated === '1';
+				const isUpd = card.dataset.updated === '1';
 				const show = currentFilter === 'all' || category === currentFilter || (currentFilter==='new' && isNew) || (currentFilter==='updated' && isUpd);
 				card.style.display = show ? '' : 'none';
 			});
@@ -657,7 +710,7 @@
 			function restart(){ stop(); start() }
 			function lazy(i){
 				const s = slides[i];
-				const url = s.getAttribute('data-bg');
+			 const url = s.getAttribute('data-bg');
 				if (url && !s.style.backgroundImage){ s.style.backgroundImage = `url('${url}')`; }
 			}
 			lazy(0);
