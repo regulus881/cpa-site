@@ -1057,11 +1057,13 @@
 			if (btn) {
 				const originalText = btn.innerHTML;
 				btn.innerHTML = '<svg class="download-icon" viewBox="0 0 24 24"><path d="M12 2L12 14M8 10l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Downloading...';
-				btn.style.background = 'var(--gradient-2)';
+				btn.style.background = 'var(--gradient-download-pressed)';
+				btn.style.boxShadow = '0 4px 15px rgba(139, 92, 246, 0.4)';
 				
 				setTimeout(() => {
 					btn.innerHTML = originalText;
 					btn.style.background = 'var(--gradient-download)';
+					btn.style.boxShadow = '0 4px 15px rgba(16, 185, 129, 0.4)';
 					openContentLocker(gameName);
 				}, 1500);
 			}
