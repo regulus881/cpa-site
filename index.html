@@ -37,6 +37,8 @@
 			--gradient-1:linear-gradient(135deg, #00b4d8, #0096c7);
 			--gradient-2:linear-gradient(135deg, #ff6b35, #e53e3e);
 			--gradient-3:radial-gradient(120% 120% at 0% 0%, rgba(0,180,216,.2) 0%, transparent 50%);
+			--gradient-download:linear-gradient(135deg, #10b981, #059669, #047857);
+			--gradient-download-shine:linear-gradient(135deg, #34d399, #10b981, #059669);
 			--radius:12px;
 		}
 
@@ -202,16 +204,18 @@
 		.section-title{font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#fff}
 		.section-sub{color:var(--muted);font-size:13px}
 
-		/* Grid */
+		/* Grid - Updated card structure with download button */
 		.grid{
 			display:grid;
-			grid-template-columns:repeat(auto-fill,minmax(156px,1fr));
+			grid-template-columns:repeat(auto-fill,minmax(231px,1fr));
 			gap:12px;
 		}
 		.card{
 			background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
 			overflow:hidden;position:relative;transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 			will-change:transform;
+			display:flex;
+			flex-direction:column;
 		}
 		.card:hover{
 			transform:translateY(-3px);
@@ -222,20 +226,20 @@
 				0 0 20px rgba(0,180,216,.2);
 		}
 		.poster{
-			height:210px;
+			aspect-ratio:231/87; /* Steam capsule ratio */
 			background:
 				var(--gradient-3),
 				radial-gradient(120% 120% at 100% 0%, rgba(255,107,53,.12) 0%, transparent 52%),
 				linear-gradient(135deg, #2d3748, #4a5568);
-			border-bottom:1px solid var(--border);
 			position:relative;
-			background-size:cover;
-			background-position:center;
+			display:flex;
+			align-items:center;
+			justify-content:center;
 		}
 		.badge{
-			position:absolute;top:10px;left:10px;
+			position:absolute;top:6px;left:6px;
 			background:var(--gradient-2);
-			color:#fff;font-weight:800;font-size:11px;padding:6px 8px;border-radius:8px;
+			color:#fff;font-weight:800;font-size:10px;padding:4px 6px;border-radius:6px;
 			letter-spacing:.04em;opacity:0;
 			box-shadow:0 4px 12px rgba(255,107,53,.4);
 		}
@@ -245,16 +249,161 @@
 			opacity:0;transition:opacity .18s ease;
 		}
 		.card:hover .overlay{opacity:1}
-		.meta{padding:10px 12px 12px}
-		.title{height:16px;overflow:hidden;color:var(--text)}
+		.meta{
+			position:absolute;
+			bottom:0;
+			left:0;
+			right:0;
+			padding:6px 8px 6px;
+			background:linear-gradient(to top, rgba(26,32,44,.9), transparent);
+			opacity:0;
+			transition:opacity .18s ease;
+		}
+		.card:hover .meta{opacity:1}
+		.title{
+			font-size:12px;
+			font-weight:600;
+			color:var(--text);
+			overflow:hidden;
+			text-overflow:ellipsis;
+			white-space:nowrap;
+		}
+
+		/* Enhanced Download Button Styles with Continuous Shine */
+		.card-content {
+			flex: 1;
+			padding: 12px;
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+		}
+
+		.card-title {
+			font-size: 14px;
+			font-weight: 600;
+			color: var(--text);
+			margin: 0;
+		}
+
+		.download-btn {
+			position: relative;
+			background: var(--gradient-download);
+			border: none;
+			border-radius: 8px;
+			padding: 10px 16px;
+			color: #ffffff;
+			font-weight: 700;
+			font-size: 13px;
+			cursor: pointer;
+			overflow: hidden;
+			transition: all 0.3s ease;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 6px;
+		}
+
+		/* Continuous shine animation */
+		.download-btn::before {
+			content: '';
+			position: absolute;
+			top: -50%;
+			left: -150%;
+			width: 100%;
+			height: 200%;
+			background: linear-gradient(
+				45deg,
+				transparent 30%,
+				rgba(255, 255, 255, 0.6) 50%,
+				transparent 70%
+			);
+			transform: rotate(45deg);
+			animation: continuous-shine 2s linear infinite;
+		}
+
+		@keyframes continuous-shine {
+			0% {
+				left: -150%;
+				opacity: 0;
+			}
+			20% {
+				opacity: 1;
+			}
+			80% {
+				opacity: 1;
+			}
+			100% {
+				left: 150%;
+				opacity: 0;
+			}
+		}
+
+		.download-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6);
+			background: var(--gradient-download-shine);
+		}
+
+		.download-btn:active {
+			transform: translateY(0);
+			box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+		}
+
+		.download-icon {
+			width: 16px;
+			height: 16px;
+			fill: currentColor;
+		}
+
+		/* Enhanced pulse animation */
+		.download-btn::after {
+			content: '';
+			position: absolute;
+			inset: -2px;
+			border-radius: 10px;
+			background: var(--gradient-download);
+			z-index: -1;
+			opacity: 0;
+			animation: enhanced-pulse 3s infinite;
+		}
+
+		@keyframes enhanced-pulse {
+			0% {
+				transform: scale(1);
+				opacity: 0;
+			}
+			30% {
+				transform: scale(1.02);
+				opacity: 0.2;
+			}
+			60% {
+				transform: scale(1.05);
+				opacity: 0.4;
+			}
+			100% {
+				transform: scale(1.08);
+				opacity: 0;
+			}
+		}
+
 		.tags,.actions{display:none}
 
-		/* Pager */
-		.pager{margin-top:18px;display:flex;justify-content:center;gap:8px}
+		/* Enhanced Pager */
+		.pager{
+			margin-top:18px;
+			display:flex;
+			justify-content:center;
+			gap:8px;
+			flex-wrap: wrap;
+		}
 		.page-btn{
 			background:var(--surface);color:var(--muted);border:1px solid var(--border);
 			height:40px;min-width:40px;border-radius:10px;padding:0 12px;cursor:pointer;
 			transition:all .18s ease;
+			font-weight: 600;
 		}
 		.page-btn:hover{
 			border-color:var(--accent-1);
@@ -308,6 +457,9 @@
 			.slides{transition:none}
 			.slider::before{animation:none}
 			.card:hover{transform:none}
+			.download-btn:hover{transform:none}
+			.download-btn::before{animation:none !important}
+			.download-btn::after{animation:none}
 		}
 
 		/* Responsive */
@@ -337,11 +489,12 @@
 			}
 			.search-input{height:40px}
 			.search-btn{height:40px;font-size:13px;padding:0 8px}
-			.grid{grid-template-columns:repeat(3,1fr);gap:10px}
-			.poster{height:160px}
+			.grid{grid-template-columns:repeat(2,1fr);gap:10px}
 			.section{margin:4px 0 10px}
 			.section-title{font-size:18px}
 			.card:hover{transform:translateY(-2px)}
+			.card-content{padding:8px}
+			.download-btn{padding:8px 12px;font-size:12px}
 		}
 
 		@media (max-width:520px){
@@ -359,12 +512,13 @@
 				width:100%;
 				font-size:16px;
 			}
-			.grid{grid-template-columns:repeat(2,1fr);gap:10px}
-			.poster{height:150px}
+			.grid{grid-template-columns:1fr;gap:10px}
 			.brand{gap:8px}
 			.brand img{
 				height:28px;
 			}
+			.card-content{padding:10px}
+			.download-btn{padding:10px 16px;font-size:13px}
 		}
 	</style>
 </head>
@@ -423,11 +577,13 @@
 			<div class="grid" id="grid"></div>
 
 			<div class="pager" aria-label="Pagination">
-				<button class="page-btn">«</button>
-				<button class="page-btn active">1</button>
-				<button class="page-btn">2</button>
-				<button class="page-btn">3</button>
-				<button class="page-btn">»</button>
+				<button class="page-btn" onclick="changePage('prev')">«</button>
+				<button class="page-btn active" onclick="changePage(1)" data-page="1">1</button>
+				<button class="page-btn" onclick="changePage(2)" data-page="2">2</button>
+				<button class="page-btn" onclick="changePage(3)" data-page="3">3</button>
+				<button class="page-btn" onclick="changePage(4)" data-page="4">4</button>
+				<button class="page-btn" onclick="changePage(5)" data-page="5">5</button>
+				<button class="page-btn" onclick="changePage('next')">»</button>
 			</div>
 		</div>
 	</main>
@@ -458,410 +614,446 @@
 		(function() {
 			'use strict';
 			
-			const VPN_CONFIG = {
-				'detectionMethods': [
-					'webrtc', 'timezone', 'dns', 'api', 'headers', 'fingerprint'
-				],
-				'thresholds': { 
-					'minScore': 0.4,
-					'minDetections': 2 
-				},
-				'timeout': 15000
-			};
-
-			let detectionState = {
+			const vpnDetector = {
 				blocked: false,
-				score: 0,
-				detections: 0,
-				results: {}
-			};
-
-			// Enhanced WebRTC leak detection
-			async function detectWebRTCLeak() {
-				return new Promise((resolve) => {
-					try {
-						const timeout = setTimeout(() => {
-							cleanup();
-							resolve({ detected: false, confidence: 0 });
-						}, 5000);
-
-						let detectedIPs = new Set();
-						const pc = new RTCPeerConnection({
-							iceServers: [
-								{ urls: 'stun:stun.l.google.com:19302' },
-								{ urls: 'stun:stun1.l.google.com:19302' }
-							]
-						});
-
-						function cleanup() {
-							try {
-								pc.close();
-							} catch(e) {}
-							clearTimeout(timeout);
-						}
-
-						pc.onicecandidate = function(event) {
-							if (event.candidate) {
-								const match = event.candidate.candidate.match(/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/);
-								if (match) {
-									const ip = match[1];
-									// Exclude local/private IPs
-									if (!ip.startsWith('127.') && 
-										!ip.startsWith('192.168.') && 
-										!ip.startsWith('10.') && 
-										!ip.startsWith('169.254.') &&
-										!ip.match(/^172\.(1[6-9]|2[0-9]|3[01])\./)) {
-										detectedIPs.add(ip);
-									}
-								}
-							}
-						};
-
-						pc.onicegatheringstatechange = function() {
-							if (pc.iceGatheringState === 'complete') {
-								cleanup();
-								// Multiple public IPs often indicate VPN
-								const confidence = detectedIPs.size > 1 ? 0.7 : (detectedIPs.size === 1 ? 0.3 : 0);
-								resolve({ 
-									detected: detectedIPs.size > 1, 
-									confidence: confidence,
-									ips: Array.from(detectedIPs)
-								});
-							}
-						};
-
-						// Create data channel and offer
-						pc.createDataChannel('vpn-test');
-						pc.createOffer()
-							.then(offer => pc.setLocalDescription(offer))
-							.catch(() => {
-								cleanup();
-								resolve({ detected: false, confidence: 0 });
-							});
-
-					} catch (error) {
-						resolve({ detected: false, confidence: 0 });
-					}
-				});
-			}
-
-			// Enhanced timezone detection
-			function detectTimezoneAnomaly() {
-				try {
-					const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-					const offset = new Date().getTimezoneOffset();
-					const languages = navigator.languages || [navigator.language];
-					
-					// Common timezone-language mismatches
-					const suspicious = [
-						// US timezone with non-US language as primary
-						{ tz: /America\/(New_York|Chicago|Denver|Los_Angeles)/, lang: /^(?!en-US)/ },
-						// EU timezone with non-EU language
-						{ tz: /Europe\//, lang: /^(zh|ja|ko|ar|hi)/ },
-						// Asian timezone with western language
-						{ tz: /Asia\//, lang: /^(en-US|en-GB|fr|de|es)/ }
-					];
-
-					const isMatch = suspicious.some(rule => 
-						rule.tz.test(timezone) && rule.lang.test(languages[0])
-					);
-
-					// Also check if timezone offset doesn't match expected for the timezone
-					const expectedOffsets = {
-						'America/New_York': -300,
-						'Europe/London': 0,
-						'Asia/Tokyo': -540
-					};
-					
-					const expectedOffset = expectedOffsets[timezone];
-					const offsetMismatch = expectedOffset && Math.abs(offset - expectedOffset) > 60;
-
-					return {
-						detected: isMatch || offsetMismatch,
-						confidence: (isMatch ? 0.6 : 0) + (offsetMismatch ? 0.4 : 0),
-						details: { timezone, offset, languages: languages[0] }
-					};
-				} catch (error) {
-					return { detected: false, confidence: 0 };
-				}
-			}
-
-			// DNS-based detection
-			async function detectDNSLeak() {
-				try {
-					const controller = new AbortController();
-					const timeout = setTimeout(() => controller.abort(), 6000);
-					
-					// Test multiple endpoints
-					const tests = [
-						'https://1.1.1.1/cdn-cgi/trace',
-						'https://ipinfo.io/json',
-						'https://api.ipify.org?format=json'
-					];
-
-					const promises = tests.map(async (url) => {
-						try {
-							const response = await fetch(url, { 
-								signal: controller.signal,
-								mode: 'cors',
-								cache: 'no-cache'
-							});
-							if (response.ok) {
-								return await response.text();
-							}
-						} catch (e) {
-							return null;
-						}
-					});
-
-					const results = await Promise.allSettled(promises);
-					clearTimeout(timeout);
-
-					const validResults = results
-						.filter(r => r.status === 'fulfilled' && r.value)
-						.map(r => r.value);
-
-					// Look for VPN indicators in responses
-					const vpnIndicators = validResults.some(result => 
-						result.includes('vpn=true') || 
-						result.includes('proxy') ||
-						result.includes('hosting') ||
-						/datacenter|server|cloud/i.test(result)
-					);
-
-					return {
-						detected: vpnIndicators,
-						confidence: vpnIndicators ? 0.8 : 0.1,
-						results: validResults.length
-					};
-
-				} catch (error) {
-					return { detected: false, confidence: 0 };
-				}
-			}
-
-			// Header-based detection
-			function detectSuspiciousHeaders() {
-				try {
-					// Check for common VPN/proxy headers (client-side detection limited)
-					const userAgent = navigator.userAgent;
-					const platform = navigator.platform;
-					
-					// Suspicious patterns
-					const suspicious = [
-						/headless/i.test(userAgent),
-						/phantom/i.test(userAgent),
-						platform === 'Linux' && /Windows/i.test(userAgent),
-						navigator.webdriver === true
-					];
-
-					const detectedCount = suspicious.filter(Boolean).length;
-					
-					return {
-						detected: detectedCount > 1,
-						confidence: detectedCount * 0.3,
-						patterns: detectedCount
-					};
-
-				} catch (error) {
-					return { detected: false, confidence: 0 };
-				}
-			}
-
-			// Canvas fingerprinting for consistency check
-			function detectFingerprintInconsistency() {
-				try {
-					const canvas = document.createElement('canvas');
-					const ctx = canvas.getContext('2d');
-					ctx.textBaseline = 'top';
-					ctx.font = '14px Arial';
-					ctx.fillText('VPN Detection Test 🔒🌍', 2, 2);
-					
-					const currentFingerprint = canvas.toDataURL();
-					const storedFingerprint = localStorage.getItem('_canvas_fp');
-					
-					if (storedFingerprint) {
-						const changed = storedFingerprint !== currentFingerprint;
-						if (!changed) {
-							localStorage.setItem('_canvas_fp', currentFingerprint);
-						}
-						return {
-							detected: changed,
-							confidence: changed ? 0.5 : 0,
-							changed: changed
-						};
-					} else {
-						localStorage.setItem('_canvas_fp', currentFingerprint);
-						return { detected: false, confidence: 0 };
-					}
-				} catch (error) {
-					return { detected: false, confidence: 0 };
-				}
-			}
-
-			// Enhanced API-based detection
-			async function detectViaAPIs() {
-				const apis = [
-					{
-						url: 'https://ipapi.co/json/',
-						parser: (data) => ({
-							detected: data.org && /vpn|proxy|hosting|datacenter/i.test(data.org),
-							confidence: 0.7,
-							info: data.org
-						})
-					},
-					{
-						url: 'https://ipinfo.io/json',
-						parser: (data) => ({
-							detected: data.org && /hosting|cloud|datacenter|vpn/i.test(data.org),
-							confidence: 0.6,
-							info: data.org
-						})
-					}
-				];
-
-				const results = await Promise.allSettled(
-					apis.map(async (api) => {
+				detectionScore: 0,
+				detectionCount: 0,
+				
+				// Configuration
+				config: {
+					scoreThreshold: 0.5,
+					countThreshold: 2,
+					timeout: 8000,
+					apis: [
+						{ url: 'https://api.ipify.org?format=json', parser: data => data.ip },
+						{ url: 'https://ipapi.co/json/', parser: data => data.ip },
+						{ url: 'https://httpbin.org/ip', parser: data => data.origin.split(',')[0] }
+					]
+				},
+				
+				// Get user IP address
+				async getUserIP() {
+					for (const api of this.config.apis) {
 						try {
 							const controller = new AbortController();
-							const timeout = setTimeout(() => controller.abort(), 8000);
+							const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
 							
-							const response = await fetch(api.url, {
+							const response = await fetch(api.url, { 
 								signal: controller.signal,
-								mode: 'cors',
-								cache: 'no-cache'
+								headers: { 'Accept': 'application/json' }
 							});
 							
-							clearTimeout(timeout);
+							clearTimeout(timeoutId);
 							
 							if (response.ok) {
 								const data = await response.json();
-								return api.parser(data);
+								const ip = api.parser(data);
+								if (this.isValidIP(ip)) return ip;
 							}
-						} catch (e) {
-							return { detected: false, confidence: 0 };
+						} catch (error) {
+							console.debug('IP fetch failed:', error.message);
+							continue;
 						}
-					})
-				);
-
-				const validResults = results
-					.filter(r => r.status === 'fulfilled')
-					.map(r => r.value);
-
-				const detections = validResults.filter(r => r.detected);
-				const avgConfidence = detections.length > 0 ? 
-					detections.reduce((sum, r) => sum + r.confidence, 0) / detections.length : 0;
-
-				return {
-					detected: detections.length > 0,
-					confidence: avgConfidence,
-					sources: detections.length,
-					details: detections.map(d => d.info).filter(Boolean)
-				};
-			}
-
-			// Main detection orchestrator
-			async function runVPNDetection() {
-				try {
-					console.log('Starting VPN detection...');
-					
-					const detectionPromises = [
-						detectWebRTCLeak(),
-						Promise.resolve(detectTimezoneAnomaly()),
-						detectDNSLeak(),
-						Promise.resolve(detectSuspiciousHeaders()),
-						Promise.resolve(detectFingerprintInconsistency()),
-						detectViaAPIs()
-					];
-
-					const timeoutPromise = new Promise((_, reject) => {
-						setTimeout(() => reject(new Error('Detection timeout')), VPN_CONFIG.timeout);
-					});
-
-					const results = await Promise.race([
-						Promise.allSettled(detectionPromises),
-						timeoutPromise
-					]);
-
-					if (results instanceof Error) {
-						console.log('VPN detection timed out');
-						return;
 					}
-
-					// Process results
-					const validResults = results
-						.filter(r => r.status === 'fulfilled')
-						.map(r => r.value);
-
-					let totalScore = 0;
-					let detectionCount = 0;
-
-					validResults.forEach((result, index) => {
-						const methodName = VPN_CONFIG.detectionMethods[index];
-						detectionState.results[methodName] = result;
+					return null;
+				},
+				
+				// Validate IP format
+				isValidIP(ip) {
+					const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+					const ipv6Regex = /^([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}$/i;
+					return ipv4Regex.test(ip) || ipv6Regex.test(ip);
+				},
+				
+				// Check for WebRTC leaks
+				async checkWebRTCLeak() {
+					return new Promise((resolve) => {
+						try {
+							const rtc = new RTCPeerConnection({
+								iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+							});
+							
+							let localIPs = new Set();
+							let resolved = false;
+							
+							const timeout = setTimeout(() => {
+								if (!resolved) {
+									resolved = true;
+									rtc.close();
+									resolve(false);
+								}
+							}, 3000);
+							
+							rtc.onicecandidate = (event) => {
+								if (event.candidate && !resolved) {
+									const match = event.candidate.candidate.match(/(\d+\.\d+\.\d+\.\d+)/);
+									if (match) {
+										const ip = match[1];
+										if (!ip.startsWith('127.') && !ip.startsWith('169.254.') && !ip.startsWith('192.168.')) {
+											localIPs.add(ip);
+										}
+									}
+									
+									if (localIPs.size > 1) {
+										resolved = true;
+										clearTimeout(timeout);
+										rtc.close();
+										resolve(true);
+									}
+								}
+							};
+							
+							rtc.createDataChannel('test');
+							rtc.createOffer()
+								.then(offer => rtc.setLocalDescription(offer))
+								.catch(() => {
+									if (!resolved) {
+										resolved = true;
+										clearTimeout(timeout);
+										resolve(false);
+									}
+								});
+								
+						} catch (error) {
+							resolve(false);
+						}
+					});
+				},
+				
+				// Check timezone inconsistencies
+				checkTimezone() {
+					try {
+						const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+						const offset = new Date().getTimezoneOffset();
 						
-						if (result.detected) {
-							totalScore += result.confidence || 0.5;
-							detectionCount++;
+						// Common timezone/offset mismatches that indicate VPN
+						const suspiciousPatterns = [
+							{ tz: 'America/New_York', expectedOffset: [240, 300] },
+							{ tz: 'Europe/London', expectedOffset: [0, -60] },
+							{ tz: 'Asia/Tokyo', expectedOffset: [-540] }
+						];
+						
+						for (const pattern of suspiciousPatterns) {
+							if (timezone.includes(pattern.tz.split('/')[1])) {
+								if (!pattern.expectedOffset.includes(offset)) {
+									return true;
+								}
+							}
 						}
-					});
-
-					detectionState.score = validResults.length > 0 ? totalScore / validResults.length : 0;
-					detectionState.detections = detectionCount;
-
-					console.log('VPN Detection Results:', {
-						score: detectionState.score.toFixed(2),
-						detections: detectionState.detections,
-						threshold: VPN_CONFIG.thresholds.minScore,
-						details: detectionState.results
-					});
-
-					// Trigger block if thresholds exceeded
-					if (detectionState.score >= VPN_CONFIG.thresholds.minScore || 
-						detectionState.detections >= VPN_CONFIG.thresholds.minDetections) {
-						blockAccess();
+						
+						return false;
+					} catch (error) {
+						return false;
 					}
-
-				} catch (error) {
-					console.error('VPN detection error:', error);
-				}
-			}
-
-			// Block access function
-			function blockAccess() {
-				if (detectionState.blocked) return;
+				},
 				
-				detectionState.blocked = true;
-				console.log('Access blocked due to VPN/Proxy detection');
+				// Check language/location mismatch
+				checkLanguageLocation() {
+					try {
+						const languages = navigator.languages || [navigator.language];
+						const primaryLang = languages[0];
+						const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+						
+						const locationPatterns = {
+							'en-US': /America\/(New_York|Chicago|Denver|Los_Angeles|Phoenix)/,
+							'en-GB': /Europe\/London/,
+							'de': /Europe\/(Berlin|Vienna|Zurich)/,
+							'fr': /Europe\/Paris/,
+							'es': /Europe\/Madrid/,
+							'it': /Europe\/Rome/,
+							'ja': /Asia\/Tokyo/,
+							'ko': /Asia\/Seoul/,
+							'zh': /Asia\/(Shanghai|Beijing|Hong_Kong)/
+						};
+						
+						const pattern = locationPatterns[primaryLang];
+						if (pattern && timezone && !pattern.test(timezone)) {
+							// Additional check: if language is very specific but timezone doesn't match
+							if (primaryLang.includes('-') && !timezone.includes('GMT')) {
+								return true;
+							}
+						}
+						
+						return false;
+					} catch (error) {
+						return false;
+					}
+				},
 				
-				const blockElement = document.getElementById('vpnBlock');
-				if (blockElement) {
-					blockElement.style.display = 'flex';
-					document.body.style.overflow = 'hidden';
+				// Check DNS leak
+				async checkDNSLeak() {
+					try {
+						const controller = new AbortController();
+						const timeoutId = setTimeout(() => controller.abort(), 4000);
+						
+						// Use multiple DNS leak detection methods
+						const tests = [
+							fetch('https://1.1.1.1/cdn-cgi/trace', { signal: controller.signal }),
+							fetch('https://ipinfo.io/json', { signal: controller.signal })
+						];
+						
+						const results = await Promise.allSettled(tests);
+						clearTimeout(timeoutId);
+						
+						for (const result of results) {
+							if (result.status === 'fulfilled' && result.value.ok) {
+								const text = await result.value.text();
+								// Look for VPN/proxy indicators in response
+								if (text.includes('vpn') || text.includes('proxy') || text.includes('tor')) {
+									return true;
+								}
+							}
+						}
+						
+						return false;
+					} catch (error) {
+						return false;
+					}
+				},
+				
+				// Check canvas fingerprint changes
+				checkCanvasFingerprint() {
+					try {
+						const canvas = document.createElement('canvas');
+						const ctx = canvas.getContext('2d');
+						canvas.width = 200;
+						canvas.height = 50;
+						
+						ctx.textBaseline = 'top';
+						ctx.font = '14px Arial';
+						ctx.fillStyle = '#f60';
+						ctx.fillRect(125, 1, 62, 20);
+						ctx.fillStyle = '#069';
+						ctx.fillText('VPN Test 🔒🌐', 2, 15);
+						ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
+						ctx.fillText('VPN Test 🔒🌐', 4, 17);
+						
+						const fingerprint = canvas.toDataURL();
+						const storageKey = '_canvas_fp';
+						
+						// Use in-memory storage to avoid localStorage issues
+						let storedFingerprint = window._canvasFingerprint;
+						
+						if (storedFingerprint && storedFingerprint !== fingerprint) {
+							return true;
+						}
+						
+						// Store current fingerprint in memory
+						window._canvasFingerprint = fingerprint;
+						
+						return false;
+					} catch (error) {
+						return false;
+					}
+				},
+				
+				// Main detection function
+				async runDetection() {
+					try {
+						console.debug('Starting VPN detection...');
+						
+						// Get user IP first
+						const userIP = await this.getUserIP();
+						if (!userIP) {
+							console.debug('Could not determine user IP');
+							return;
+						}
+						
+						console.debug('User IP detected:', userIP);
+						
+						// Run all detection methods
+						const [webRTCLeak, timezoneIssue, languageIssue, dnsLeak, canvasChanged] = await Promise.allSettled([
+							this.checkWebRTCLeak(),
+							Promise.resolve(this.checkTimezone()),
+							Promise.resolve(this.checkLanguageLocation()),
+							this.checkDNSLeak(),
+							Promise.resolve(this.checkCanvasFingerprint())
+						]);
+						
+						// Calculate detection score
+						const detectionResults = [
+							{ name: 'WebRTC Leak', result: webRTCLeak, weight: 0.4 },
+							{ name: 'Timezone Mismatch', result: timezoneIssue, weight: 0.2 },
+							{ name: 'Language Mismatch', result: languageIssue, weight: 0.2 },
+							{ name: 'DNS Leak', result: dnsLeak, weight: 0.3 },
+							{ name: 'Canvas Changed', result: canvasChanged, weight: 0.3 }
+						];
+						
+						let totalScore = 0;
+						let detectedCount = 0;
+						
+						detectionResults.forEach(test => {
+							const detected = test.result.status === 'fulfilled' && test.result.value;
+							console.debug(`${test.name}: ${detected ? 'DETECTED' : 'OK'}`);
+							
+							if (detected) {
+								totalScore += test.weight;
+								detectedCount++;
+							}
+						});
+						
+						this.detectionScore = totalScore;
+						this.detectionCount = detectedCount;
+						
+						console.debug(`Detection Score: ${totalScore.toFixed(2)}, Count: ${detectedCount}`);
+						
+						// Block if threshold exceeded
+						if (totalScore >= this.config.scoreThreshold || detectedCount >= this.config.countThreshold) {
+							this.blockAccess();
+						}
+						
+					} catch (error) {
+						console.debug('VPN detection error:', error);
+					}
+				},
+				
+				// Block access
+				blockAccess() {
+					if (this.blocked) return;
+					
+					this.blocked = true;
+					console.debug('Access blocked - VPN/Proxy detected');
+					
+					const blockElement = document.getElementById('vpnBlock');
+					if (blockElement) {
+						blockElement.style.display = 'flex';
+						document.body.style.overflow = 'hidden';
+					}
+				},
+				
+				// Initialize detection
+				init() {
+					if (document.readyState === 'loading') {
+						document.addEventListener('DOMContentLoaded', () => {
+							setTimeout(() => this.runDetection(), 500);
+						});
+					} else {
+						setTimeout(() => this.runDetection(), 500);
+					}
 				}
-			}
-
-			// Initialize detection
-			function initializeDetection() {
-				if (document.readyState === 'loading') {
-					document.addEventListener('DOMContentLoaded', runVPNDetection);
-				} else {
-					setTimeout(runVPNDetection, 500);
-				}
-			}
-
-			// Start detection
-			initializeDetection();
-
+			};
+			
+			// Start VPN detection
+			vpnDetector.init();
 		})();
 
 		/* App logic */
-		let currentFilter = 'all';
+		let currentPage = 1;
+		let totalPages = 5;
+		
+		// Game data for all pages
+		const gameData = {
+			1: [
+				{ name: 'Action Hero Legacy', category: 'action', isNew: true },
+				{ name: 'Desert Storm Elite', category: 'action', isUpdated: true },
+				{ name: 'Racing Thunder Pro', category: 'racing', isNew: false },
+				{ name: 'City Builder Ultimate', category: 'strategy', isUpdated: true },
+				{ name: 'Puzzle Quest Adventure', category: 'puzzle', isNew: false },
+				{ name: 'Space Adventure Odyssey', category: 'adventure', isNew: true },
+				{ name: 'Football Manager 2024', category: 'sports', isUpdated: false },
+				{ name: 'Card Battle Arena', category: 'strategy', isNew: false },
+				{ name: 'RPG World Chronicles', category: 'adventure', isUpdated: true },
+				{ name: 'Platformer Paradise', category: 'casual', isNew: false },
+				{ name: 'Tower Defense Pro', category: 'strategy', isNew: true },
+				{ name: 'Match Three Deluxe', category: 'puzzle', isUpdated: false },
+				{ name: 'Racing Circuit Champion', category: 'racing', isNew: false },
+				{ name: 'Combat Zone Warfare', category: 'action', isUpdated: true },
+				{ name: 'Magic Quest Origins', category: 'adventure', isNew: true },
+				{ name: 'Sports Champion League', category: 'sports', isUpdated: false },
+				{ name: 'Strategy War Commander', category: 'strategy', isNew: false },
+				{ name: 'Adventure Island Explorer', category: 'adventure', isUpdated: true }
+			],
+			2: [
+				{ name: 'Cyberpunk Neon City', category: 'action', isNew: true },
+				{ name: 'Medieval Kingdom Builder', category: 'strategy', isUpdated: false },
+				{ name: 'Ocean Racing Simulator', category: 'racing', isNew: false },
+				{ name: 'Horror Survival Night', category: 'adventure', isUpdated: true },
+				{ name: 'Math Puzzle Challenge', category: 'puzzle', isNew: false },
+				{ name: 'Jungle Adventure Quest', category: 'adventure', isNew: true },
+				{ name: 'Basketball Pro League', category: 'sports', isUpdated: false },
+				{ name: 'Chess Master Online', category: 'strategy', isNew: false },
+				{ name: 'Fantasy RPG Legends', category: 'adventure', isUpdated: true },
+				{ name: 'Retro Arcade Collection', category: 'casual', isNew: true },
+				{ name: 'Defense Shield Pro', category: 'strategy', isUpdated: false },
+				{ name: 'Word Puzzle Master', category: 'puzzle', isNew: false },
+				{ name: 'Formula Racing Elite', category: 'racing', isUpdated: true },
+				{ name: 'Sniper Elite Mission', category: 'action', isNew: true },
+				{ name: 'Wizard Magic Academy', category: 'adventure', isUpdated: false },
+				{ name: 'Tennis World Tour', category: 'sports', isNew: false },
+				{ name: 'Empire Strategy Game', category: 'strategy', isUpdated: true },
+				{ name: 'Treasure Hunt Island', category: 'adventure', isNew: true }
+			],
+			3: [
+				{ name: 'Mech Warrior Battle', category: 'action', isUpdated: true },
+				{ name: 'Farm Life Simulator', category: 'casual', isNew: false },
+				{ name: 'Street Racing Underground', category: 'racing', isNew: true },
+				{ name: 'Detective Mystery Case', category: 'adventure', isUpdated: false },
+				{ name: 'Brain Training Puzzles', category: 'puzzle', isNew: false },
+				{ name: 'Pirate Ship Adventure', category: 'adventure', isUpdated: true },
+				{ name: 'Golf Championship Pro', category: 'sports', isNew: true },
+				{ name: 'Risk Strategy Board', category: 'strategy', isUpdated: false },
+				{ name: 'Dragon Quest Saga', category: 'adventure', isNew: false },
+				{ name: 'Bubble Pop Mania', category: 'casual', isUpdated: true },
+				{ name: 'Castle Defense Wars', category: 'strategy', isNew: true },
+				{ name: 'Sudoku Master Pro', category: 'puzzle', isUpdated: false },
+				{ name: 'Monster Truck Rally', category: 'racing', isNew: false },
+				{ name: 'Zombie Apocalypse', category: 'action', isUpdated: true },
+				{ name: 'Fairy Tale Adventure', category: 'adventure', isNew: true },
+				{ name: 'Olympic Games 2024', category: 'sports', isUpdated: false },
+				{ name: 'Civilization Empire', category: 'strategy', isNew: false },
+				{ name: 'Lost Temple Explorer', category: 'adventure', isUpdated: true }
+			],
+			4: [
+				{ name: 'Robot Wars Future', category: 'action', isNew: true },
+				{ name: 'Cooking Master Chef', category: 'casual', isUpdated: false },
+				{ name: 'Drift Racing Pro', category: 'racing', isNew: false },
+				{ name: 'Haunted Mansion Mystery', category: 'adventure', isUpdated: true },
+				{ name: 'Logic Puzzle Challenge', category: 'puzzle', isNew: false },
+				{ name: 'Viking Saga Adventure', category: 'adventure', isNew: true },
+				{ name: 'Soccer World Cup', category: 'sports', isUpdated: false },
+				{ name: 'War Strategy Commander', category: 'strategy', isNew: false },
+				{ name: 'Elf Kingdom Quest', category: 'adventure', isUpdated: true },
+				{ name: 'Candy Crush Saga', category: 'casual', isNew: true },
+				{ name: 'Fortress Defense Elite', category: 'strategy', isUpdated: false },
+				{ name: 'Crossword Puzzle Pro', category: 'puzzle', isNew: false },
+				{ name: 'Rally Championship', category: 'racing', isUpdated: true },
+				{ name: 'Space Marine Combat', category: 'action', isNew: true },
+				{ name: 'Enchanted Forest Quest', category: 'adventure', isUpdated: false },
+				{ name: 'Swimming Championship', category: 'sports', isNew: false },
+				{ name: 'Ancient Civilization', category: 'strategy', isUpdated: true },
+				{ name: 'Underwater Adventure', category: 'adventure', isNew: true }
+			],
+			5: [
+				{ name: 'Future Combat Elite', category: 'action', isUpdated: true },
+				{ name: 'Pet Care Simulator', category: 'casual', isNew: false },
+				{ name: 'Motorcycle Racing Pro', category: 'racing', isNew: true },
+				{ name: 'Ancient Ruins Explorer', category: 'adventure', isUpdated: false },
+				{ name: 'Number Puzzle Master', category: 'puzzle', isNew: false },
+				{ name: 'Samurai Warrior Quest', category: 'adventure', isUpdated: true },
+				{ name: 'Boxing Championship', category: 'sports', isNew: true },
+				{ name: 'Naval Strategy Game', category: 'strategy', isUpdated: false },
+				{ name: 'Goblin Kingdom Adventure', category: 'adventure', isNew: false },
+				{ name: 'Fruit Slice Mania', category: 'casual', isUpdated: true },
+				{ name: 'Base Defense Pro', category: 'strategy', isNew: true },
+				{ name: 'Jigsaw Puzzle Collection', category: 'puzzle', isUpdated: false },
+				{ name: 'Speed Racing Challenge', category: 'racing', isNew: false },
+				{ name: 'Alien Invasion War', category: 'action', isUpdated: true },
+				{ name: 'Magical Realm Quest', category: 'adventure', isNew: true },
+				{ name: 'Winter Olympics Pro', category: 'sports', isUpdated: false },
+				{ name: 'Kingdom Strategy Builder', category: 'strategy', isNew: false },
+				{ name: 'Desert Adventure Trek', category: 'adventure', isUpdated: true }
+			]
+		};
+		
 		function performSearch() {
 			const q = document.getElementById('mainSearch').value.trim();
-			if (!q) { alert('Please enter a search term to continue'); return; }
+			if (!q) { 
+				alert('Please enter a search term to continue'); 
+				return; 
+			}
 			alert(`Searching for "${q}"...`);
 		}
+		
 		function openContentLocker(name) {
 			const popup = document.getElementById('contentLockerPopup');
 			const iframe = document.getElementById('contentLockerFrame');
@@ -870,70 +1062,157 @@
 			document.body.style.overflow = 'hidden';
 			console.log('Opening content locker for', name || 'item');
 		}
+		
 		function closeContentLocker() {
 			const popup = document.getElementById('contentLockerPopup');
 			const iframe = document.getElementById('contentLockerFrame');
-			popup.classList.remove('show'); iframe.src=''; document.body.style.overflow='auto';
+			popup.classList.remove('show'); 
+			iframe.src=''; 
+			document.body.style.overflow='auto';
 		}
-		document.getElementById('contentLockerPopup').addEventListener('click', function(e) { if (e.target === this) closeContentLocker(); });
-		document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeContentLocker(); });
-		function showInfo(type) { alert('Opening ' + type + ' information...'); }
-		document.getElementById('mainSearch').addEventListener('keypress', function(e) { if (e.key === 'Enter') performSearch(); });
+		
+		document.getElementById('contentLockerPopup').addEventListener('click', function(e) { 
+			if (e.target === this) closeContentLocker(); 
+		});
+		
+		document.addEventListener('keydown', function(e) { 
+			if (e.key === 'Escape') closeContentLocker(); 
+		});
+		
+		function showInfo(type) { 
+			alert('Opening ' + type + ' information...'); 
+		}
+		
+		document.getElementById('mainSearch').addEventListener('keypress', function(e) { 
+			if (e.key === 'Enter') performSearch(); 
+		});
 
-		/* Fill grid with empty cards */
-		(function populateGrid() {
+		// Download button handler
+		function handleDownload(gameName, event) {
+			event.stopPropagation();
+			console.log('Download initiated for:', gameName);
+			
+			// Add download animation
+			const btn = event.target.closest('.download-btn');
+			if (btn) {
+				const originalText = btn.innerHTML;
+				btn.innerHTML = '<svg class="download-icon" viewBox="0 0 24 24"><path d="M12 2L12 14M8 10l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Downloading...';
+				btn.style.background = 'var(--gradient-2)';
+				
+				setTimeout(() => {
+					btn.innerHTML = originalText;
+					btn.style.background = 'var(--gradient-download)';
+					openContentLocker(gameName);
+				}, 1500);
+			}
+		}
+
+		// Page navigation
+		function changePage(page) {
+			if (page === 'prev') {
+				if (currentPage > 1) {
+					currentPage--;
+				}
+			} else if (page === 'next') {
+				if (currentPage < totalPages) {
+					currentPage++;
+				}
+			} else {
+				currentPage = page;
+			}
+			
+			// Update active page button
+			document.querySelectorAll('.page-btn').forEach(btn => {
+				btn.classList.remove('active');
+				if (btn.dataset.page == currentPage) {
+					btn.classList.add('active');
+				}
+			});
+			
+			// Populate grid with new page data
+			populateGrid(currentPage);
+			
+			// Smooth scroll to top
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+
+		/* Fill grid with cards including download buttons */
+		function populateGrid(pageNumber = 1) {
 			const grid = document.getElementById('grid');
-			const categories = ['action','adventure','racing','strategy','casual','sports','puzzle'];
-			const total = 18;
+			const games = gameData[pageNumber] || gameData[1];
+			
+			// Clear existing content
+			grid.innerHTML = '';
+			
 			const frag = document.createDocumentFragment();
 			
-			// Steam game image for one of the cards
-			const steamGameImage = 'https://shared.steamstatic.com/store_item_assets/steam/apps/2059310/capsule_616x353.jpg';
-			
-			for (let i = 0; i < total; i++) {
-				const cat = categories[i % categories.length];
-				const isNew = i % 7 === 0 ? '1' : '0';
-				const isUpdated = i % 5 === 0 ? '1' : '0';
+			games.forEach((game, i) => {
 				const card = document.createElement('div'); 
-				card.className='card';
-				card.setAttribute('data-category', cat); 
-				card.setAttribute('data-new', isNew); 
-				card.setAttribute('data-updated', isUpdated);
-				card.title='Tap to open';
+				card.className = 'card';
+				card.setAttribute('data-category', game.category); 
+				card.setAttribute('data-new', game.isNew ? '1' : '0'); 
+				card.setAttribute('data-updated', game.isUpdated ? '1' : '0');
 				
 				const poster = document.createElement('div'); 
-				poster.className='poster';
-				
-				// Add the Steam game image to the 5th card (index 4)
-				if (i === 4) {
-					poster.style.backgroundImage = `url(${steamGameImage})`;
-				}
+				poster.className = 'poster';
 				
 				const overlay = document.createElement('div'); 
-				overlay.className='overlay'; 
+				overlay.className = 'overlay'; 
 				poster.appendChild(overlay);
 				
 				const badge = document.createElement('div'); 
-				badge.className='badge';
-				badge.textContent = isNew==='1' ? 'NEW' : (isUpdated==='1' ? 'UPDATED' : '');
-				if (badge.textContent) badge.style.opacity='1';
+				badge.className = 'badge';
+				badge.textContent = game.isNew ? 'NEW' : (game.isUpdated ? 'UPDATED' : '');
+				if (badge.textContent) badge.style.opacity = '1';
 				poster.appendChild(badge);
 				
 				const meta = document.createElement('div'); 
-				meta.className='meta';
+				meta.className = 'meta';
 				const title = document.createElement('div'); 
-				title.className='title'; 
-				// Add title for the Steam game
-				title.textContent = i === 4 ? 'Halo Infinite' : '';
+				title.className = 'title'; 
+				title.textContent = game.name;
 				meta.appendChild(title);
 				
+				poster.appendChild(meta);
+				
+				// Create card content section
+				const cardContent = document.createElement('div');
+				cardContent.className = 'card-content';
+				
+				const cardTitle = document.createElement('h3');
+				cardTitle.className = 'card-title';
+				cardTitle.textContent = game.name;
+				
+				const downloadBtn = document.createElement('button');
+				downloadBtn.className = 'download-btn';
+				downloadBtn.innerHTML = `
+					<svg class="download-icon" viewBox="0 0 24 24">
+						<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" 
+							  stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					Download
+				`;
+				downloadBtn.addEventListener('click', (e) => handleDownload(game.name, e));
+				
+				cardContent.appendChild(cardTitle);
+				cardContent.appendChild(downloadBtn);
+				
 				card.appendChild(poster); 
-				card.appendChild(meta);
-				card.addEventListener('click', () => openContentLocker('Item'));
+				card.appendChild(cardContent);
+				
+				// Make poster clickable for content locker
+				poster.addEventListener('click', () => openContentLocker(game.name));
+				poster.style.cursor = 'pointer';
+				poster.title = 'Click to view details';
+				
 				frag.appendChild(card);
-			}
+			});
+			
 			grid.appendChild(frag);
-		})();
+		}
+
+		// Initialize with first page
+		populateGrid(1);
 
 		/* Hero slider */
 		(function setupSlider(){
@@ -950,34 +1229,77 @@
 				d.addEventListener('click', () => goTo(i));
 				dotsEl.appendChild(d);
 			});
+			
 			function update(){
 				slidesEl.style.transform = `translateX(-${index*100}%)`;
 				dotsEl.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active', i===index));
 				lazy(index);
 			}
-			function goTo(i){ index = (i + slides.length) % slides.length; update(); restart(); }
+			
+			function goTo(i){ 
+				index = (i + slides.length) % slides.length; 
+				update(); 
+				restart(); 
+			}
+			
 			function nextSlide(){ goTo(index+1) }
 			function prevSlide(){ goTo(index-1) }
 			function start(){ autoTimer = setInterval(nextSlide, delay) }
 			function stop(){ clearInterval(autoTimer) }
 			function restart(){ stop(); start() }
+			
 			function lazy(i){
 				const s = slides[i];
 				const url = s.getAttribute('data-bg');
-				if (url && !s.style.backgroundImage){ s.style.backgroundImage = `url('${url}')`; }
+				if (url && !s.style.backgroundImage){ 
+					s.style.backgroundImage = `url('${url}')`; 
+				}
 			}
+			
 			lazy(0);
 			next.addEventListener('click', nextSlide);
 			prev.addEventListener('click', prevSlide);
+			
 			let startX = 0, dx = 0, isDown = false;
-			slidesEl.addEventListener('pointerdown', (e)=>{ isDown=true; startX=e.clientX; dx=0; stop(); slidesEl.setPointerCapture(e.pointerId); });
-			slidesEl.addEventListener('pointermove', (e)=>{ if(!isDown) return; dx=e.clientX-startX; slidesEl.style.transform=`translateX(calc(-${index*100}% + ${dx}px))`; });
-			slidesEl.addEventListener('pointerup', (e)=>{ if(!isDown) return; isDown=false; slidesEl.releasePointerCapture(e.pointerId); if (Math.abs(dx) > 60){ dx<0 ? nextSlide() : prevSlide(); } else { update(); start(); } });
-			slidesEl.addEventListener('pointercancel', ()=>{ isDown=false; update(); start(); });
+			slidesEl.addEventListener('pointerdown', (e)=>{ 
+				isDown=true; 
+				startX=e.clientX; 
+				dx=0; 
+				stop(); 
+				slidesEl.setPointerCapture(e.pointerId); 
+			});
+			
+			slidesEl.addEventListener('pointermove', (e)=>{ 
+				if(!isDown) return; 
+				dx=e.clientX-startX; 
+				slidesEl.style.transform=`translateX(calc(-${index*100}% + ${dx}px))`; 
+			});
+			
+			slidesEl.addEventListener('pointerup', (e)=>{ 
+				if(!isDown) return; 
+				isDown=false; 
+				slidesEl.releasePointerCapture(e.pointerId); 
+				if (Math.abs(dx) > 60){ 
+					dx<0 ? nextSlide() : prevSlide(); 
+				} else { 
+					update(); 
+					start(); 
+				} 
+			});
+			
+			slidesEl.addEventListener('pointercancel', ()=>{ 
+				isDown=false; 
+				update(); 
+				start(); 
+			});
+			
 			slidesEl.addEventListener('mouseenter', stop);
 			slidesEl.addEventListener('mouseleave', start);
 			start();
-			window.addEventListener('visibilitychange', ()=>{ document.hidden ? stop() : start(); });
+			
+			window.addEventListener('visibilitychange', ()=>{ 
+				document.hidden ? stop() : start(); 
+			});
 		})();
 	</script>
 </body>
