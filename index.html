@@ -941,7 +941,7 @@
 		let currentPage = 1;
 		let totalPages = 5;
 		
-		// Game data for all pages
+		// Game data for all pages - Updated to show only 10 games per page
 		const gameData = {
 			1: [
 				{ name: 'Action Hero Legacy', category: 'action', isNew: true },
@@ -953,7 +953,9 @@
 				{ name: 'Football Manager 2024', category: 'sports', isUpdated: false },
 				{ name: 'Card Battle Arena', category: 'strategy', isNew: false },
 				{ name: 'RPG World Chronicles', category: 'adventure', isUpdated: true },
-				{ name: 'Platformer Paradise', category: 'casual', isNew: false },
+				{ name: 'Platformer Paradise', category: 'casual', isNew: false }
+			],
+			2: [
 				{ name: 'Tower Defense Pro', category: 'strategy', isNew: true },
 				{ name: 'Match Three Deluxe', category: 'puzzle', isUpdated: false },
 				{ name: 'Racing Circuit Champion', category: 'racing', isNew: false },
@@ -961,11 +963,11 @@
 				{ name: 'Magic Quest Origins', category: 'adventure', isNew: true },
 				{ name: 'Sports Champion League', category: 'sports', isUpdated: false },
 				{ name: 'Strategy War Commander', category: 'strategy', isNew: false },
-				{ name: 'Adventure Island Explorer', category: 'adventure', isUpdated: true }
-			],
-			2: [
+				{ name: 'Adventure Island Explorer', category: 'adventure', isUpdated: true },
 				{ name: 'Cyberpunk Neon City', category: 'action', isNew: true },
-				{ name: 'Medieval Kingdom Builder', category: 'strategy', isUpdated: false },
+				{ name: 'Medieval Kingdom Builder', category: 'strategy', isUpdated: false }
+			],
+			3: [
 				{ name: 'Ocean Racing Simulator', category: 'racing', isNew: false },
 				{ name: 'Horror Survival Night', category: 'adventure', isUpdated: true },
 				{ name: 'Math Puzzle Challenge', category: 'puzzle', isNew: false },
@@ -975,19 +977,21 @@
 				{ name: 'Fantasy RPG Legends', category: 'adventure', isUpdated: true },
 				{ name: 'Retro Arcade Collection', category: 'casual', isNew: true },
 				{ name: 'Defense Shield Pro', category: 'strategy', isUpdated: false },
-				{ name: 'Word Puzzle Master', category: 'puzzle', isNew: false },
+				{ name: 'Word Puzzle Master', category: 'puzzle', isNew: false }
+			],
+			4: [
 				{ name: 'Formula Racing Elite', category: 'racing', isUpdated: true },
 				{ name: 'Sniper Elite Mission', category: 'action', isNew: true },
 				{ name: 'Wizard Magic Academy', category: 'adventure', isUpdated: false },
 				{ name: 'Tennis World Tour', category: 'sports', isNew: false },
 				{ name: 'Empire Strategy Game', category: 'strategy', isUpdated: true },
-				{ name: 'Treasure Hunt Island', category: 'adventure', isNew: true }
-			],
-			3: [
+				{ name: 'Treasure Hunt Island', category: 'adventure', isNew: true },
 				{ name: 'Mech Warrior Battle', category: 'action', isUpdated: true },
 				{ name: 'Farm Life Simulator', category: 'casual', isNew: false },
 				{ name: 'Street Racing Underground', category: 'racing', isNew: true },
-				{ name: 'Detective Mystery Case', category: 'adventure', isUpdated: false },
+				{ name: 'Detective Mystery Case', category: 'adventure', isUpdated: false }
+			],
+			5: [
 				{ name: 'Brain Training Puzzles', category: 'puzzle', isNew: false },
 				{ name: 'Pirate Ship Adventure', category: 'adventure', isUpdated: true },
 				{ name: 'Golf Championship Pro', category: 'sports', isNew: true },
@@ -997,51 +1001,7 @@
 				{ name: 'Castle Defense Wars', category: 'strategy', isNew: true },
 				{ name: 'Sudoku Master Pro', category: 'puzzle', isUpdated: false },
 				{ name: 'Monster Truck Rally', category: 'racing', isNew: false },
-				{ name: 'Zombie Apocalypse', category: 'action', isUpdated: true },
-				{ name: 'Fairy Tale Adventure', category: 'adventure', isNew: true },
-				{ name: 'Olympic Games 2024', category: 'sports', isUpdated: false },
-				{ name: 'Civilization Empire', category: 'strategy', isNew: false },
-				{ name: 'Lost Temple Explorer', category: 'adventure', isUpdated: true }
-			],
-			4: [
-				{ name: 'Robot Wars Future', category: 'action', isNew: true },
-				{ name: 'Cooking Master Chef', category: 'casual', isUpdated: false },
-				{ name: 'Drift Racing Pro', category: 'racing', isNew: false },
-				{ name: 'Haunted Mansion Mystery', category: 'adventure', isUpdated: true },
-				{ name: 'Logic Puzzle Challenge', category: 'puzzle', isNew: false },
-				{ name: 'Viking Saga Adventure', category: 'adventure', isNew: true },
-				{ name: 'Soccer World Cup', category: 'sports', isUpdated: false },
-				{ name: 'War Strategy Commander', category: 'strategy', isNew: false },
-				{ name: 'Elf Kingdom Quest', category: 'adventure', isUpdated: true },
-				{ name: 'Candy Crush Saga', category: 'casual', isNew: true },
-				{ name: 'Fortress Defense Elite', category: 'strategy', isUpdated: false },
-				{ name: 'Crossword Puzzle Pro', category: 'puzzle', isNew: false },
-				{ name: 'Rally Championship', category: 'racing', isUpdated: true },
-				{ name: 'Space Marine Combat', category: 'action', isNew: true },
-				{ name: 'Enchanted Forest Quest', category: 'adventure', isUpdated: false },
-				{ name: 'Swimming Championship', category: 'sports', isNew: false },
-				{ name: 'Ancient Civilization', category: 'strategy', isUpdated: true },
-				{ name: 'Underwater Adventure', category: 'adventure', isNew: true }
-			],
-			5: [
-				{ name: 'Future Combat Elite', category: 'action', isUpdated: true },
-				{ name: 'Pet Care Simulator', category: 'casual', isNew: false },
-				{ name: 'Motorcycle Racing Pro', category: 'racing', isNew: true },
-				{ name: 'Ancient Ruins Explorer', category: 'adventure', isUpdated: false },
-				{ name: 'Number Puzzle Master', category: 'puzzle', isNew: false },
-				{ name: 'Samurai Warrior Quest', category: 'adventure', isUpdated: true },
-				{ name: 'Boxing Championship', category: 'sports', isNew: true },
-				{ name: 'Naval Strategy Game', category: 'strategy', isUpdated: false },
-				{ name: 'Goblin Kingdom Adventure', category: 'adventure', isNew: false },
-				{ name: 'Fruit Slice Mania', category: 'casual', isUpdated: true },
-				{ name: 'Base Defense Pro', category: 'strategy', isNew: true },
-				{ name: 'Jigsaw Puzzle Collection', category: 'puzzle', isUpdated: false },
-				{ name: 'Speed Racing Challenge', category: 'racing', isNew: false },
-				{ name: 'Alien Invasion War', category: 'action', isUpdated: true },
-				{ name: 'Magical Realm Quest', category: 'adventure', isNew: true },
-				{ name: 'Winter Olympics Pro', category: 'sports', isUpdated: false },
-				{ name: 'Kingdom Strategy Builder', category: 'strategy', isNew: false },
-				{ name: 'Desert Adventure Trek', category: 'adventure', isUpdated: true }
+				{ name: 'Zombie Apocalypse', category: 'action', isUpdated: true }
 			]
 		};
 		
