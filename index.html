@@ -949,11 +949,11 @@
 				{ name: 'Sweet Shine', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1636420/capsule_616x353.jpg' },
 				{ name: 'Inari', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2639100/811733a9020bec8f121032ace6f4139f15168fc3/capsule_616x353.jpg' },
 				{ name: 'Daily life with my succubus boss', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2059310/capsule_616x353.jpg' },
-				{ name: 'Puzzle Quest Adventure', category: 'puzzle', isNew: false },
-				{ name: 'Space Adventure Odyssey', category: 'adventure', isNew: true },
-				{ name: 'Football Manager 2024', category: 'sports', isUpdated: false },
-				{ name: 'Card Battle Arena', category: 'strategy', isNew: false },
-				{ name: 'RPG World Chronicles', category: 'adventure', isUpdated: true }
+				{ name: 'Parasitic Evil', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1997470/capsule_616x353.jpg' },
+				{ name: 'Oppai Muse', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1263160/capsule_616x353.jpg' },
+				{ name: 'Kurage Life', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2989770/6d7bc3d3ea78376fac85ced0d53bd074394e4d12/capsule_616x353.jpg' },
+				{ name: 'VillageRhapsody', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2109460/capsule_616x353.jpg' },
+				{ name: 'Benefitship', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2404000/capsule_616x353.jpg' }
 			],
 			2: [
 				{ name: 'Tower Defense Pro', category: 'strategy', isNew: true },
@@ -1006,12 +1006,121 @@
 		};
 		
 		function performSearch() {
-			const q = document.getElementById('mainSearch').value.trim();
-			if (!q) { 
-				alert('Please enter a search term to continue'); 
-				return; 
+			const query = document.getElementById('mainSearch').value.trim().toLowerCase();
+			const sectionSub = document.querySelector('.section-sub');
+			
+			if (!query) {
+				// If search is cleared, restore the current page and reset the section subtitle
+				sectionSub.textContent = 'Fresh content with a clean, fast layout';
+				changePage(currentPage);
+				return;
 			}
-			alert(`Searching for "${q}"...`);
+			
+			const filteredGames = filterGames(query);
+			
+			if (filteredGames.length === 0) {
+				// Show feedback if no results are found
+				sectionSub.textContent = `No results found for "${query}"`;
+				const grid = document.getElementById('grid');
+				grid.innerHTML = '';
+				return;
+			}
+			
+			// Update section subtitle with the number of results
+			sectionSub.textContent = `Found ${filteredGames.length} result${filteredGames.length === 1 ? '' : 's'} for "${query}"`;
+			
+			// Populate grid with filtered results
+			populateGridWithResults(filteredGames);
+		}
+		
+		function filterGames(query) {
+			const filtered = [];
+			// Search across all pages
+			for (let page in gameData) {
+				gameData[page].forEach(game => {
+					if (
+						game.name.toLowerCase().includes(query) ||
+						game.category.toLowerCase().includes(query)
+					) {
+						filtered.push(game);
+					}
+				});
+			}
+			return filtered;
+		}
+		
+		function populateGridWithResults(games) {
+			const grid = document.getElementById('grid');
+			grid.innerHTML = '';
+			const frag = document.createDocumentFragment();
+			
+			games.forEach((game, i) => {
+				const card = document.createElement('div'); 
+				card.className = 'card';
+				card.setAttribute('data-category', game.category); 
+				card.setAttribute('data-new', game.isNew ? '1' : '0'); 
+				card.setAttribute('data-updated', game.isUpdated ? '1' : '0');
+				
+				const poster = document.createElement('div'); 
+				poster.className = 'poster';
+				if (game.image) {
+					poster.setAttribute('data-bg', game.image);
+					poster.style.backgroundImage = `url('${game.image}')`;
+					poster.style.backgroundSize = 'cover';
+					poster.style.backgroundPosition = 'center';
+				}
+				
+				const overlay = document.createElement('div'); 
+				overlay.className = 'overlay'; 
+				poster.appendChild(overlay);
+				
+				const badge = document.createElement('div'); 
+				badge.className = 'badge';
+				badge.textContent = game.isNew ? 'NEW' : (game.isUpdated ? 'UPDATED' : '');
+				if (badge.textContent) badge.style.opacity = '1';
+				poster.appendChild(badge);
+				
+				const meta = document.createElement('div'); 
+				meta.className = 'meta';
+				const title = document.createElement('div'); 
+				title.className = 'title'; 
+				title.textContent = game.name;
+				meta.appendChild(title);
+				
+				poster.appendChild(meta);
+				
+				const cardContent = document.createElement('div');
+				cardContent.className = 'card-content';
+				
+				const cardTitle = document.createElement('h3');
+				cardTitle.className = 'card-title';
+				cardTitle.textContent = game.name;
+				
+				const downloadBtn = document.createElement('button');
+				downloadBtn.className = 'download-btn';
+				downloadBtn.innerHTML = `
+					<svg class="download-icon" viewBox="0 0 24 24">
+						<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" 
+							  stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					Download
+				`;
+				downloadBtn.addEventListener('click', (e) => handleDownload(game.name, e));
+				
+				cardContent.appendChild(cardTitle);
+				cardContent.appendChild(downloadBtn);
+				
+				card.appendChild(poster); 
+				card.appendChild(cardContent);
+				
+				poster.addEventListener('click', () => openContentLocker(game.name));
+				poster.style.cursor = 'pointer';
+				poster.title = 'Click to view details';
+				
+				frag.appendChild(card);
+			});
+			
+			grid.appendChild(frag);
 		}
 		
 		function openContentLocker(name) {
@@ -1045,6 +1154,13 @@
 		
 		document.getElementById('mainSearch').addEventListener('keypress', function(e) { 
 			if (e.key === 'Enter') performSearch(); 
+		});
+		
+		// Add input event listener to handle real-time search clearing
+		document.getElementById('mainSearch').addEventListener('input', function() {
+			if (this.value.trim() === '') {
+				performSearch();
+			}
 		});
 
 		// Download button handler
@@ -1090,6 +1206,12 @@
 					btn.classList.add('active');
 				}
 			});
+			
+			// Clear search input and restore default section subtitle
+			const searchInput = document.getElementById('mainSearch');
+			const sectionSub = document.querySelector('.section-sub');
+			searchInput.value = '';
+			sectionSub.textContent = 'Fresh content with a clean, fast layout';
 			
 			// Populate grid with new page data
 			populateGrid(currentPage);
