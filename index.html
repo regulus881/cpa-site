@@ -1080,7 +1080,6 @@
 				// Extract geolocation timezone and ISP details
 				const geoTimezone = data.time_zone.name;
 				const isp = data.isp.toLowerCase();
-				const country = data.country_name;
 				// Check for VPN indicators
 				const isVPN = 
 					// Timezone mismatch
@@ -1089,67 +1088,17 @@
 					/vpn|proxy|hosting|cloud|data center/i.test(isp) ||
 					// Known VPN providers
 					/nordvpn|expressvpn|surfshark|protonvpn|ipvanish|hidemyass/i.test(isp);
-				// Create result div for debugging
-				const resultDiv = document.createElement('div');
-				resultDiv.style.cssText = `
-					position: fixed; 
-					top: 10px; 
-					left: 10px; 
-					padding: 10px; 
-					background: var(--surface); 
-					border: 1px solid var(--border); 
-					z-index: 1000; 
-					color: var(--text); 
-					border-radius: var(--radius); 
-					box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-					font-size: 14px;
-					line-height: 1.5;
-				`;
-				document.body.appendChild(resultDiv);
 				if (isVPN) {
-					resultDiv.innerHTML = `
-						<h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">VPN Detected</h3>
-						<p>IP: ${data.ip}</p>
-						<p>Country: ${country}</p>
-						<p>ISP: ${data.isp}</p>
-						<p>Timezone Mismatch: Browser (${browserTimezone}) vs Geo (${geoTimezone})</p>
-					`;
 					// Show VPN block screen
 					document.getElementById('vpnBlock').style.display = 'flex';
 					document.body.style.overflow = 'hidden';
 					console.log('VPN usage detected. Access blocked.');
 				} else {
-					resultDiv.innerHTML = `
-						<h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">No VPN Detected</h3>
-						<p>IP: ${data.ip}</p>
-						<p>Country: ${country}</p>
-						<p>ISP: ${data.isp}</p>
-						<p>Timezone: ${browserTimezone}</p>
-					`;
 					console.log('No VPN detected. Access allowed.');
 				}
 			} catch (error) {
+				// Log error silently in console
 				console.error('Error detecting VPN:', error);
-				const errorDiv = document.createElement('div');
-				errorDiv.style.cssText = `
-					position: fixed; 
-					top: 10px; 
-					left: 10px; 
-					padding: 10px; 
-					background: var(--surface); 
-					border: 1px solid var(--border); 
-					z-index: 1000; 
-					color: var(--text); 
-					border-radius: var(--radius); 
-					box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-					font-size: 14px;
-					line-height: 1.5;
-				`;
-				errorDiv.innerHTML = `
-					<h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Error</h3>
-					<p>Failed to detect VPN: ${error.message}</p>
-				`;
-				document.body.appendChild(errorDiv);
 			}
 		}
 
