@@ -610,305 +610,6 @@
 	</footer>
 
 	<script>
-		/* Enhanced VPN Detection - Cross-browser compatible */
-		(function() {
-			'use strict';
-			
-			const vpnDetector = {
-				blocked: false,
-				detectionScore: 0,
-				detectionCount: 0,
-				
-				// Configuration
-				config: {
-					scoreThreshold: 0.6, // Increased to reduce false positives
-					countThreshold: 2,
-					timeout: 6000,
-					ipQualityScoreKey: 'YOUR_IPQUALITYSCORE_API_KEY', // Replace with your API key
-					apis: [
-						{ url: 'https://api.ipify.org?format=json', parser: data => data.ip },
-						{ url: 'https://ipapi.co/json/', parser: data => data.ip },
-						{ url: 'https://httpbin.org/ip', parser: data => data.origin.split(',')[0] }
-					]
-				},
-				
-				// Get user IP address
-				async getUserIP() {
-					for (const api of this.config.apis) {
-						try {
-							const controller = new AbortController();
-							const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
-							
-							const response = await fetch(api.url, { 
-								signal: controller.signal,
-								headers: { 'Accept': 'application/json' }
-							});
-							
-							clearTimeout(timeoutId);
-							
-							if (response.ok) {
-								const data = await response.json();
-								const ip = api.parser(data);
-								if (this.isValidIP(ip)) return ip;
-							}
-						} catch (error) {
-							console.debug('IP fetch failed:', api.url, error.message);
-							continue;
-						}
-					}
-					return null;
-				},
-				
-				// Validate IP format
-				isValidIP(ip) {
-					const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
-					const ipv6Regex = /^([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}$/i;
-					return ipv4Regex.test(ip) || ipv6Regex.test(ip);
-				},
-				
-				// Check IP against IPQualityScore API
-				async checkIPQualityScore(ip) {
-					try {
-						const url = `https://www.ipqualityscore.com/api/json/ip/${this.config.ipQualityScoreKey}/${ip}?strictness=1&user_agent=${encodeURIComponent(navigator.userAgent)}`;
-						const controller = new AbortController();
-						const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
-						
-						const response = await fetch(url, { signal: controller.signal });
-						clearTimeout(timeoutId);
-						
-						if (response.ok) {
-							const data = await response.json();
-							if (data.success === false) {
-								console.debug('IPQualityScore error:', data.message);
-								return { isProxy: false, fraudScore: 0 };
-							}
-							return {
-								isProxy: data.proxy || data.vpn || data.tor || data.hosting,
-								fraudScore: data.fraud_score || 0,
-								isResidential: data.is_residential || false
-							};
-						}
-						return { isProxy: false, fraudScore: 0 };
-					} catch (error) {
-						console.debug('IPQualityScore fetch failed:', error.message);
-						return { isProxy: false, fraudScore: 0 };
-					}
-				},
-				
-				// Check for WebRTC leaks
-				async checkWebRTCLeak() {
-					if (!window.RTCPeerConnection) {
-						console.debug('WebRTC is disabled or not supported');
-						return false;
-					}
-					return new Promise((resolve) => {
-						try {
-							const rtc = new RTCPeerConnection({
-								iceServers: [
-									{ urls: 'stun:stun.l.google.com:19302' },
-									{ urls: 'stun:stun1.l.google.com:19302' }
-								]
-							});
-							
-							let publicIPs = new Set();
-							let resolved = false;
-							
-							const timeout = setTimeout(() => {
-								if (!resolved) {
-									resolved = true;
-									rtc.close();
-									resolve(false);
-								}
-							}, 3000);
-							
-							rtc.onicecandidate = (event) => {
-								if (event.candidate && !resolved) {
-									const match = event.candidate.candidate.match(/(\d+\.\d+\.\d+\.\d+)/);
-									if (match) {
-										const ip = match[1];
-										// Exclude local and private IPs
-										if (!ip.startsWith('127.') && !ip.startsWith('169.254.') && !ip.startsWith('192.168.') && !ip.startsWith('10.')) {
-											publicIPs.add(ip);
-										}
-									}
-									
-									if (publicIPs.size > 1) {
-										resolved = true;
-										clearTimeout(timeout);
-										rtc.close();
-										resolve(true); // Multiple public IPs suggest a VPN/proxy
-									}
-								}
-							};
-							
-							rtc.createDataChannel('test');
-							rtc.createOffer()
-								.then(offer => rtc.setLocalDescription(offer))
-								.catch(() => {
-									if (!resolved) {
-										resolved = true;
-										clearTimeout(timeout);
-										resolve(false);
-									}
-								});
-								
-						} catch (error) {
-							console.debug('WebRTC check failed:', error.message);
-							resolve(false);
-						}
-					});
-				},
-				
-				// Check timezone inconsistencies
-				checkTimezone() {
-					try {
-						const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-						const offset = new Date().getTimezoneOffset();
-						
-						const suspiciousPatterns = [
-							{ tz: 'America/New_York', expectedOffset: [240, 300] },
-							{ tz: 'Europe/London', expectedOffset: [0, -60] },
-							{ tz: 'Asia/Tokyo', expectedOffset: [-540] }
-						];
-						
-						for (const pattern of suspiciousPatterns) {
-							if (timezone.includes(pattern.tz.split('/')[1])) {
-								if (!pattern.expectedOffset.includes(offset)) {
-									return true;
-								}
-							}
-						}
-						return false;
-					} catch (error) {
-						console.debug('Timezone check failed:', error.message);
-						return false;
-					}
-				},
-				
-				// Check DNS leak
-				async checkDNSLeak() {
-					try {
-						const controller = new AbortController();
-						const timeoutId = setTimeout(() => controller.abort(), 4000);
-						
-						const response = await fetch('https://dnsleaktest.com/api/v1/test', {
-							method: 'POST',
-							body: JSON.stringify({}),
-							headers: { 'Content-Type': 'application/json' },
-							signal: controller.signal
-						});
-						clearTimeout(timeoutId);
-						
-						if (response.ok) {
-							const data = await response.json();
-							if (data.servers && data.servers.length > 0) {
-								// Check if DNS servers belong to known VPN providers
-								const vpnProviders = ['nordvpn', 'expressvpn', 'protonvpn', 'mullvad', 'cloudflare', 'google'];
-								return data.servers.some(server => 
-									vpnProviders.some(provider => 
-										server.isp && server.isp.toLowerCase().includes(provider)
-									)
-								);
-							}
-						}
-						return false;
-					} catch (error) {
-						console.debug('DNS leak test failed:', error.message);
-						return false;
-					}
-				},
-				
-				// Main detection function
-				async runDetection() {
-					try {
-						console.debug('Starting VPN detection...');
-						
-						// Get user IP first
-						const userIP = await this.getUserIP();
-						if (!userIP) {
-							console.debug('Could not determine user IP, skipping detection');
-							return;
-						}
-						
-						console.debug('User IP detected:', userIP);
-						
-						// Run IPQualityScore check
-						const ipqsResult = await this.checkIPQualityScore(userIP);
-						
-						// Run other detection methods
-						const [webRTCLeak, timezoneIssue, dnsLeak] = await Promise.allSettled([
-							this.checkWebRTCLeak(),
-							Promise.resolve(this.checkTimezone()),
-							this.checkDNSLeak()
-						]);
-						
-						// Calculate detection score
-						const detectionResults = [
-							{ name: 'IPQualityScore Proxy/VPN', result: { status: 'fulfilled', value: ipqsResult.isProxy }, weight: 0.5 },
-							{ name: 'IPQualityScore Fraud Score', result: { status: 'fulfilled', value: ipqsResult.fraudScore > 75 }, weight: 0.3 },
-							{ name: 'WebRTC Leak', result: webRTCLeak, weight: 0.2 },
-							{ name: 'Timezone Mismatch', result: timezoneIssue, weight: 0.15 },
-							{ name: 'DNS Leak', result: dnsLeak, weight: 0.2 }
-						];
-						
-						let totalScore = 0;
-						let detectedCount = 0;
-						
-						detectionResults.forEach(test => {
-							const detected = test.result.status === 'fulfilled' && test.result.value;
-							console.debug(`${test.name}: ${detected ? 'DETECTED' : 'OK'}`);
-							
-							if (detected) {
-								totalScore += test.weight;
-								detectedCount++;
-							}
-						});
-						
-						this.detectionScore = totalScore;
-						this.detectionCount = detectedCount;
-						
-						console.debug(`Detection Score: ${totalScore.toFixed(2)}, Count: ${detectedCount}, Fraud Score: ${ipqsResult.fraudScore}`);
-						
-						// Block if thresholds exceeded and not a residential IP
-						if ((totalScore >= this.config.scoreThreshold || detectedCount >= this.config.countThreshold) && !ipqsResult.isResidential) {
-							this.blockAccess();
-						}
-						
-					} catch (error) {
-						console.debug('VPN detection error:', error.message);
-					}
-				},
-				
-				// Block access
-				blockAccess() {
-					if (this.blocked) return;
-					
-					this.blocked = true;
-					console.debug('Access blocked - VPN/Proxy detected');
-					
-					const blockElement = document.getElementById('vpnBlock');
-					if (blockElement) {
-						blockElement.style.display = 'flex';
-						document.body.style.overflow = 'hidden';
-					}
-				},
-				
-				// Initialize detection
-				init() {
-					if (document.readyState === 'loading') {
-						document.addEventListener('DOMContentLoaded', () => {
-							setTimeout(() => this.runDetection(), 500);
-						});
-					} else {
-						setTimeout(() => this.runDetection(), 500);
-					}
-				}
-			};
-			
-			// Start VPN detection
-			vpnDetector.init();
-		})();
-
 		/* App logic */
 		let currentPage = 1;
 		let totalPages = 5;
@@ -1363,6 +1064,97 @@
 				document.hidden ? stop() : start(); 
 			});
 		})();
+
+		/* VPN Detection */
+		const API_KEY = '64d52f4862d144399659edc49c1356f4'; // API key for ipgeolocation.io
+		const API_URL = `https://api.ipgeolocation.io/ipgeo?apiKey=${API_KEY}`;
+
+		// Function to detect VPN usage
+		async function detectVPN() {
+			try {
+				// Fetch IP geolocation data
+				const response = await fetch(API_URL);
+				const data = await response.json();
+				// Get browser timezone
+				const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+				// Extract geolocation timezone and ISP details
+				const geoTimezone = data.time_zone.name;
+				const isp = data.isp.toLowerCase();
+				const country = data.country_name;
+				// Check for VPN indicators
+				const isVPN = 
+					// Timezone mismatch
+					browserTimezone !== geoTimezone ||
+					// ISP contains VPN-related keywords
+					/vpn|proxy|hosting|cloud|data center/i.test(isp) ||
+					// Known VPN providers
+					/nordvpn|expressvpn|surfshark|protonvpn|ipvanish|hidemyass/i.test(isp);
+				// Create result div for debugging
+				const resultDiv = document.createElement('div');
+				resultDiv.style.cssText = `
+					position: fixed; 
+					top: 10px; 
+					left: 10px; 
+					padding: 10px; 
+					background: var(--surface); 
+					border: 1px solid var(--border); 
+					z-index: 1000; 
+					color: var(--text); 
+					border-radius: var(--radius); 
+					box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+					font-size: 14px;
+					line-height: 1.5;
+				`;
+				document.body.appendChild(resultDiv);
+				if (isVPN) {
+					resultDiv.innerHTML = `
+						<h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">VPN Detected</h3>
+						<p>IP: ${data.ip}</p>
+						<p>Country: ${country}</p>
+						<p>ISP: ${data.isp}</p>
+						<p>Timezone Mismatch: Browser (${browserTimezone}) vs Geo (${geoTimezone})</p>
+					`;
+					// Show VPN block screen
+					document.getElementById('vpnBlock').style.display = 'flex';
+					document.body.style.overflow = 'hidden';
+					console.log('VPN usage detected. Access blocked.');
+				} else {
+					resultDiv.innerHTML = `
+						<h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">No VPN Detected</h3>
+						<p>IP: ${data.ip}</p>
+						<p>Country: ${country}</p>
+						<p>ISP: ${data.isp}</p>
+						<p>Timezone: ${browserTimezone}</p>
+					`;
+					console.log('No VPN detected. Access allowed.');
+				}
+			} catch (error) {
+				console.error('Error detecting VPN:', error);
+				const errorDiv = document.createElement('div');
+				errorDiv.style.cssText = `
+					position: fixed; 
+					top: 10px; 
+					left: 10px; 
+					padding: 10px; 
+					background: var(--surface); 
+					border: 1px solid var(--border); 
+					z-index: 1000; 
+					color: var(--text); 
+					border-radius: var(--radius); 
+					box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+					font-size: 14px;
+					line-height: 1.5;
+				`;
+				errorDiv.innerHTML = `
+					<h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Error</h3>
+					<p>Failed to detect VPN: ${error.message}</p>
+				`;
+				document.body.appendChild(errorDiv);
+			}
+		}
+
+		// Run VPN detection on page load
+		window.onload = detectVPN;
 	</script>
 </body>
 </html>
