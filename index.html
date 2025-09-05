@@ -941,19 +941,19 @@
 		let currentPage = 1;
 		let totalPages = 5;
 		
-		// Game data for all pages - Updated to show only 10 games per page
+		// Game data for all pages - Updated with new games and images
 		const gameData = {
 			1: [
-				{ name: 'Action Hero Legacy', category: 'action', isNew: true },
-				{ name: 'Desert Storm Elite', category: 'action', isUpdated: true },
-				{ name: 'Racing Thunder Pro', category: 'racing', isNew: false },
-				{ name: 'City Builder Ultimate', category: 'strategy', isUpdated: true },
+				{ name: 'Robolife2 - Nova Duty', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1777390/capsule_616x353.jpg' },
+				{ name: 'Milf Collection', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/3772480/5c0e24d511bb65ce3577a7abc7cac2772f1947e6/capsule_616x353.jpg' },
+				{ name: 'Sweet Shine', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1636420/capsule_616x353.jpg' },
+				{ name: 'Inari', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2639100/811733a9020bec8f121032ace6f4139f15168fc3/capsule_616x353.jpg' },
+				{ name: 'Daily life with my succubus boss', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2059310/capsule_616x353.jpg' },
 				{ name: 'Puzzle Quest Adventure', category: 'puzzle', isNew: false },
 				{ name: 'Space Adventure Odyssey', category: 'adventure', isNew: true },
 				{ name: 'Football Manager 2024', category: 'sports', isUpdated: false },
 				{ name: 'Card Battle Arena', category: 'strategy', isNew: false },
-				{ name: 'RPG World Chronicles', category: 'adventure', isUpdated: true },
-				{ name: 'Platformer Paradise', category: 'casual', isNew: false }
+				{ name: 'RPG World Chronicles', category: 'adventure', isUpdated: true }
 			],
 			2: [
 				{ name: 'Tower Defense Pro', category: 'strategy', isNew: true },
@@ -1117,6 +1117,12 @@
 				
 				const poster = document.createElement('div'); 
 				poster.className = 'poster';
+				if (game.image) {
+					poster.setAttribute('data-bg', game.image);
+					poster.style.backgroundImage = `url('${game.image}')`;
+					poster.style.backgroundSize = 'cover';
+					poster.style.backgroundPosition = 'center';
+				}
 				
 				const overlay = document.createElement('div'); 
 				overlay.className = 'overlay'; 
