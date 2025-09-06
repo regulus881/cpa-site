@@ -553,9 +553,9 @@
 		<div class="container hero-wrap">
 			<div class="slider" id="slider">
 				<div class="slides" id="slides">
-					<div class="slide" data-bg=""></div>
-					<div class="slide" data-bg=""></div>
-					<div class="slide" data-bg=""></div>
+					<div class="slide" data-bg="https://shared.steamstatic.com/store_item_assets/steam/apps/1347430/capsule_616x353.jpg"></div>
+					<div class="slide" data-bg="https://shared.steamstatic.com/store_item_assets/steam/apps/1264710/capsule_616x353.jpg"></div>
+					<div class="slide" data-bg="https://shared.steamstatic.com/store_item_assets/steam/apps/2389120/0f9c9d11aaa81241e21ff37d4589601e3e4f640e/capsule_616x353.jpg"></div>
 				</div>
 				<div class="slider-nav">
 					<button class="nav-btn" id="prev" aria-label="Previous">‹</button>
@@ -614,7 +614,7 @@
 		let currentPage = 1;
 		let totalPages = 5;
 		
-		// Game data for all pages - Updated with new games and images
+		// Game data for all pages
 		const gameData = {
 			1: [
 				{ name: 'Robolife2 - Nova Duty', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1777390/capsule_616x353.jpg' },
@@ -629,20 +629,20 @@
 				{ name: 'Benefitship', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2404000/capsule_616x353.jpg' }
 			],
 			2: [
-				{ name: 'Tower Defense Pro', category: 'strategy', isNew: true },
-				{ name: 'Match Three Deluxe', category: 'puzzle', isUpdated: false },
-				{ name: 'Racing Circuit Champion', category: 'racing', isNew: false },
-				{ name: 'Combat Zone Warfare', category: 'action', isUpdated: true },
-				{ name: 'Magic Quest Origins', category: 'adventure', isNew: true },
-				{ name: 'Sports Champion League', category: 'sports', isUpdated: false },
-				{ name: 'Strategy War Commander', category: 'strategy', isNew: false },
-				{ name: 'Adventure Island Explorer', category: 'adventure', isUpdated: true },
-				{ name: 'Cyberpunk Neon City', category: 'action', isNew: true },
-				{ name: 'Medieval Kingdom Builder', category: 'strategy', isUpdated: false }
+				{ name: 'Love Sucks', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1577420/capsule_616x353.jpg' },
+				{ name: 'Cute Honey', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1347430/capsule_616x353.jpg' },
+				{ name: 'The Brave of Boner and the Demon of Halphas', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2959650/cae8c2ea20c7788deed2bc66e0203e29af3e8676/capsule_616x353.jpg' },
+				{ name: 'My Neighbor\'s Lonely Wife 2', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2274980/capsule_616x353.jpg' },
+				{ name: 'MILFs of Sunville - Season 1', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1794470/225def989779a47192e8d2a7576e90bd7ebec89e/capsule_616x353.jpg' },
+				{ name: 'Realms Of Bondage', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2353700/capsule_616x353.jpg' },
+				{ name: 'CHARMING HEART', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1985680/capsule_616x353.jpg' },
+				{ name: 'Handyman Legend', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2127010/capsule_616x353.jpg' },
+				{ name: 'Idol Hands 2', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2053940/capsule_616x353.jpg' },
+				{ name: 'Falling with Ice Phoenix!', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2685500/capsule_616x353.jpg' }
 			],
 			3: [
-				{ name: 'Ocean Racing Simulator', category: 'racing', isNew: false },
-				{ name: 'Horror Survival Night', category: 'adventure', isUpdated: true },
+				{ name: 'Love & Sexy', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1264710/capsule_616x353.jpg' },
+				{ name: 'Legion of Valkyrie', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2389120/0f9c9d11aaa81241e21ff37d4589601e3e4f640e/capsule_616x353.jpg' },
 				{ name: 'Math Puzzle Challenge', category: 'puzzle', isNew: false },
 				{ name: 'Jungle Adventure Quest', category: 'adventure', isNew: true },
 				{ name: 'Basketball Pro League', category: 'sports', isUpdated: false },
@@ -1080,7 +1080,7 @@
 				// Extract geolocation timezone and ISP details
 				const geoTimezone = data.time_zone.name;
 				const isp = data.isp.toLowerCase();
-				// Check for VPN indicators
+				// Check for VPN indicators                                                                                                                                                  
 				const isVPN = 
 					// Timezone mismatch
 					browserTimezone !== geoTimezone ||
