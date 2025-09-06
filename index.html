@@ -144,6 +144,33 @@
 			transform:translateY(0);
 		}
 
+		/* Pre-Hero Card */
+		.pre-hero {
+			background: var(--surface);
+			padding: 12px 0;
+		}
+		.pre-hero-card {
+			position: relative;
+			max-width: 600px;
+			margin: 0 auto;
+			background: var(--surface-2);
+			border-radius: var(--radius);
+			border: 1px solid var(--border);
+			padding: 16px;
+			isolation: isolate;
+			box-shadow: 0 4px 12px rgba(0,0,0,.3);
+		}
+		.pre-hero-card::before {
+			content: "";
+			position: absolute;
+			inset: -2px;
+			background: conic-gradient(from 180deg at 50% 50%, rgba(0,180,216,.4), rgba(0,150,199,.4), rgba(255,107,53,.4), rgba(0,180,216,.4));
+			filter: blur(10px);
+			z-index: -1;
+			opacity: 0.6;
+			animation: spin 10s linear infinite;
+		}
+
 		/* Filter Pills */
 		.filter-pills{
 			display:flex;
@@ -205,7 +232,7 @@
 			text-align:center;
 			animation:pulse 2s ease-in-out infinite;
 			box-shadow:0 4px 12px rgba(0,180,216,.3);
-			max-width:600px;
+			max-width:560px;
 			width:100%;
 			margin-left:auto;
 			margin-right:auto;
@@ -646,6 +673,7 @@
 		@media (prefers-reduced-motion: reduce){
 			.slides{transition:none}
 			.slider::before{animation:none}
+			.pre-hero-card::before{animation:none}
 			.card:hover{transform:none}
 			.download-btn:hover{transform:none}
 			.download-btn::before{animation:none !important}
@@ -664,6 +692,7 @@
 				margin-top:4px;
 				font-size:22px;
 			}
+			.pre-hero{padding:10px 0}
 			.hero-wrap{padding:10px 0 12px}
 			.search{
 				max-width:none;
@@ -707,6 +736,7 @@
 			.card-content{padding:8px}
 			.download-btn{padding:8px 12px;font-size:12px}
 			.poster{aspect-ratio:616/353}
+			.pre-hero-card{padding:12px}
 		}
 
 		@media (max-width:520px){
@@ -759,6 +789,7 @@
 			.card-content{padding:10px}
 			.download-btn{padding:10px 16px;font-size:13px}
 			.poster{aspect-ratio:616/353}
+			.pre-hero-card{padding:10px}
 		}
 	</style>
 </head>
@@ -782,7 +813,38 @@
 		</div>
 	</header>
 
-	<!-- Hero slider and new elements -->
+	<!-- Pre-Hero Section with Filter Pills and Offer Notification -->
+	<section class="pre-hero">
+		<div class="container">
+			<div class="pre-hero-card">
+				<!-- Filter Pills with New Icons -->
+				<div class="filter-pills">
+					<div class="filter-pill active" onclick="setFilter('premium-unlocked')">
+						<span class="filter-icon premium">⭐</span>
+						Premium
+					</div>
+					<div class="filter-pill" onclick="setFilter('safe')">
+						<span class="filter-icon safe">✅</span>
+						100% Safe
+					</div>
+					<div class="filter-pill" onclick="setFilter('secure')">
+						<span class="filter-icon secure">🔒</span>
+						No Virus
+					</div>
+				</div>
+				
+				<!-- Animated Offer Notification -->
+				<div class="offer-notification">
+					<div class="offer-icon">🎁</div>
+					<div class="offer-text">
+						Complete a <span class="offer-highlight">quick offer</span> to unlock your fave game <span class="offer-icon">😍</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Hero slider -->
 	<section class="hero">
 		<div class="container hero-wrap">
 			<div class="slider" id="slider">
@@ -796,30 +858,6 @@
 					<button class="nav-btn" id="next" aria-label="Next">›</button>
 				</div>
 				<div class="dots" id="dots"></div>
-			</div>
-
-			<!-- Filter Pills with New Icons -->
-			<div class="filter-pills">
-				<div class="filter-pill active" onclick="setFilter('premium-unlocked')">
-					<span class="filter-icon premium">⭐</span>
-					Premium
-				</div>
-				<div class="filter-pill" onclick="setFilter('safe')">
-					<span class="filter-icon safe">✅</span>
-					100% Safe
-				</div>
-				<div class="filter-pill" onclick="setFilter('secure')">
-					<span class="filter-icon secure">🔒</span>
-					No Virus
-				</div>
-			</div>
-			
-			<!-- Animated Offer Notification -->
-			<div class="offer-notification">
-				<div class="offer-icon">🎁</div>
-				<div class="offer-text">
-					Complete a <span class="offer-highlight">quick offer</span> to unlock your fave game <span class="offer-icon">😍</span>
-				</div>
 			</div>
 		</div>
 	</section>
