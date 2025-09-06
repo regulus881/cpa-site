@@ -72,8 +72,7 @@
 			height:60px;
 			display:flex;
 			align-items:center;
-			justify-content:flex-start;
-			gap:10px;
+			justify-content:center;
 		}
 		.brand{
 			display:flex;
@@ -82,20 +81,20 @@
 			color:var(--gold);
 			font-family:"Playfair Display", "Inter", serif;
 			font-weight:700;
-			font-size:26px; /* Slightly larger for prominence */
-			letter-spacing:0.03em; /* Refined for elegance */
+			font-size:26px;
+			letter-spacing:0.03em;
 			text-transform:uppercase;
 			transition:color .2s ease;
-			line-height:1.2; /* Improved vertical alignment */
+			line-height:1.2;
 		}
 		.brand:hover{
-			color:#FFD700; /* Brighter gold on hover */
+			color:#FFD700;
 		}
 
 		/* Search */
 		.search{
 			display:grid;
-			grid-template-columns:1fr 100px;
+			grid-template-columns:1fr 80px; /* Adjusted for smaller button */
 			gap:8px;
 			max-width:560px;
 			width:100%;
@@ -124,7 +123,7 @@
 			background:rgba(0,180,216,0.15);
 		}
 		.search-btn{
-			height:36px;
+			height:32px; /* Smaller height */
 			border:none;
 			cursor:pointer;
 			border-radius:10px;
@@ -132,17 +131,100 @@
 			font-weight:700;
 			letter-spacing:.01em;
 			background:var(--gradient-1);
-			box-shadow:0 8px 22px rgba(0,180,216,.4);
+			box-shadow:0 6px 18px rgba(0,180,216,.3); /* Adjusted shadow */
 			transition:transform .15s ease, box-shadow .15s ease;
-			font-size:13px;
-			padding:0 10px;
+			font-size:12px; /* Smaller font */
+			padding:0 8px; /* Reduced padding */
 		}
 		.search-btn:hover{
 			transform:translateY(-1px);
-			box-shadow:0 12px 28px rgba(0,180,216,.5);
+			box-shadow:0 8px 22px rgba(0,180,216,.4);
 		}
 		.search-btn:active{
 			transform:translateY(0);
+		}
+
+		/* Filter Pills */
+		.filter-pills{
+			display:flex;
+			gap:8px;
+			justify-content:center;
+			margin:14px 0;
+			flex-wrap:wrap;
+		}
+		.filter-pill{
+			display:flex;
+			align-items:center;
+			gap:6px;
+			padding:8px 14px;
+			background:var(--surface);
+			border:1px solid var(--border);
+			border-radius:20px;
+			color:var(--text);
+			font-size:13px;
+			font-weight:600;
+			cursor:pointer;
+			transition:all .2s ease;
+		}
+		.filter-pill:hover{
+			background:rgba(0,180,216,0.1);
+			border-color:var(--accent-1);
+			color:var(--accent-1);
+		}
+		.filter-pill.active{
+			background:var(--gradient-1);
+			border-color:transparent;
+			color:#fff;
+			box-shadow:0 4px 12px rgba(0,180,216,.3);
+		}
+		.filter-icon{
+			font-size:16px;
+			color:var(--gold);
+			transition:color .2s ease;
+		}
+		.filter-pill:hover .filter-icon{
+			color:#FFD700;
+		}
+		.filter-pill.active .filter-icon{
+			color:#FFD700;
+		}
+
+		/* Offer Notification */
+		.offer-notification{
+			display:flex;
+			align-items:center;
+			justify-content:center;
+			gap:10px;
+			background:var(--gradient-1);
+			border-radius:10px;
+			padding:10px 16px;
+			margin:14px 0;
+			color:#fff;
+			font-size:14px;
+			font-weight:600;
+			text-align:center;
+			animation:pulse 2s ease-in-out infinite;
+			box-shadow:0 4px 12px rgba(0,180,216,.3);
+			max-width:600px;
+			width:100%;
+			margin-left:auto;
+			margin-right:auto;
+		}
+		.offer-icon{
+			font-size:18px;
+			color:var(--gold);
+		}
+		.offer-text{
+			flex:1;
+		}
+		.offer-highlight{
+			color:var(--accent-3);
+			font-weight:800;
+		}
+		@keyframes pulse {
+			0% { transform:scale(1); opacity:0.9; }
+			50% { transform:scale(1.02); opacity:1; }
+			100% { transform:scale(1); opacity:0.9; }
 		}
 
 		/* Hero slider */
@@ -568,26 +650,24 @@
 			.download-btn:hover{transform:none}
 			.download-btn::before{animation:none !important}
 			.download-btn::after{animation:none}
+			.offer-notification{animation:none}
 		}
 
 		/* Responsive */
 		@media (max-width:768px){
 			.container{padding:0 14px}
 			.nav{
-				gap:8px;
-				flex-wrap:wrap;
 				min-height:60px;
-				align-items:center;
 				padding:12px 0;
 			}
 			.brand{
 				margin-top:4px;
-				font-size:22px; /* Adjusted for balance */
+				font-size:22px;
 			}
 			.hero-wrap{padding:10px 0 12px}
 			.search{
 				max-width:none;
-				grid-template-columns:1fr 70px;
+				grid-template-columns:1fr 60px; /* Adjusted for smaller button */
 				margin:4px 0 10px;
 			}
 			.search-input{
@@ -597,10 +677,29 @@
 				padding:0 10px;
 			}
 			.search-btn{
-				height:34px;
-				font-size:12px;
-				padding:0 8px;
+				height:30px; /* Smaller height */
+				font-size:11px; /* Smaller font */
+				padding:0 6px; /* Reduced padding */
 				border-radius:8px;
+			}
+			.filter-pills{
+				gap:6px;
+				margin:10px 0;
+			}
+			.filter-pill{
+				padding:6px 12px;
+				font-size:12px;
+			}
+			.filter-icon{
+				font-size:14px;
+			}
+			.offer-notification{
+				padding:8px 12px;
+				font-size:13px;
+				margin:10px 0;
+			}
+			.offer-icon{
+				font-size:16px;
 			}
 			.grid{grid-template-columns:repeat(2,1fr);gap:10px}
 			.section{margin:4px 0 10px}
@@ -617,23 +716,44 @@
 				padding:12px 0;
 			}
 			.brand{
-				font-size:20px; /* Slightly larger for readability */
+				font-size:20px;
 			}
 			.search{
-				grid-template-columns:1fr;
+				grid-template-columns:1fr; /* Stacked layout */
 				gap:8px;
 				margin:4px 0 10px;
 			}
 			.search-btn{
 				width:100%;
-				font-size:14px;
-				height:36px;
+				height:34px; /* Slightly larger for usability */
+				font-size:12px;
+				padding:0 10px;
 				border-radius:8px;
 			}
 			.search-input{
 				height:36px;
 				border-radius:8px;
 				font-size:13px;
+			}
+			.filter-pills{
+				gap:6px;
+				margin:8px 0;
+				justify-content:center;
+			}
+			.filter-pill{
+				padding:6px 10px;
+				font-size:11px;
+			}
+			.filter-icon{
+				font-size:13px;
+			}
+			.offer-notification{
+				padding:8px 10px;
+				font-size:12px;
+				margin:8px 0;
+			}
+			.offer-icon{
+				font-size:14px;
 			}
 			.grid{grid-template-columns:1fr;gap:10px}
 			.card-content{padding:10px}
@@ -662,7 +782,7 @@
 		</div>
 	</header>
 
-	<!-- Hero slider -->
+	<!-- Hero slider and new elements -->
 	<section class="hero">
 		<div class="container hero-wrap">
 			<div class="slider" id="slider">
@@ -676,6 +796,31 @@
 					<button class="nav-btn" id="next" aria-label="Next">›</button>
 				</div>
 				<div class="dots" id="dots"></div>
+			</div>
+
+			<!-- Filter Pills with New Icons -->
+			<div class="filter-pills">
+				<div class="filter-pill active" onclick="setFilter('premium-unlocked')">
+					<span class="filter-icon premium">⭐</span>
+					Premium
+				</div>
+				<div class="filter-pill" onclick="setFilter('safe')">
+					<span class="filter-icon safe">✅</span>
+					100% Safe
+				</div>
+				<div class="filter-pill" onclick="setFilter('secure')">
+					<span class="filter-icon secure">🔒</span>
+					No Virus
+				</div>
+			</div>
+			
+			<!-- Animated Offer Notification -->
+			<div class="offer-notification">
+				<div class="offer-icon">🎁</div>
+				<div class="offer-text">
+					Complete a <span class="offer-highlight">quick offer</span> to unlock your fave game ❤️
+				</div>
+				<div class="offer-icon">❤️</div>
 			</div>
 		</div>
 	</section>
@@ -729,87 +874,83 @@
 		/* App logic */
 		let currentPage = 1;
 		let totalPages = 5;
+		let currentFilter = 'premium-unlocked';
 		
 		// Game data for all pages
 		const gameData = {
 			1: [
-				{ name: 'Robolife2 - Nova Duty', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1777390/capsule_616x353.jpg' },
-				{ name: 'Milf Collection', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/3772480/5c0e24d511bb65ce3577a7abc7cac2772f1947e6/capsule_616x353.jpg' },
-				{ name: 'Sweet Shine', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1636420/capsule_616x353.jpg' },
-				{ name: 'Inari', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2639100/811733a9020bec8f121032ace6f4139f15168fc3/capsule_616x353.jpg' },
-				{ name: 'Daily life with my succubus boss', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2059310/capsule_616x353.jpg' },
-				{ name: 'Parasitic Evil', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1997470/capsule_616x353.jpg' },
-				{ name: 'Oppai Muse', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1263160/capsule_616x353.jpg' },
-				{ name: 'Kurage Life', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2989770/6d7bc3d3ea78376fac85ced0d53bd074394e4d12/capsule_616x353.jpg' },
-				{ name: 'VillageRhapsody', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2109460/capsule_616x353.jpg' },
-				{ name: 'Benefitship', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2404000/capsule_616x353.jpg' }
+				{ name: 'Robolife2 - Nova Duty', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1777390/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Milf Collection', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/3772480/5c0e24d511bb65ce3577a7abc7cac2772f1947e6/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Sweet Shine', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1636420/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Inari', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2639100/811733a9020bec8f121032ace6f4139f15168fc3/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Daily life with my succubus boss', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2059310/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Parasitic Evil', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1997470/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Oppai Muse', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1263160/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Kurage Life', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2989770/6d7bc3d3ea78376fac85ced0d53bd074394e4d12/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'VillageRhapsody', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2109460/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Benefitship', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2404000/capsule_616x353.jpg', premium: true, safe: true, secure: true }
 			],
 			2: [
-				{ name: 'Love Sucks', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1577420/capsule_616x353.jpg' },
-				{ name: 'Cute Honey', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1347430/capsule_616x353.jpg' },
-				{ name: 'The Brave of Boner and the Demon of Halphas', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2959650/cae8c2ea20c7788deed2bc66e0203e29af3e8676/capsule_616x353.jpg' },
-				{ name: 'My Neighbor\'s Lonely Wife 2', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2274980/capsule_616x353.jpg' },
-				{ name: 'MILFs of Sunville - Season 1', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1794470/225def989779a47192e8d2a7576e90bd7ebec89e/capsule_616x353.jpg' },
-				{ name: 'Realms Of Bondage', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2353700/capsule_616x353.jpg' },
-				{ name: 'CHARMING HEART', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1985680/capsule_616x353.jpg' },
-				{ name: 'Handyman Legend', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2127010/capsule_616x353.jpg' },
-				{ name: 'Idol Hands 2', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2053940/capsule_616x353.jpg' },
-				{ name: 'Falling with Ice Phoenix!', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2685500/capsule_616x353.jpg' }
+				{ name: 'Love Sucks', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1577420/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Cute Honey', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1347430/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'The Brave of Boner and the Demon of Halphas', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2959650/cae8c2ea20c7788deed2bc66e0203e29af3e8676/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'My Neighbor\'s Lonely Wife 2', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2274980/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'MILFs of Sunville - Season 1', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1794470/225def989779a47192e8d2a7576e90bd7ebec89e/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Realms Of Bondage', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2353700/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'CHARMING HEART', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1985680/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Handyman Legend', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2127010/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Idol Hands 2', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2053940/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Falling with Ice Phoenix!', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2685500/capsule_616x353.jpg', premium: true, safe: true, secure: true }
 			],
 			3: [
-				{ name: 'Love & Sexy', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1264710/capsule_616x353.jpg' },
-				{ name: 'Legion of Valkyrie', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2389120/0f9c9d11aaa81241e21ff37d4589601e3e4f640e/capsule_616x353.jpg' },
-				{ name: 'Math Puzzle Challenge', category: 'puzzle', isNew: false },
-				{ name: 'Jungle Adventure Quest', category: 'adventure', isNew: true },
-				{ name: 'Basketball Pro League', category: 'sports', isUpdated: false },
-				{ name: 'Chess Master Online', category: 'strategy', isNew: false },
-				{ name: 'Fantasy RPG Legends', category: 'adventure', isUpdated: true },
-				{ name: 'Retro Arcade Collection', category: 'casual', isNew: true },
-				{ name: 'Defense Shield Pro', category: 'strategy', isUpdated: false },
-				{ name: 'Word Puzzle Master', category: 'puzzle', isNew: false }
+				{ name: 'Love & Sexy', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/1264710/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Legion of Valkyrie', category: 'adventure', isNew: true, image: 'https://shared.steamstatic.com/store_item_assets/steam/apps/2389120/0f9c9d11aaa81241e21ff37d4589601e3e4f640e/capsule_616x353.jpg', premium: true, safe: true, secure: true },
+				{ name: 'Math Puzzle Challenge', category: 'puzzle', isNew: false, premium: false, safe: true, secure: true },
+				{ name: 'Jungle Adventure Quest', category: 'adventure', isNew: true, premium: true, safe: true, secure: true },
+				{ name: 'Basketball Pro League', category: 'sports', isUpdated: false, premium: false, safe: true, secure: true },
+				{ name: 'Chess Master Online', category: 'strategy', isNew: false, premium: false, safe: true, secure: true },
+				{ name: 'Fantasy RPG Legends', category: 'adventure', isUpdated: true, premium: true, safe: true, secure: true },
+				{ name: 'Retro Arcade Collection', category: 'casual', isNew: true, premium: true, safe: true, secure: true },
+				{ name: 'Defense Shield Pro', category: 'strategy', isUpdated: false, premium: false, safe: true, secure: true },
+				{ name: 'Word Puzzle Master', category: 'puzzle', isNew: false, premium: false, safe: true, secure: true }
 			],
 			4: [
-				{ name: 'Formula Racing Elite', category: 'racing', isUpdated: true },
-				{ name: 'Sniper Elite Mission', category: 'action', isNew: true },
-				{ name: 'Wizard Magic Academy', category: 'adventure', isUpdated: false },
-				{ name: 'Tennis World Tour', category: 'sports', isNew: false },
-				{ name: 'Empire Strategy Game', category: 'strategy', isUpdated: true },
-				{ name: 'Treasure Hunt Island', category: 'adventure', isNew: true },
-				{ name: 'Mech Warrior Battle', category: 'action', isUpdated: true },
-				{ name: 'Farm Life Simulator', category: 'casual', isNew: false },
-				{ name: 'Street Racing Underground', category: 'racing', isNew: true },
-				{ name: 'Detective Mystery Case', category: 'adventure', isUpdated: false }
+				{ name: 'Formula Racing Elite', category: 'racing', isUpdated: true, premium: false, safe: true, secure: true },
+				{ name: 'Sniper Elite Mission', category: 'action', isNew: true, premium: true, safe: true, secure: true },
+				{ name: 'Wizard Magic Academy', category: 'adventure', isUpdated: false, premium: true, safe: true, secure: true },
+				{ name: 'Tennis World Tour', category: 'sports', isNew: false, premium: false, safe: true, secure: true },
+				{ name: 'Empire Strategy Game', category: 'strategy', isUpdated: true, premium: false, safe: true, secure: true },
+				{ name: 'Treasure Hunt Island', category: 'adventure', isNew: true, premium: true, safe: true, secure: true },
+				{ name: 'Mech Warrior Battle', category: 'action', isUpdated: true, premium: true, safe: true, secure: true },
+				{ name: 'Farm Life Simulator', category: 'casual', isNew: false, premium: false, safe: true, secure: true },
+				{ name: 'Street Racing Underground', category: 'racing', isNew: true, premium: true, safe: true, secure: true },
+				{ name: 'Detective Mystery Case', category: 'adventure', isUpdated: false, premium: true, safe: true, secure: true }
 			],
 			5: [
-				{ name: 'Brain Training Puzzles', category: 'puzzle', isNew: false },
-				{ name: 'Pirate Ship Adventure', category: 'adventure', isUpdated: true },
-				{ name: 'Golf Championship Pro', category: 'sports', isNew: true },
-				{ name: 'Risk Strategy Board', category: 'strategy', isUpdated: false },
-				{ name: 'Dragon Quest Saga', category: 'adventure', isNew: false },
-				{ name: 'Bubble Pop Mania', category: 'casual', isUpdated: true },
-				{ name: 'Castle Defense Wars', category: 'strategy', isNew: true },
-				{ name: 'Sudoku Master Pro', category: 'puzzle', isUpdated: false },
-				{ name: 'Monster Truck Rally', category: 'racing', isNew: false },
-				{ name: 'Zombie Apocalypse', category: 'action', isUpdated: true }
+				{ name: 'Brain Training Puzzles', category: 'puzzle', isNew: false, premium: false, safe: true, secure: true },
+				{ name: 'Pirate Ship Adventure', category: 'adventure', isUpdated: true, premium: true, safe: true, secure: true },
+				{ name: 'Golf Championship Pro', category: 'sports', isNew: true, premium: false, safe: true, secure: true },
+				{ name: 'Risk Strategy Board', category: 'strategy', isUpdated: false, premium: false, safe: true, secure: true },
+				{ name: 'Dragon Quest Saga', category: 'adventure', isNew: false, premium: true, safe: true, secure: true },
+				{ name: 'Bubble Pop Mania', category: 'casual', isUpdated: true, premium: false, safe: true, secure: true },
+				{ name: 'Castle Defense Wars', category: 'strategy', isNew: true, premium: false, safe: true, secure: true },
+				{ name: 'Sudoku Master Pro', category: 'puzzle', isUpdated: false, premium: false, safe: true, secure: true },
+				{ name: 'Monster Truck Rally', category: 'racing', isNew: false, premium: false, safe: true, secure: true },
+				{ name: 'Zombie Apocalypse', category: 'action', isUpdated: true, premium: true, safe: true, secure: true }
 			]
 		};
 		
+		function setFilter(filter) {
+			currentFilter = filter;
+			document.querySelectorAll('.filter-pill').forEach(pill => {
+				pill.classList.toggle('active', pill.getAttribute('onclick').includes(filter));
+			});
+			performSearch();
+		}
+
 		function performSearch() {
 			const query = document.getElementById('mainSearch').value.trim().toLowerCase();
-			
-			if (!query) {
-				changePage(currentPage);
-				return;
-			}
-			
 			const filteredGames = filterGames(query);
-			
-			if (filteredGames.length === 0) {
-				const grid = document.getElementById('grid');
-				grid.innerHTML = '<div style="color: var(--muted); text-align: center; width: 100%;">No results found for "' + query + '"</div>';
-				return;
-			}
-			
 			populateGridWithResults(filteredGames);
 		}
 		
@@ -817,10 +958,14 @@
 			const filtered = [];
 			for (let page in gameData) {
 				gameData[page].forEach(game => {
-					if (
+					const matchesQuery = !query || 
 						game.name.toLowerCase().includes(query) ||
-						game.category.toLowerCase().includes(query)
-					) {
+						game.category.toLowerCase().includes(query);
+					const matchesFilter = 
+						currentFilter === 'premium-unlocked' ? game.premium :
+						currentFilter === 'safe' ? game.safe :
+						currentFilter === 'secure' ? game.secure : true;
+					if (matchesQuery && matchesFilter) {
 						filtered.push(game);
 					}
 				});
@@ -831,6 +976,10 @@
 		function populateGridWithResults(games) {
 			const grid = document.getElementById('grid');
 			grid.innerHTML = '';
+			if (games.length === 0) {
+				grid.innerHTML = `<div style="color: var(--muted); text-align: center; width: 100%;">No results found for current filter</div>`;
+				return;
+			}
 			const frag = document.createDocumentFragment();
 			
 			games.forEach((game, i) => {
@@ -839,6 +988,9 @@
 				card.setAttribute('data-category', game.category); 
 				card.setAttribute('data-new', game.isNew ? '1' : '0'); 
 				card.setAttribute('data-updated', game.isUpdated ? '1' : '0');
+				card.setAttribute('data-premium', game.premium ? '1' : '0');
+				card.setAttribute('data-safe', game.safe ? '1' : '0');
+				card.setAttribute('data-secure', game.secure ? '1' : '0');
 				
 				const poster = document.createElement('div'); 
 				poster.className = 'poster';
@@ -985,84 +1137,16 @@
 			searchInput.value = '';
 			
 			populateGrid(currentPage);
-			
-			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 
 		function populateGrid(pageNumber = 1) {
-			const grid = document.getElementById('grid');
 			const games = gameData[pageNumber] || gameData[1];
-			
-			grid.innerHTML = '';
-			const frag = document.createDocumentFragment();
-			
-			games.forEach((game, i) => {
-				const card = document.createElement('div'); 
-				card.className = 'card';
-				card.setAttribute('data-category', game.category); 
-				card.setAttribute('data-new', game.isNew ? '1' : '0'); 
-				card.setAttribute('data-updated', game.isUpdated ? '1' : '0');
-				
-				const poster = document.createElement('div'); 
-				poster.className = 'poster';
-				if (game.image) {
-					poster.setAttribute('data-bg', game.image);
-					poster.style.backgroundImage = `url('${game.image}')`;
-					poster.style.backgroundSize = 'cover';
-					poster.style.backgroundPosition = 'center';
-				}
-				
-				const overlay = document.createElement('div'); 
-				overlay.className = 'overlay'; 
-				poster.appendChild(overlay);
-				
-				const badge = document.createElement('div'); 
-				badge.className = 'badge';
-				badge.textContent = game.isNew ? 'NEW' : (game.isUpdated ? 'UPDATED' : '');
-				if (badge.textContent) badge.style.opacity = '1';
-				poster.appendChild(badge);
-				
-				const meta = document.createElement('div'); 
-				meta.className = 'meta';
-				const title = document.createElement('div'); 
-				title.className = 'title'; 
-				title.textContent = game.name;
-				meta.appendChild(title);
-				
-				poster.appendChild(meta);
-				
-				const cardContent = document.createElement('div');
-				cardContent.className = 'card-content';
-				
-				const cardTitle = document.createElement('h3');
-				cardTitle.className = 'card-title';
-				cardTitle.textContent = game.name;
-				
-				const downloadBtn = document.createElement('button');
-				downloadBtn.className = 'download-btn';
-				downloadBtn.innerHTML = `
-					<svg class="download-icon" viewBox="0 0 24 24">
-						<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" 
-							  stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-					</svg>
-					Download
-				`;
-				downloadBtn.addEventListener('click', (e) => handleDownload(game.name, e));
-				
-				cardContent.appendChild(cardTitle);
-				cardContent.appendChild(downloadBtn);
-				
-				card.appendChild(poster); 
-				card.appendChild(cardContent);
-				
-				poster.addEventListener('click', () => openContentLocker(game.name));
-				poster.style.cursor = 'pointer';
-				poster.title = 'Click to view details';
-				
-				frag.appendChild(card);
+			const filteredGames = games.filter(game => {
+				return currentFilter === 'premium-unlocked' ? game.premium :
+					currentFilter === 'safe' ? game.safe :
+					currentFilter === 'secure' ? game.secure : true;
 			});
-			
-			grid.appendChild(frag);
+			populateGridWithResults(filteredGames);
 		}
 
 		// Initialize with first page
