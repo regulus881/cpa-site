@@ -161,13 +161,14 @@
 		}
 		.slide{
 			min-width:100%;
-			aspect-ratio:21/9;
+			aspect-ratio:616/353; /* Match 616x353 image dimensions */
 			background:
 				var(--gradient-3),
 				radial-gradient(120% 120% at 100% 0%, rgba(255,107,53,.15) 0%, transparent 52%),
 				linear-gradient(135deg, #2d3748, #4a5568);
 			position:relative;overflow:hidden;
-			background-size:cover;background-position:center;
+			background-size:cover;
+			background-position:center;
 		}
 		.slide::after{
 			content:"";position:absolute;inset:0;
@@ -226,7 +227,7 @@
 				0 0 20px rgba(0,180,216,.2);
 		}
 		.poster{
-			aspect-ratio:231/87; /* Steam capsule ratio */
+			aspect-ratio:616/353; /* Match 616x353 image dimensions */
 			background:
 				var(--gradient-3),
 				radial-gradient(120% 120% at 100% 0%, rgba(255,107,53,.12) 0%, transparent 52%),
@@ -235,6 +236,8 @@
 			display:flex;
 			align-items:center;
 			justify-content:center;
+			background-size:cover;
+			background-position:center;
 		}
 		.badge{
 			position:absolute;top:6px;left:6px;
@@ -495,6 +498,7 @@
 			.card:hover{transform:translateY(-2px)}
 			.card-content{padding:8px}
 			.download-btn{padding:8px 12px;font-size:12px}
+			.poster{aspect-ratio:616/353} /* Maintain aspect ratio */
 		}
 
 		@media (max-width:520px){
@@ -519,6 +523,7 @@
 			}
 			.card-content{padding:10px}
 			.download-btn{padding:10px 16px;font-size:13px}
+			.poster{aspect-ratio:616/353} /* Maintain aspect ratio */
 		}
 	</style>
 </head>
@@ -683,7 +688,6 @@
 			const sectionSub = document.querySelector('.section-sub');
 			
 			if (!query) {
-				// If search is cleared, restore the current page and reset the section subtitle
 				sectionSub.textContent = 'Fresh content with a clean, fast layout';
 				changePage(currentPage);
 				return;
@@ -692,23 +696,18 @@
 			const filteredGames = filterGames(query);
 			
 			if (filteredGames.length === 0) {
-				// Show feedback if no results are found
 				sectionSub.textContent = `No results found for "${query}"`;
 				const grid = document.getElementById('grid');
 				grid.innerHTML = '';
 				return;
 			}
 			
-			// Update section subtitle with the number of results
 			sectionSub.textContent = `Found ${filteredGames.length} result${filteredGames.length === 1 ? '' : 's'} for "${query}"`;
-			
-			// Populate grid with filtered results
 			populateGridWithResults(filteredGames);
 		}
 		
 		function filterGames(query) {
 			const filtered = [];
-			// Search across all pages
 			for (let page in gameData) {
 				gameData[page].forEach(game => {
 					if (
@@ -829,19 +828,16 @@
 			if (e.key === 'Enter') performSearch(); 
 		});
 		
-		// Add input event listener to handle real-time search clearing
 		document.getElementById('mainSearch').addEventListener('input', function() {
 			if (this.value.trim() === '') {
 				performSearch();
 			}
 		});
 
-		// Download button handler
 		function handleDownload(gameName, event) {
 			event.stopPropagation();
 			console.log('Download initiated for:', gameName);
 			
-			// Add download animation
 			const btn = event.target.closest('.download-btn');
 			if (btn) {
 				const originalText = btn.innerHTML;
@@ -858,7 +854,6 @@
 			}
 		}
 
-		// Page navigation
 		function changePage(page) {
 			if (page === 'prev') {
 				if (currentPage > 1) {
@@ -872,7 +867,6 @@
 				currentPage = page;
 			}
 			
-			// Update active page button
 			document.querySelectorAll('.page-btn').forEach(btn => {
 				btn.classList.remove('active');
 				if (btn.dataset.page == currentPage) {
@@ -880,27 +874,21 @@
 				}
 			});
 			
-			// Clear search input and restore default section subtitle
 			const searchInput = document.getElementById('mainSearch');
 			const sectionSub = document.querySelector('.section-sub');
 			searchInput.value = '';
 			sectionSub.textContent = 'Fresh content with a clean, fast layout';
 			
-			// Populate grid with new page data
 			populateGrid(currentPage);
 			
-			// Smooth scroll to top
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 
-		/* Fill grid with cards including download buttons */
 		function populateGrid(pageNumber = 1) {
 			const grid = document.getElementById('grid');
 			const games = gameData[pageNumber] || gameData[1];
 			
-			// Clear existing content
 			grid.innerHTML = '';
-			
 			const frag = document.createDocumentFragment();
 			
 			games.forEach((game, i) => {
@@ -938,7 +926,6 @@
 				
 				poster.appendChild(meta);
 				
-				// Create card content section
 				const cardContent = document.createElement('div');
 				cardContent.className = 'card-content';
 				
@@ -963,7 +950,6 @@
 				card.appendChild(poster); 
 				card.appendChild(cardContent);
 				
-				// Make poster clickable for content locker
 				poster.addEventListener('click', () => openContentLocker(game.name));
 				poster.style.cursor = 'pointer';
 				poster.title = 'Click to view details';
@@ -1016,6 +1002,8 @@
 				const url = s.getAttribute('data-bg');
 				if (url && !s.style.backgroundImage){ 
 					s.style.backgroundImage = `url('${url}')`; 
+					s.style.backgroundSize = 'cover';
+					s.style.backgroundPosition = 'center';
 				}
 			}
 			
@@ -1066,30 +1054,21 @@
 		})();
 
 		/* VPN Detection */
-		const API_KEY = '64d52f4862d144399659edc49c1356f4'; // API key for ipgeolocation.io
+		const API_KEY = '64d52f4862d144399659edc49c1356f4';
 		const API_URL = `https://api.ipgeolocation.io/ipgeo?apiKey=${API_KEY}`;
 
-		// Function to detect VPN usage
 		async function detectVPN() {
 			try {
-				// Fetch IP geolocation data
 				const response = await fetch(API_URL);
 				const data = await response.json();
-				// Get browser timezone
 				const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-				// Extract geolocation timezone and ISP details
 				const geoTimezone = data.time_zone.name;
 				const isp = data.isp.toLowerCase();
-				// Check for VPN indicators                                                                                                                                                  
 				const isVPN = 
-					// Timezone mismatch
 					browserTimezone !== geoTimezone ||
-					// ISP contains VPN-related keywords
 					/vpn|proxy|hosting|cloud|data center/i.test(isp) ||
-					// Known VPN providers
 					/nordvpn|expressvpn|surfshark|protonvpn|ipvanish|hidemyass/i.test(isp);
 				if (isVPN) {
-					// Show VPN block screen
 					document.getElementById('vpnBlock').style.display = 'flex';
 					document.body.style.overflow = 'hidden';
 					console.log('VPN usage detected. Access blocked.');
@@ -1097,12 +1076,10 @@
 					console.log('No VPN detected. Access allowed.');
 				}
 			} catch (error) {
-				// Log error silently in console
 				console.error('Error detecting VPN:', error);
 			}
 		}
 
-		// Run VPN detection on page load
 		window.onload = detectVPN;
 	</script>
 </body>
