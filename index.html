@@ -46,15 +46,12 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* VPN Block Styles */
+        /* VPN Block */
         .vpn-block {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #dc2626, #991b1b);
-            color: white;
+            inset: 0;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: #fff;
             display: none;
             align-items: center;
             justify-content: center;
@@ -65,30 +62,16 @@
 
         .vpn-block-content {
             max-width: 600px;
-            animation: slideIn 0.5s ease-out;
         }
 
         .vpn-block h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
+            font-size: 2.1rem;
+            margin-bottom: 12px;
             font-weight: 800;
         }
 
         .vpn-block p {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            opacity: 0.9;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            opacity: 0.95;
         }
 
         /* Centered Navigation */
@@ -174,7 +157,7 @@
         }
 
         .search-container {
-            max-width: 420px; /* Reduced from 500px */
+            max-width: 420px;
             margin: 0 auto;
         }
 
@@ -182,15 +165,15 @@
             position: relative;
             display: flex;
             background: rgba(40, 40, 40, 0.95);
-            border-radius: 10px; /* Slightly smaller radius */
+            border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            height: 44px; /* Made smaller from default */
+            height: 44px;
         }
 
         .search-emoji {
             position: absolute;
-            left: 14px; /* Adjusted positioning */
+            left: 14px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 16px;
@@ -201,9 +184,9 @@
 
         .search-input {
             flex: 1;
-            padding: 10px 16px 10px 42px; /* Reduced padding and adjusted left padding for emoji */
+            padding: 10px 16px 10px 42px;
             border: none;
-            font-size: 15px; /* Slightly smaller font */
+            font-size: 15px;
             outline: none;
             background: transparent;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
@@ -255,7 +238,6 @@
             font-size: 20px;
             animation: bounce 2s ease-in-out infinite;
             filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));
-            /* Added slight downward positioning */
             transform: translateY(2px);
         }
 
@@ -283,13 +265,13 @@
 
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
-                transform: translateY(2px); /* Updated to include the base offset */
+                transform: translateY(2px);
             }
             40% {
-                transform: translateY(-4px); /* Adjusted from -6px */
+                transform: translateY(-4px);
             }
             60% {
-                transform: translateY(-1px); /* Adjusted from -3px */
+                transform: translateY(-1px);
             }
         }
 
@@ -302,7 +284,6 @@
             }
         }
 
-        /* Pulsing glow effect */
         @keyframes glowPulse {
             0%, 100% {
                 box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1), 0 0 0 rgba(59, 130, 246, 0.1);
@@ -358,7 +339,6 @@
             box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
         }
 
-        /* Animated background effect */
         .filter-pill::before {
             content: '';
             position: absolute;
@@ -374,7 +354,6 @@
             left: 100%;
         }
 
-        /* Consistent emoji sizing with individual adjustments and continuous color animations */
         .filter-icon {
             display: inline-flex;
             align-items: center;
@@ -387,13 +366,11 @@
             transition: all 0.3s ease;
         }
 
-        /* Individual icon size adjustments to make them visually consistent */
         .filter-icon.mobile { font-size: 13px; }
         .filter-icon.coins { font-size: 13px; }
         .filter-icon.no-ads { font-size: 16px; }
         .filter-icon.premium { font-size: 16px; }
 
-        /* Continuous color animations for mobile visibility */
         .filter-icon.premium {
             animation: starGlow 2s ease-in-out infinite alternate;
         }
@@ -410,7 +387,6 @@
             animation: blueWave 2.2s ease-in-out infinite alternate;
         }
 
-        /* Color animation keyframes */
         @keyframes starGlow {
             0% { 
                 filter: hue-rotate(0deg) brightness(1) saturate(1);
@@ -455,7 +431,6 @@
             }
         }
 
-        /* Cleaner Mod Cards */
         .featured-section {
             padding: 40px 20px;
             max-width: 1200px;
@@ -585,7 +560,6 @@
             background: linear-gradient(135deg, #2563eb, #1e40af);
         }
 
-        /* Content Locker Popup Styles */
         .popup-overlay {
             position: fixed;
             top: 0;
@@ -655,7 +629,6 @@
             border-radius: 20px;
         }
 
-        /* Review Section */
         .reviews-section {
             background: rgba(15, 15, 35, 0.8);
             padding: 60px 20px;
@@ -712,7 +685,6 @@
             font-weight: 500;
         }
 
-        /* Footer */
         .footer {
             background: rgba(15, 15, 35, 0.95);
             color: #e2e8f0;
@@ -746,22 +718,21 @@
             letter-spacing: -0.009em;
         }
 
-        /* Mobile Responsive */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.4rem;
             }
 
             .search-container {
-                max-width: 350px; /* Smaller on mobile */
+                max-width: 350px;
             }
 
             .main-search {
-                height: 42px; /* Even smaller on mobile */
+                height: 42px;
             }
 
             .search-input {
-                font-size: 14px; /* Smaller font on mobile */
+                font-size: 14px;
                 padding: 9px 14px 9px 40px;
             }
 
@@ -779,7 +750,7 @@
 
             .offer-icon {
                 font-size: 18px;
-                transform: translateY(3px); /* Slightly more offset on mobile */
+                transform: translateY(3px);
             }
 
             .offer-text {
@@ -787,7 +758,7 @@
             }
 
             .section-title {
-                font-size: 2.2rem; /* Smaller on mobile */
+                font-size: 2.2rem;
             }
 
             .filter-pills {
@@ -838,10 +809,10 @@
 </head>
 
 <body>
-    <!-- VPN Block Screen (Hidden by default) -->
+    <!-- VPN Block Screen -->
     <div class="vpn-block" id="vpnBlock">
         <div class="vpn-block-content">
-            <h1>🚫 Access Blocked</h1>
+            <h1>Access Blocked</h1>
             <p>VPN or Proxy connections are not allowed on this site.</p>
             <p>Please disable your VPN/Proxy and refresh the page to continue.</p>
         </div>
@@ -862,7 +833,6 @@
         <h1>Trusted Mobile Game Mods</h1>
         <p class="hero-subtitle">Fast, safe, and ready to enhance your gaming.</p>
 
-        <!-- Simple Search -->
         <div class="search-section">
             <div class="search-container">
                 <div class="main-search">
@@ -872,7 +842,6 @@
             </div>
         </div>
         
-        <!-- Filter Pills with New Icons -->
         <div class="filter-pills">
             <div class="filter-pill active" onclick="setFilter('premium-unlocked')">
                 <span class="filter-icon premium">⭐</span>
@@ -888,7 +857,6 @@
             </div>
         </div>
         
-        <!-- Animated Offer Notification -->
         <div class="offer-notification">
             <div class="offer-icon">🎁</div>
             <div class="offer-text">
@@ -898,7 +866,6 @@
         </div>
     </section>
 
-    <!-- Cleaner Mod Listings -->
     <section class="featured-section" id="mods">
         <h2 class="section-title">Top-Rated Mods</h2>
         
@@ -1015,7 +982,6 @@
         </div>
     </section>
 
-    <!-- Content Locker Popup -->
     <div class="popup-overlay" id="contentLockerPopup">
         <div class="popup-content">
             <button class="popup-close" onclick="closeContentLocker()">×</button>
@@ -1023,7 +989,6 @@
         </div>
     </div>
 
-    <!-- Improved Reviews Section -->
     <section class="reviews-section" id="reviews">
         <div class="reviews-container">
             <h3 class="reviews-title">What Our Users Say</h3>
@@ -1056,7 +1021,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer" id="contact">
         <div class="footer-links">
             <a href="#" onclick="showInfo('contact')">Contact</a>
@@ -1068,336 +1032,37 @@
     </footer>
 
     <script>
-        // Enhanced VPN Detection System - Silent Background Operation
-        (function() {
-            'use strict';
-            
-            // Obfuscated variables and configuration
-            const _0x4f2a = {
-                'apis': [
-                    { 'url': 'vpnapi.io', 'key': 'd4f2116e2ff14e6abf3ecd0ae5d96667', 'timeout': 12000 },
-                    { 'url': 'proxycheck.io', 'key': 'free', 'timeout': 10000 },
-                    { 'url': 'ip-api.com', 'key': 'none', 'timeout': 8000 }
-                ],
-                'ipServices': ['api.ipify.org', 'ipapi.co', 'httpbin.org/ip'],
-                'thresholds': { 'score': 0.6, 'checks': 2 }
-            };
+        /* VPN Detection */
+        const API_KEY = '64d52f4862d144399659edc49c1356f4';
+        const API_URL = `https://api.ipgeolocation.io/ipgeo?apiKey=${API_KEY}`;
 
-            let _0x3c1d = { 'blocked': false, 'score': 0, 'checks': 0 };
-
-            // Silent IP detection
-            async function _0x1a2b() {
-                for (const service of _0x4f2a.ipServices) {
-                    try {
-                        const controller = new AbortController();
-                        const timeout = setTimeout(() => controller.abort(), 5000);
-                        
-                        let url, parser;
-                        switch(service) {
-                            case 'api.ipify.org':
-                                url = `https://${service}?format=json`;
-                                parser = data => data.ip;
-                                break;
-                            case 'ipapi.co':
-                                url = `https://${service}/ip`;
-                                parser = data => data.trim();
-                                break;
-                            case 'httpbin.org/ip':
-                                url = `https://${service}`;
-                                parser = data => JSON.parse(data).origin.split(',')[0];
-                                break;
-                        }
-
-                        const response = await fetch(url, { signal: controller.signal });
-                        clearTimeout(timeout);
-                        
-                        if (response.ok) {
-                            const data = await response.text();
-                            return parser(data);
-                        }
-                    } catch (e) {
-                        continue;
-                    }
-                }
-                return null;
-            }
-
-            // Enhanced VPN detection with multiple APIs
-            async function _0x2b3c(ip) {
-                const promises = _0x4f2a.apis.map(async api => {
-                    try {
-                        const controller = new AbortController();
-                        const timeout = setTimeout(() => controller.abort(), api.timeout);
-                        
-                        let url, headers = {};
-                        
-                        switch(api.url) {
-                            case 'vpnapi.io':
-                                url = `https://${api.url}/api/${ip}?key=${api.key}`;
-                                break;
-                            case 'proxycheck.io':
-                                url = `https://${api.url}/v2/${ip}?vpn=1&asn=1&risk=1&time=1`;
-                                break;
-                            case 'ip-api.com':
-                                url = `http://${api.url}/json/${ip}?fields=proxy,hosting,mobile`;
-                                break;
-                        }
-
-                        const response = await fetch(url, { 
-                            signal: controller.signal,
-                            headers,
-                            mode: 'cors'
-                        });
-                        clearTimeout(timeout);
-
-                        if (response.ok) {
-                            const data = await response.json();
-                            return _0x4d5e(data, api.url);
-                        }
-                    } catch (e) {
-                        return { detected: false, confidence: 0 };
-                    }
-                });
-
-                const results = await Promise.allSettled(promises);
-                return results.filter(r => r.status === 'fulfilled').map(r => r.value);
-            }
-
-            // Result parser for different APIs
-            function _0x4d5e(data, apiType) {
-                switch(apiType) {
-                    case 'vpnapi.io':
-                        return {
-                            detected: !!(data.security && (data.security.vpn || data.security.proxy)),
-                            confidence: data.security ? 0.9 : 0.1,
-                            type: 'vpnapi'
-                        };
-                    case 'proxycheck.io':
-                        return {
-                            detected: data[Object.keys(data)[0]]?.proxy === 'yes',
-                            confidence: 0.8,
-                            type: 'proxycheck'
-                        };
-                    case 'ip-api.com':
-                        return {
-                            detected: !!(data.proxy || data.hosting),
-                            confidence: 0.7,
-                            type: 'ipapi'
-                        };
-                    default:
-                        return { detected: false, confidence: 0 };
-                }
-            }
-
-            // WebRTC IP leak detection
-            async function _0x5f6g() {
-                return new Promise((resolve) => {
-                    try {
-                        const pc = new RTCPeerConnection({
-                            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
-                        });
-                        
-                        let localIPs = new Set();
-                        let timeout = setTimeout(() => {
-                            pc.close();
-                            resolve(localIPs.size > 0);
-                        }, 3000);
-
-                        pc.onicecandidate = (event) => {
-                            if (event.candidate) {
-                                const ip = event.candidate.candidate.match(/(\d+\.\d+\.\d+\.\d+)/);
-                                if (ip && !ip[1].startsWith('127.') && !ip[1].startsWith('169.254.')) {
-                                    localIPs.add(ip[1]);
-                                }
-                            }
-                        };
-
-                        pc.createDataChannel('test');
-                        pc.createOffer().then(offer => pc.setLocalDescription(offer));
-                    } catch (e) {
-                        resolve(false);
-                    }
-                });
-            }
-
-            // Timezone consistency check
-            function _0x6g7h() {
-                try {
-                    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                    const offset = new Date().getTimezoneOffset();
-                    const expectedOffset = {
-                        'America/New_York': 300,
-                        'Europe/London': 0,
-                        'Asia/Tokyo': -540
-                    };
-                    
-                    // Basic inconsistency check
-                    return Math.abs(offset - (expectedOffset[tz] || offset)) > 60;
-                } catch (e) {
-                    return false;
-                }
-            }
-
-            // Language/locale inconsistency check
-            function _0x7h8i() {
-                try {
-                    const languages = navigator.languages || [navigator.language];
-                    const primaryLang = languages[0];
-                    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                    
-                    // Basic inconsistency patterns
-                    const patterns = {
-                        'en-US': /America\/(New_York|Chicago|Denver|Los_Angeles)/,
-                        'en-GB': /Europe\/London/,
-                        'de': /Europe\/(Berlin|Munich)/,
-                        'fr': /Europe\/Paris/,
-                        'ja': /Asia\/Tokyo/
-                    };
-                    
-                    const pattern = patterns[primaryLang];
-                    return pattern && !pattern.test(timezone);
-                } catch (e) {
-                    return false;
-                }
-            }
-
-            // DNS leak detection
-            async function _0x8i9j() {
-                try {
-                    const controller = new AbortController();
-                    const timeout = setTimeout(() => controller.abort(), 5000);
-                    
-                    const response = await fetch('https://1.1.1.1/cdn-cgi/trace', {
-                        signal: controller.signal
-                    });
-                    clearTimeout(timeout);
-                    
-                    if (response.ok) {
-                        const text = await response.text();
-                        return text.includes('uag=') && !text.includes('colo=');
-                    }
-                } catch (e) {
-                    return false;
-                }
-                return false;
-            }
-
-            // Canvas fingerprinting consistency
-            function _0x9j0k() {
-                try {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    ctx.textBaseline = 'top';
-                    ctx.font = '14px Arial';
-                    ctx.fillText('VPN Detection Test 🔒', 2, 2);
-                    const fingerprint = canvas.toDataURL();
-                    
-                    // Store and compare on subsequent visits
-                    const stored = localStorage.getItem('_fp');
-                    if (stored && stored !== fingerprint) {
-                        return true; // Fingerprint changed, possible VPN
-                    }
-                    localStorage.setItem('_fp', fingerprint);
-                    return false;
-                } catch (e) {
-                    return false;
-                }
-            }
-
-            // Execute block action
-            function _0xa0b1() {
-                if (_0x3c1d.blocked) return;
-                _0x3c1d.blocked = true;
-                
-                // Silent blocking - just show the block screen
-                const blockElement = document.getElementById('vpnBlock');
-                if (blockElement) {
-                    blockElement.style.display = 'flex';
+        async function detectVPN() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                const geoTimezone = data.time_zone.name;
+                const isp = data.isp.toLowerCase();
+                const isVPN = 
+                    browserTimezone !== geoTimezone ||
+                    /vpn|proxy|hosting|cloud|data center/i.test(isp) ||
+                    /nordvpn|expressvpn|surfshark|protonvpn|ipvanish|hidemyass/i.test(isp);
+                if (isVPN) {
+                    document.getElementById('vpnBlock').style.display = 'flex';
                     document.body.style.overflow = 'hidden';
+                    console.log('VPN usage detected. Access blocked.');
+                } else {
+                    console.log('No VPN detected. Access allowed.');
                 }
+            } catch (error) {
+                console.error('Error detecting VPN:', error);
             }
+        }
 
-            // Main detection orchestrator
-            async function _0xb1c2() {
-                try {
-                    // Get IP silently
-                    const userIP = await _0x1a2b();
-                    if (!userIP) return;
+        window.onload = detectVPN;
 
-                    // Run all detection methods in parallel
-                    const [
-                        apiResults,
-                        webRtcLeak,
-                        timezoneInconsistent,
-                        localeInconsistent,
-                        dnsLeak,
-                        fingerprintChanged
-                    ] = await Promise.all([
-                        _0x2b3c(userIP),
-                        _0x5f6g(),
-                        Promise.resolve(_0x6g7h()),
-                        Promise.resolve(_0x7h8i()),
-                        _0x8i9j(),
-                        Promise.resolve(_0x9j0k())
-                    ]);
-
-                    // Calculate composite score
-                    let totalScore = 0;
-                    let validChecks = 0;
-
-                    // API results
-                    apiResults.forEach(result => {
-                        if (result.detected) {
-                            totalScore += result.confidence;
-                        }
-                        validChecks++;
-                    });
-
-                    // Additional detection methods
-                    const additionalChecks = [
-                        { detected: webRtcLeak, weight: 0.3 },
-                        { detected: timezoneInconsistent, weight: 0.2 },
-                        { detected: localeInconsistent, weight: 0.2 },
-                        { detected: dnsLeak, weight: 0.4 },
-                        { detected: fingerprintChanged, weight: 0.5 }
-                    ];
-
-                    additionalChecks.forEach(check => {
-                        if (check.detected) {
-                            totalScore += check.weight;
-                        }
-                        validChecks++;
-                    });
-
-                    // Calculate final score
-                    const finalScore = validChecks > 0 ? totalScore / validChecks : 0;
-                    
-                    // Block if score exceeds threshold or multiple methods detect VPN
-                    const detectionCount = apiResults.filter(r => r.detected).length + 
-                                         additionalChecks.filter(c => c.detected).length;
-
-                    if (finalScore >= _0x4f2a.thresholds.score || detectionCount >= _0x4f2a.thresholds.checks) {
-                        _0xa0b1();
-                    }
-
-                } catch (error) {
-                    // Silent failure - no console logs, no user notification
-                    return;
-                }
-            }
-
-            // Initialize detection system silently
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', _0xb1c2);
-            } else {
-                setTimeout(_0xb1c2, 100);
-            }
-
-        })();
-        // Original landing page functionality
         let currentFilter = 'all';
 
-        // Search and Filter Functions
         function performSearch() {
             const searchTerm = document.getElementById('mainSearch').value;
             if (searchTerm.trim()) {
@@ -1410,27 +1075,21 @@
         function setFilter(filterType) {
             currentFilter = filterType;
             
-            // Remove active class from all pills
             document.querySelectorAll('.filter-pill').forEach(pill => {
                 pill.classList.remove('active');
             });
             
-            // Add active class to clicked pill
             event.target.classList.add('active');
         }
 
-        // Content Locker Functions
         function openContentLocker(modName) {
             const popup = document.getElementById('contentLockerPopup');
             const iframe = document.getElementById('contentLockerFrame');
             
-            // Set the content locker URL
             iframe.src = 'https://installchecker.com/cl/i/o6wn2d';
             
-            // Show the popup
             popup.classList.add('show');
             
-            // Prevent body scrolling when popup is open
             document.body.style.overflow = 'hidden';
             
             console.log(`Opening content locker for ${modName}`);
@@ -1440,24 +1099,19 @@
             const popup = document.getElementById('contentLockerPopup');
             const iframe = document.getElementById('contentLockerFrame');
             
-            // Hide the popup
             popup.classList.remove('show');
             
-            // Clear the iframe source to stop any ongoing processes
             iframe.src = '';
             
-            // Restore body scrolling
             document.body.style.overflow = 'auto';
         }
 
-        // Close popup when clicking outside the content
         document.getElementById('contentLockerPopup').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeContentLocker();
             }
         });
 
-        // Close popup with Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeContentLocker();
@@ -1468,7 +1122,6 @@
             alert(`Opening ${type} information...`);
         }
 
-        // Enter key search functionality
         document.getElementById('mainSearch').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 performSearch();
