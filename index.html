@@ -498,10 +498,32 @@
       { name: "Cake", image: "https://i.postimg.cc/sDKBkWt5/Cake.webp", category: "resource" },
       { name: "Medkit", image: "https://i.postimg.cc/B6kVmtCF/MEDKIIIT.png", category: "tool" },
       { name: "Bandage", image: "https://i.postimg.cc/XJgH3pVt/Bandage-Close-Up.png", category: "tool" },
+      { name: "Carrot", image: "https://i.postimg.cc/rFq0ZjY8/Carrot.webp", category: "resource" },
+      { name: "Berry", image: "https://i.postimg.cc/J7NHQvx6/Pumpkin.webp", category: "resource" },
+      { name: "Steak", image: "https://i.postimg.cc/T3wyfw6F/Ribs-Uncooked.webp", category: "resource" },
+      { name: "Old Sack", image: "https://i.postimg.cc/7hdgykTp/Good-sack.webp", category: "tool" },
+      { name: "Good Sack", image: "https://i.postimg.cc/7hdgykTp/Good-sack.webp", category: "tool" },
+      { name: "Giant Sack", image: "https://i.postimg.cc/CMQC8j6m/Giant-sack.webp", category: "tool" },
+      { name: "Old Flashlight", image: "https://i.postimg.cc/yd9gtbHN/Old-flashlight.webp", category: "tool" },
+      { name: "Strong Flashlight", image: "https://i.postimg.cc/zvFLXH3Z/Strong-light.webp", category: "tool" },
+      { name: "Spear", image: "https://i.postimg.cc/8cSJSmpm/Poison-Spear.webp", category: "weapon" },
+      { name: "Morningstar", image: "https://i.postimg.cc/N0Kr70Cm/Trident-New.webp", category: "weapon" },
+      { name: "Katana", image: "https://i.postimg.cc/htyddmsK/Ice-Sword-Render.webp", category: "weapon" },
+      { name: "Revolver", image: "https://i.postimg.cc/TPH7PhFs/FSFSFS.png", category: "weapon" },
+      { name: "Rifle", image: "https://i.postimg.cc/rwHx0Wy5/SDFGDG.png", category: "weapon" },
+      { name: "Tactical Shotgun", image: "https://i.postimg.cc/3xJGN1gL/Tacticalshotgunbetter.webp", category: "weapon" },
+      { name: "Leather Armor", image: "https://i.postimg.cc/qMGnpSCh/Oil-barrel.webp", category: "tool" },
+      { name: "Iron Armor", image: "https://i.postimg.cc/L6SLK2hF/Fuel-canister.webp", category: "tool" },
+      { name: "Wood", image: "https://i.postimg.cc/8kMM0jpb/UFO-Scrap.webp", category: "resource" },
+      { name: "Coal", image: "https://i.postimg.cc/qMGnpSCh/Oil-barrel.webp", category: "resource" },
+      { name: "Fuel Canister", image: "https://i.postimg.cc/L6SLK2hF/Fuel-canister.webp", category: "resource" },
+      { name: "Oil Barrel", image: "https://i.postimg.cc/qMGnpSCh/Oil-barrel.webp", category: "resource" },
+      { name: "Scrap", image: "https://i.postimg.cc/8kMM0jpb/UFO-Scrap.webp", category: "resource" },
       { name: "Cyborg", image: "https://i.postimg.cc/7PpP2Y9V/Cyborgclass.webp", category: "class" },
       { name: "Pyromaniac", image: "https://i.postimg.cc/g2zCwfCs/Pyromancerclass.webp", category: "class" },
-      { name: "Flamethrower", image: "https://i.postimg.cc/TPH7PhFs/FSFSFS.png", category: "weapon" },
-      { name: "Rifle", image: "https://i.postimg.cc/rwHx0Wy5/SDFGDG.png", category: "weapon" },
+      { name: "Big Game Hunter", image: "https://i.postimg.cc/Sxgwcgqh/Big-Game-Masterclass.webp", category: "class" },
+      { name: "Assassin", image: "https://i.postimg.cc/L63d8Hbh/Assassinclass.webp", category: "class" },
+      { name: "Blacksmith", image: "https://i.postimg.cc/3JT5hy9P/Blacksmithclass.webp", category: "class" },
     ];
 
     function loadItems(filter = 'all') {
@@ -567,7 +589,7 @@
     });
 
     setInterval(() => {
-      const users = Math.floor(Math.random() * 100) + 300;
+      const users = Math.floor(Math.random() * 30) + 75;
       document.getElementById('online-users').textContent = users;
     }, 5000);
 
