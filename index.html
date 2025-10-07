@@ -1,1132 +1,577 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Games WAM | Trusted Mobile Game Mods</title>
-    <meta name="description" content="Top-rated mobile game mods for Android & iOS. Browse trusted mods with reviews.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>99 Nights in the Forest - Item Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Fredoka:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #8b5a9c;
+      --secondary-color: #a37aa3;
+      --accent-color: #e6a8e0;
+      --dark-color: #1a0d2e;
+      --light-color: #f5f5f5;
+      --card-bg: rgba(138, 90, 156, 0.15);
+      --text-color: #ffffff;
+      --border-color: rgba(230, 168, 224, 0.3);
+    }
     
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GN1K1JFT39"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-GN1K1JFT39');
-    </script>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(rgba(26, 13, 46, 0.85), rgba(58, 26, 82, 0.85)), 
+                  url('https://i.postimg.cc/B6cYsN5q/99-nights-in-the-forest.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: var(--text-color);
+      text-align: center;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 60px;
+    }
     
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 25%, #2d1b69 50%, #1a1a3e 75%, #0f0f23 100%);
-            background-size: 400% 400%;
-            animation: subtleGradient 30s ease-in-out infinite;
-            color: #1e293b;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            line-height: 1.47059;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            font-feature-settings: "kern";
-        }
-
-        @keyframes subtleGradient {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        /* VPN Block */
-        .vpn-block {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            color: #fff;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .vpn-block-content {
-            max-width: 600px;
-        }
-
-        .vpn-block h1 {
-            font-size: 2.1rem;
-            margin-bottom: 12px;
-            font-weight: 800;
-        }
-
-        .vpn-block p {
-            opacity: 0.95;
-        }
-
-        /* Centered Navigation */
-        .navbar {
-            background: rgba(15, 15, 35, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
-            padding: 0 20px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            height: 60px;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-
-        .logo-nav {
-            font-size: 18px;
-            font-weight: 700;
-            color: #60a5fa;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: -0.022em;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 900;
-            font-size: 14px;
-        }
-
-        /* Streamlined Hero Section */
-        .hero {
-            text-align: center;
-            padding: 40px 20px 20px;
-            color: white;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 3.2rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #ffffff, #60a5fa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
-            letter-spacing: -0.055em;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: #cbd5e1;
-            margin-bottom: 25px;
-            font-weight: 400;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-            letter-spacing: -0.012em;
-        }
-
-        /* Fixed Search Section - Made smaller */
-        .search-section {
-            margin: 20px 0 40px;
-        }
-
-        .search-container {
-            max-width: 420px;
-            margin: 0 auto;
-        }
-
-        .main-search {
-            position: relative;
-            display: flex;
-            background: rgba(40, 40, 40, 0.95);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            height: 44px;
-        }
-
-        .search-emoji {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            pointer-events: none;
-            color: rgba(255, 255, 255, 0.8);
-            z-index: 10;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 10px 16px 10px 42px;
-            border: none;
-            font-size: 15px;
-            outline: none;
-            background: transparent;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
-            font-weight: 400;
-            letter-spacing: -0.022em;
-            color: white;
-        }
-
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Offer Notification Styles - Updated icon positioning */
-        .offer-notification {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(147, 51, 234, 0.15));
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 20px;
-            padding: 12px 24px;
-            margin: 30px auto 20px;
-            max-width: 500px;
-            color: #e2e8f0;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: -0.01em;
-            position: relative;
-            overflow: hidden;
-            animation: gentleFloat 4s ease-in-out infinite, glowPulse 6s ease-in-out infinite;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1);
-        }
-
-        .offer-notification::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            animation: shimmer 3s linear infinite;
-            pointer-events: none;
-        }
-
-        .offer-icon {
-            font-size: 20px;
-            animation: bounce 2s ease-in-out infinite;
-            filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));
-            transform: translateY(2px);
-        }
-
-        .offer-text {
-            flex: 1;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .offer-highlight {
-            color: #60a5fa;
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
-        }
-
-        @keyframes gentleFloat {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-8px);
-            }
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(2px);
-            }
-            40% {
-                transform: translateY(-4px);
-            }
-            60% {
-                transform: translateY(-1px);
-            }
-        }
-
-        @keyframes shimmer {
-            0% {
-                transform: translateX(-100%) translateY(-100%) rotate(45deg);
-            }
-            100% {
-                transform: translateX(100%) translateY(100%) rotate(45deg);
-            }
-        }
-
-        @keyframes glowPulse {
-            0%, 100% {
-                box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1), 0 0 0 rgba(59, 130, 246, 0.1);
-            }
-            50% {
-                box-shadow: 0 8px 35px rgba(59, 130, 246, 0.2), 0 0 25px rgba(59, 130, 246, 0.15);
-            }
-        }
-
-        /* Filter Pills with Mobile-Friendly Color Animations */
-        .filter-pills {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-            max-width: 100%;
-            overflow-x: auto;
-            padding: 0 10px;
-        }
-
-        .filter-pill {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 18px;
-            font-size: 13px;
-            font-weight: 510;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: -0.016em;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            position: relative;
-            overflow: hidden;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .filter-pill:hover {
-            background: rgba(59, 130, 246, 0.3);
-            border-color: #3b82f6;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
-        }
-
-        .filter-pill.active {
-            background: rgba(59, 130, 246, 0.3);
-            border-color: #3b82f6;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
-        }
-
-        .filter-pill::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .filter-pill:hover::before {
-            left: 100%;
-        }
-
-        .filter-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 16px;
-            height: 16px;
-            font-size: 14px;
-            line-height: 1;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .filter-icon.mobile { font-size: 13px; }
-        .filter-icon.coins { font-size: 13px; }
-        .filter-icon.no-ads { font-size: 16px; }
-        .filter-icon.premium { font-size: 16px; }
-
-        .filter-icon.premium {
-            animation: starGlow 2s ease-in-out infinite alternate;
-        }
-
-        .filter-icon.coins {
-            animation: goldShine 2.5s ease-in-out infinite alternate;
-        }
-
-        .filter-icon.no-ads {
-            animation: redPulse 3s ease-in-out infinite alternate;
-        }
-
-        .filter-icon.mobile {
-            animation: blueWave 2.2s ease-in-out infinite alternate;
-        }
-
-        @keyframes starGlow {
-            0% { 
-                filter: hue-rotate(0deg) brightness(1) saturate(1);
-                text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
-            }
-            100% { 
-                filter: hue-rotate(60deg) brightness(1.3) saturate(1.5);
-                text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
-            }
-        }
-
-        @keyframes goldShine {
-            0% { 
-                filter: hue-rotate(0deg) brightness(1) saturate(1);
-                text-shadow: 0 0 3px rgba(255, 193, 7, 0.3);
-            }
-            100% { 
-                filter: hue-rotate(30deg) brightness(1.2) saturate(1.4);
-                text-shadow: 0 0 12px rgba(255, 193, 7, 0.7);
-            }
-        }
-
-        @keyframes redPulse {
-            0% { 
-                filter: hue-rotate(0deg) brightness(1) saturate(1);
-                text-shadow: 0 0 3px rgba(239, 68, 68, 0.3);
-            }
-            100% { 
-                filter: hue-rotate(-20deg) brightness(1.1) saturate(1.3);
-                text-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
-            }
-        }
-
-        @keyframes blueWave {
-            0% { 
-                filter: hue-rotate(0deg) brightness(1) saturate(1);
-                text-shadow: 0 0 3px rgba(59, 130, 246, 0.3);
-            }
-            100% { 
-                filter: hue-rotate(40deg) brightness(1.15) saturate(1.2);
-                text-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
-            }
-        }
-
-        .featured-section {
-            padding: 40px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.8rem;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 50px;
-            letter-spacing: -0.05em;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
-            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 30%, #e2e8f0 70%, #cbd5e1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
-            line-height: 1.15;
-        }
-
-        .featured-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .mod-card {
-            background: rgba(248, 250, 252, 0.98);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-        }
-
-        .mod-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.2);
-        }
-
-        .mod-image {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-        }
-
-        .mod-content {
-            padding: 20px;
-        }
-
-        .mod-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .mod-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #0f172a;
-            flex: 1;
-            letter-spacing: -0.019em;
-        }
-
-        .mod-rating {
-            background: #f59e0b;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-left: 12px;
-            letter-spacing: -0.003em;
-        }
-
-        .mod-features {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-        }
-
-        .feature-tag {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 3px 8px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: -0.002em;
-        }
-
-        .mod-stats {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            font-size: 13px;
-            color: #64748b;
-            font-weight: 400;
-            letter-spacing: -0.006em;
-        }
-
-        .mod-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .install-btn {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            font-size: 13px;
-            letter-spacing: -0.006em;
-        }
-
-        .install-btn:hover {
-            background: linear-gradient(135deg, #2563eb, #1e40af);
-        }
-
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .popup-overlay.show {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .popup-content {
-            background: white;
-            border-radius: 20px;
-            max-width: 90%;
-            max-height: 90%;
-            width: 600px;
-            height: 500px;
-            position: relative;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            animation: slideIn 0.3s ease-out;
-            overflow: hidden;
-        }
-
-        .popup-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0, 0, 0, 0.1);
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
-            z-index: 10001;
-            color: #666;
-            transition: all 0.2s ease;
-        }
-
-        .popup-close:hover {
-            background: rgba(0, 0, 0, 0.2);
-            color: #000;
-        }
-
-        .popup-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 20px;
-        }
-
-        .reviews-section {
-            background: rgba(15, 15, 35, 0.8);
-            padding: 60px 20px;
-            margin: 40px 20px;
-            border-radius: 24px;
-            backdrop-filter: blur(20px);
-        }
-
-        .reviews-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .reviews-title {
-            color: #60a5fa;
-            font-size: 2rem;
-            margin-bottom: 40px;
-            font-weight: 700;
-            letter-spacing: -0.035em;
-        }
-
-        .review-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-        }
-
-        .review-card {
-            background: rgba(248, 250, 252, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 24px;
-            border-radius: 16px;
-            color: #e2e8f0;
-        }
-
-        .review-content {
-            font-style: italic;
-            margin-bottom: 16px;
-            line-height: 1.6;
-            font-weight: 400;
-            letter-spacing: -0.009em;
-        }
-
-        .review-author {
-            font-weight: 600;
-            color: #60a5fa;
-            letter-spacing: -0.009em;
-        }
-
-        .review-rating {
-            color: #f59e0b;
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-
-        .footer {
-            background: rgba(15, 15, 35, 0.95);
-            color: #e2e8f0;
-            padding: 40px 20px 20px;
-            text-align: center;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 400;
-            transition: color 0.3s ease;
-            letter-spacing: -0.006em;
-        }
-
-        .footer-links a:hover {
-            color: #60a5fa;
-        }
-
-        .footer p {
-            font-weight: 400;
-            letter-spacing: -0.009em;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.4rem;
-            }
-
-            .search-container {
-                max-width: 350px;
-            }
-
-            .main-search {
-                height: 42px;
-            }
-
-            .search-input {
-                font-size: 14px;
-                padding: 9px 14px 9px 40px;
-            }
-
-            .search-emoji {
-                left: 12px;
-                font-size: 15px;
-            }
-
-            .offer-notification {
-                max-width: 90%;
-                margin: 20px auto 15px;
-                padding: 10px 16px;
-                font-size: 13px;
-            }
-
-            .offer-icon {
-                font-size: 18px;
-                transform: translateY(3px);
-            }
-
-            .offer-text {
-                font-size: 12px;
-            }
-
-            .section-title {
-                font-size: 2.2rem;
-            }
-
-            .filter-pills {
-                gap: 6px;
-                justify-content: center;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                padding: 0 5px;
-            }
-
-            .filter-pill {
-                padding: 5px 10px;
-                font-size: 12px;
-                border-radius: 16px;
-                min-width: fit-content;
-            }
-
-            .filter-icon {
-                width: 14px;
-                height: 14px;
-                font-size: 12px;
-            }
-
-            .filter-icon.mobile { font-size: 11px; }
-            .filter-icon.coins { font-size: 11px; }
-            .filter-icon.no-ads { font-size: 14px; }
-            .filter-icon.premium { font-size: 14px; }
-
-            .featured-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .popup-content {
-                width: 95%;
-                height: 80%;
-                margin: 10px;
-            }
-
-            .vpn-block h1 {
-                font-size: 2rem;
-            }
-
-            .vpn-block p {
-                font-size: 1rem;
-            }
-        }
-    </style>
+    h1, h2, .pack div, #page-title {
+      font-family: 'Fredoka', sans-serif;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    button {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .header {
+      padding: 15px 0;
+      background: rgba(0, 0, 0, 0.6);
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+    
+    .header img {
+      max-width: 80px;
+      height: auto;
+      margin-top: 5px;
+      filter: drop-shadow(0 0 8px rgba(230, 168, 224, 0.6));
+    }
+    
+    #page-title {
+      font-size: 1.5rem;
+      margin: 10px 0;
+      color: var(--accent-color);
+    }
+    
+    .subtitle {
+      font-size: 0.9rem;
+      color: #ccc;
+      max-width: 800px;
+      margin: 0 auto 15px;
+      padding: 0 15px;
+    }
+    
+    .stats-bar {
+      display: flex;
+      justify-content: space-around;
+      max-width: 800px;
+      margin: 0 auto 20px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+    
+    .stat-label {
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+    
+    .packs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px;
+      padding: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .pack {
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+      font-weight: bold;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+    
+    .pack:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+      border-color: var(--accent-color);
+    }
+    
+    .pack img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 5px;
+    }
+    
+    .pack div {
+      color: #fff;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+    
+    .pack button {
+      display: block;
+      width: 100%;
+      padding: 10px 15px;
+      background: linear-gradient(to bottom, var(--primary-color), #5a2d6b);
+      border: none;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-top: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+    
+    .pack button:hover {
+      background: linear-gradient(to bottom, #5a966c, var(--primary-color));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 15px;
+    }
+    
+    .modal-content {
+      background: rgba(30, 30, 30, 0.95);
+      color: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      width: 100%;
+      max-width: 320px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      font-family: 'Fredoka', sans-serif;
+      border: 1px solid var(--border-color);
+      position: relative;
+      backdrop-filter: blur(10px);
+      animation: modalFadeIn 0.4s ease;
+    }
+    
+    @keyframes modalFadeIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    .modal-content input {
+      width: 85%;
+      padding: 12px;
+      margin: 12px auto;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .modal-content button {
+      padding: 12px 24px;
+      background: linear-gradient(to bottom, var(--primary-color), #3a6147);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .modal-content button:hover {
+      background: linear-gradient(to bottom, #5a966c, var(--primary-color));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .close-btn:hover {
+      background: rgba(0, 0, 0, 0.5);
+    }
+    
+    .modal-item-img {
+      width: 100px;
+      height: auto;
+      margin: 0 auto 15px;
+      display: block;
+      border-radius: 8px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      object-fit: contain;
+    }
+    
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto 15px;
+      padding: 0 15px;
+    }
+    
+    .search-bar {
+      display: flex;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 30px;
+      padding: 8px 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .search-bar input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: white;
+      padding: 8px;
+      font-size: 1rem;
+      outline: none;
+    }
+    
+    .search-bar button {
+      background: transparent;
+      border: none;
+      color: var(--accent-color);
+      cursor: pointer;
+      padding: 0 10px;
+    }
+    
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+      padding: 0 15px;
+    }
+    
+    .filter-btn {
+      padding: 6px 12px;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      border-radius: 20px;
+      color: #ccc;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.8rem;
+    }
+    
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--primary-color);
+      color: white;
+    }
+    
+    .trust-badges {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.8rem;
+      color: #ccc;
+    }
+    
+    .trust-badge i {
+      color: var(--accent-color);
+    }
+    
+    .security-notice {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 8px;
+      margin: 15px auto;
+      max-width: 800px;
+      font-size: 0.8rem;
+      color: #ccc;
+    }
+    
+    .security-notice i {
+      color: var(--accent-color);
+      margin-right: 5px;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--primary-color);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      max-width: 300px;
+    }
+    
+    .notification.show {
+      transform: translateX(0);
+    }
+    
+    .glow {
+      box-shadow: 0 0 15px rgba(200, 200, 200, 0.3);
+    }
+    
+    @media (max-width: 480px) {
+      .packs {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+        padding: 10px;
+      }
+      
+      .pack img {
+        width: 70px;
+        height: 70px;
+      }
+      
+      #page-title {
+        font-size: 1.3rem;
+      }
+      
+      .stats-bar {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <!-- VPN Block Screen -->
-    <div class="vpn-block" id="vpnBlock">
-        <div class="vpn-block-content">
-            <h1>Access Blocked</h1>
-            <p>VPN or Proxy connections are not allowed on this site.</p>
-            <p>Please disable your VPN/Proxy and refresh the page to continue.</p>
-        </div>
+  <div class="header">
+    <img src="https://i.postimg.cc/qvyZjkth/TheDeer.webp" alt="Logo">
+    <h1 id="page-title">99 Nights In The Forest - Item Generator</h1>
+    <p class="subtitle">Claim powerful gear and essential supplies to dominate the wilderness</p>
+    
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="stat-number" id="total-claims">2,347</div>
+        <div class="stat-label">Total Claims</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" id="online-users">89</div>
+        <div class="stat-label">Online Now</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" id="success-rate">94%</div>
+        <div class="stat-label">Success Rate</div>
+      </div>
     </div>
-
-    <!-- Centered Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#home" class="logo-nav">
-                <div class="logo-icon">GW</div>
-                Games WAM
-            </a>
-        </div>
-    </nav>
-
-    <!-- Hero with Simple Search -->
-    <section class="hero" id="home">
-        <h1>Trusted Mobile Game Mods</h1>
-        <p class="hero-subtitle">Fast, safe, and ready to enhance your gaming.</p>
-
-        <div class="search-section">
-            <div class="search-container">
-                <div class="main-search">
-                    <span class="search-emoji">🔍</span>
-                    <input type="text" class="search-input" placeholder="Search for any game mod..." id="mainSearch">
-                </div>
-            </div>
-        </div>
-        
-        <div class="filter-pills">
-            <div class="filter-pill active" onclick="setFilter('premium-unlocked')">
-                <span class="filter-icon premium">⭐</span>
-                Premium
-            </div>
-            <div class="filter-pill" onclick="setFilter('safe')">
-                <span class="filter-icon safe">✅</span>
-                100% Safe
-            </div>
-            <div class="filter-pill" onclick="setFilter('secure')">
-                <span class="filter-icon secure">🔒</span>
-                No Virus
-            </div>
-        </div>
-        
-        <div class="offer-notification">
-            <div class="offer-icon">🎁</div>
-            <div class="offer-text">
-                Complete a <span class="offer-highlight">quick offer</span> to unlock premium mods instantly!
-            </div>
-            <div class="offer-icon">🚀</div>
-        </div>
-    </section>
-
-    <section class="featured-section" id="mods">
-        <h2 class="section-title">Top-Rated Mods</h2>
-        
-        <div class="featured-grid">
-            <div class="mod-card">
-                <img src="https://play-lh.googleusercontent.com/hxTWHaVrGFZacDxXVlO62kaoqisNrJoo24jAz84zmgNXJJwjxJGfF7ezIebaNsVgvNPsNfL2YNP03xFzA9hXtw=w240-h480-rw" alt="Steal a Brainot Mod" class="mod-image">
-                <div class="mod-content">
-                    <div class="mod-header">
-                        <h3 class="mod-title">Steal a Brainot Mod</h3>
-                        <div class="mod-rating">★ 4.8</div>
-                    </div>
-                    <div class="mod-features">
-                        <span class="feature-tag">Unlimited Resources</span>
-                        <span class="feature-tag">All Levels Unlocked</span>
-                        <span class="feature-tag">No Ads</span>
-                    </div>
-                    <div class="mod-stats">
-                        <span>4.5K downloads</span>
-                        <span>92 reviews</span>
-                    </div>
-                    <div class="mod-actions">
-                        <button class="install-btn" onclick="openContentLocker('Steal a Brainot Mod')">Install</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mod-card">
-                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgyq6op9zGDY5yhQnUdiryRhgkfesfiOpvBZERJ1ihiqSPe2fc2_0FscfyexKKrC2ZmCdWLwMQnIBmB78btu3-K2L1FAU2-5qTr4A09p_riZ8d9emRlzRwd9zKrrepMJT7fadLxFyWYDaLLmsNubOk9QNC7Y7AiPggjqMOWYOhSFOMMxnViCBLfSIrqx2Y=w300-h160" alt="Super Bear Adventure" class="mod-image">
-                <div class="mod-content">
-                    <div class="mod-header">
-                        <h3 class="mod-title">Super Bear Adventure</h3>
-                        <div class="mod-rating">★ 4.9</div>
-                    </div>
-                    <div class="mod-features">
-                        <span class="feature-tag">Unlimited Lives</span>
-                        <span class="feature-tag">All Levels</span>
-                        <span class="feature-tag">No Ads</span>
-                    </div>
-                    <div class="mod-stats">
-                        <span>2.1K downloads</span>
-                        <span>47 reviews</span>
-                    </div>
-                    <div class="mod-actions">
-                        <button class="install-btn" onclick="openContentLocker('Super Bear Adventure')">Install</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mod-card">
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmIQtTK5ockJB6PRNEoeJ4TsqGsDcN-ddctNqv0isSXhD9l9BUAMN6ter4U2UmYrM74IKhPb9FYBczvyU5K_-4qNgCa14P34Bh_xZIUECvCAhui6-CFVowVBVK_LhOsL2H4-NtbkeOOo13cAqp09H-rkBxUSzrrqYS5APHsHqc4TGx_2QarJDgcEz8Yk4/w371-h296/SUBWAY%20SURFERS%20-%20Jouez%20en%20Ligne%20Gratuitement%20!%20_%20Poki.jpeg" alt="Subway Surfers" class="mod-image">
-                <div class="mod-content">
-                    <div class="mod-header">
-                        <h3 class="mod-title">Subway Surfers</h3>
-                        <div class="mod-rating">★ 4.8</div>
-                    </div>
-                    <div class="mod-features">
-                        <span class="feature-tag">Unlimited Coins</span>
-                        <span class="feature-tag">All Characters</span>
-                        <span class="feature-tag">Keys Unlocked</span>
-                    </div>
-                    <div class="mod-stats">
-                        <span>5.2K downloads</span>
-                        <span>89 reviews</span>
-                    </div>
-                    <div class="mod-actions">
-                        <button class="install-btn" onclick="openContentLocker('Subway Surfers')">Install</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mod-card">
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiVzBi49nHQDuVwebcSXxqh-0KJt8qfbXvsAEe4xyjqHJ13yvKlVdvSREtBqhO_QCE74u6Iw7QZjntNi2UbGEwhmE5JPeOEYsgPceb60kLM0cE0vq_I2no5JBJ16MtoUoT7RAH8olCzqGGvdVAJrZ-hJSPlqcAVnT35HDdZQnWar7USTThb9wVw9riKSbY/w298-h271/Minecraft_%20Play%20with%20Game%20Pass%20_%20Xbox.jpeg" alt="Minecraft PE" class="mod-image">
-                <div class="mod-content">
-                    <div class="mod-header">
-                        <h3 class="mod-title">Minecraft PE</h3>
-                        <div class="mod-rating">★ 4.9</div>
-                    </div>
-                    <div class="mod-features">
-                        <span class="feature-tag">Unlimited Resources</span>
-                        <span class="feature-tag">All Items</span>
-                        <span class="feature-tag">Texture Packs</span>
-                    </div>
-                    <div class="mod-stats">
-                        <span>8.1K downloads</span>
-                        <span>132 reviews</span>
-                    </div>
-                    <div class="mod-actions">
-                        <button class="install-btn" onclick="openContentLocker('Minecraft PE')">Install</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mod-card">
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSujz4CS-G9Dcd2VU1KuYeGwXKntoM8CVi5B_WzQQu7Q5Ld8sXsHjb8G4SGl0cruQLC4E43ygUPD5Hb69bd46kpEGZZEIWg3RxXIo-ZHsPNomtSI6z94ntCo2LZl2WzDBd7a_QQFnilHL6r7_6y0rpZZZNz-173UqRwRl1K1iKiM_sOVpm92Do6D15jbE/s320/Among%20us.jpeg" alt="Among Us" class="mod-image">
-                <div class="mod-content">
-                    <div class="mod-header">
-                        <h3 class="mod-title">Among Us</h3>
-                        <div class="mod-rating">★ 4.7</div>
-                    </div>
-                    <div class="mod-features">
-                        <span class="feature-tag">All Skins</span>
-                        <span class="feature-tag">Premium Features</span>
-                        <span class="feature-tag">No Ads</span>
-                    </div>
-                    <div class="mod-stats">
-                        <span>3.4K downloads</span>
-                        <span>76 reviews</span>
-                    </div>
-                    <div class="mod-actions">
-                        <button class="install-btn" onclick="openContentLocker('Among Us')">Install</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="popup-overlay" id="contentLockerPopup">
-        <div class="popup-content">
-            <button class="popup-close" onclick="closeContentLocker()">×</button>
-            <iframe id="contentLockerFrame" class="popup-iframe" src=""></iframe>
-        </div>
+    
+    <div class="trust-badges">
+      <div class="trust-badge">
+        <i class="fas fa-shield-alt"></i>
+        <span>Secure Connection</span>
+      </div>
+      <div class="trust-badge">
+        <i class="fas fa-user-check"></i>
+        <span>Verified Service</span>
+      </div>
+      <div class="trust-badge">
+        <i class="fas fa-clock"></i>
+        <span>Instant Delivery</span>
+      </div>
     </div>
+    
+    <div class="search-container">
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search items...">
+        <button id="search-btn">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all">All Items</button>
+      <button class="filter-btn" data-filter="weapon">Weapons</button>
+      <button class="filter-btn" data-filter="resource">Resources</button>
+      <button class="filter-btn" data-filter="class">Classes</button>
+      <button class="filter-btn" data-filter="tool">Tools</button>
+    </div>
+  </div>
 
-    <section class="reviews-section" id="reviews">
-        <div class="reviews-container">
-            <h3 class="reviews-title">What Our Users Say</h3>
-            
-            <div class="review-cards">
-                <div class="review-card">
-                    <div class="review-rating">★★★★★</div>
-                    <div class="review-content">
-                        "The Super Bear Adventure mod works flawlessly! Unlimited lives and all levels unlocked. Installation took just two minutes and I haven't experienced any issues whatsoever."
-                    </div>
-                    <div class="review-author">— Alex M., Pro Gamer</div>
-                </div>
-                
-                <div class="review-card">
-                    <div class="review-rating">★★★★☆</div>
-                    <div class="review-content">
-                        "Downloaded five mods so far and most work exceptionally well. The Subway Surfers mod required a couple attempts to install properly, but overall I'm very satisfied with the quality."
-                    </div>
-                    <div class="review-author">— Sarah K., Mobile Enthusiast</div>
-                </div>
-                
-                <div class="review-card">
-                    <div class="review-rating">★★★★★</div>
-                    <div class="review-content">
-                        "Clean downloads with no suspicious redirects or intrusive pop-ups. The user reviews helped me select the perfect mods. This site has become my primary destination for mobile modifications."
-                    </div>
-                    <div class="review-author">— Jordan R., Android Developer</div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="security-notice">
+    <i class="fas fa-lock"></i>
+    <span>Your information is secure and encrypted. We never store personal data.</span>
+  </div>
 
-    <footer class="footer" id="contact">
-        <div class="footer-links">
-            <a href="#" onclick="showInfo('contact')">Contact</a>
-            <a href="#" onclick="showInfo('privacy')">Privacy</a>
-            <a href="#" onclick="showInfo('terms')">Terms</a>
-            <a href="#" onclick="showInfo('about')">About</a>
-        </div>
-        <p>&copy; 2024 Games WAM. Trusted by mobile gamers worldwide.</p>
-    </footer>
+  <div id="gem-packs" class="packs"></div>
 
-    <script>
-        /* VPN Detection */
-        const API_KEY = '64d52f4862d144399659edc49c1356f4';
-        const API_URL = `https://api.ipgeolocation.io/ipgeo?apiKey=${API_KEY}`;
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal()">×</button>
+      <img id="modal-item-img" src="" alt="Selected Item" class="modal-item-img">
+      <h3 id="modal-item-name"></h3>
+      <p>Enter Your Username</p>
+      <input type="text" id="username-input" placeholder="Enter Username">
+      <button onclick="claimItem()">Claim Item</button>
+    </div>
+  </div>
 
-        async function detectVPN() {
-            try {
-                const response = await fetch(API_URL);
-                const data = await response.json();
-                const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                const geoTimezone = data.time_zone.name;
-                const isp = data.isp.toLowerCase();
-                const isVPN = 
-                    browserTimezone !== geoTimezone ||
-                    /vpn|proxy|hosting|cloud|data center/i.test(isp) ||
-                    /nordvpn|expressvpn|surfshark|protonvpn|ipvanish|hidemyass/i.test(isp);
-                if (isVPN) {
-                    document.getElementById('vpnBlock').style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
-                    console.log('VPN usage detected. Access blocked.');
-                } else {
-                    console.log('No VPN detected. Access allowed.');
-                }
-            } catch (error) {
-                console.error('Error detecting VPN:', error);
-            }
-        }
+  <div class="notification" id="notification">
+    <i class="fas fa-check-circle"></i>
+    <span id="notification-text"></span>
+  </div>
 
-        window.onload = detectVPN;
+  <script>
+    const items = [
+      { name: "Diamonds", image: "https://i.postimg.cc/fLcwSsPc/diamosds-7000-2.png", category: "resource" },
+      { name: "Cake", image: "https://i.postimg.cc/sDKBkWt5/Cake.webp", category: "resource" },
+      { name: "Medkit", image: "https://i.postimg.cc/B6kVmtCF/MEDKIIIT.png", category: "tool" },
+      { name: "Bandage", image: "https://i.postimg.cc/XJgH3pVt/Bandage-Close-Up.png", category: "tool" },
+      { name: "Cyborg", image: "https://i.postimg.cc/7PpP2Y9V/Cyborgclass.webp", category: "class" },
+      { name: "Pyromaniac", image: "https://i.postimg.cc/g2zCwfCs/Pyromancerclass.webp", category: "class" },
+      { name: "Flamethrower", image: "https://i.postimg.cc/TPH7PhFs/FSFSFS.png", category: "weapon" },
+      { name: "Rifle", image: "https://i.postimg.cc/rwHx0Wy5/SDFGDG.png", category: "weapon" },
+    ];
 
-        let currentFilter = 'all';
+    function loadItems(filter = 'all') {
+      const packsContainer = document.getElementById('gem-packs');
+      packsContainer.innerHTML = '';
+      
+      const filteredItems = filter === 'all' ? items : items.filter(i => i.category === filter);
+      
+      filteredItems.forEach(item => {
+        const pack = document.createElement('div');
+        pack.className = 'pack glow';
+        pack.dataset.category = item.category;
+        pack.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div>${item.name}</div>
+          <button onclick="openModal('${item.name}', '${item.image}')">Claim</button>
+        `;
+        packsContainer.appendChild(pack);
+      });
+    }
 
-        function performSearch() {
-            const searchTerm = document.getElementById('mainSearch').value;
-            if (searchTerm.trim()) {
-                alert(`Searching for "${searchTerm}" mods with ${currentFilter} filter applied...`);
-            } else {
-                alert('Please enter a search term to continue');
-            }
-        }
+    function openModal(title, imgSrc) {
+      document.getElementById('modal').style.display = 'flex';
+      document.getElementById('modal-item-img').src = imgSrc;
+      document.getElementById('modal-item-name').textContent = title;
+    }
 
-        function setFilter(filterType) {
-            currentFilter = filterType;
-            
-            document.querySelectorAll('.filter-pill').forEach(pill => {
-                pill.classList.remove('active');
-            });
-            
-            event.target.classList.add('active');
-        }
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
 
-        function openContentLocker(modName) {
-            const popup = document.getElementById('contentLockerPopup');
-            const iframe = document.getElementById('contentLockerFrame');
-            
-            iframe.src = 'https://installchecker.com/cl/i/o6wn2d';
-            
-            popup.classList.add('show');
-            
-            document.body.style.overflow = 'hidden';
-            
-            console.log(`Opening content locker for ${modName}`);
-        }
+    function claimItem() {
+      const username = document.getElementById('username-input').value;
+      if (!username) {
+        showNotification('Please enter your username!');
+        return;
+      }
+      closeModal();
+      showNotification('Item claimed successfully!');
+    }
 
-        function closeContentLocker() {
-            const popup = document.getElementById('contentLockerPopup');
-            const iframe = document.getElementById('contentLockerFrame');
-            
-            popup.classList.remove('show');
-            
-            iframe.src = '';
-            
-            document.body.style.overflow = 'auto';
-        }
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      document.getElementById('notification-text').textContent = message;
+      notification.classList.add('show');
+      setTimeout(() => notification.classList.remove('show'), 3000);
+    }
 
-        document.getElementById('contentLockerPopup').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeContentLocker();
-            }
-        });
+    document.getElementById('search-btn').addEventListener('click', () => {
+      const searchTerm = document.getElementById('search-input').value.toLowerCase();
+      document.querySelectorAll('.pack').forEach(pack => {
+        const itemName = pack.querySelector('div').textContent.toLowerCase();
+        pack.style.display = itemName.includes(searchTerm) ? 'block' : 'none';
+      });
+    });
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeContentLocker();
-            }
-        });
+    document.querySelectorAll('.filter-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        loadItems(this.dataset.filter);
+      });
+    });
 
-        function showInfo(type) {
-            alert(`Opening ${type} information...`);
-        }
+    setInterval(() => {
+      const users = Math.floor(Math.random() * 100) + 300;
+      document.getElementById('online-users').textContent = users;
+    }, 5000);
 
-        document.getElementById('mainSearch').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-    </script>
+    loadItems();
+  </script>
 </body>
 </html>
